@@ -1539,18 +1539,6 @@ select:focus {
     transform: translateY(-2px);
 }
 
-/* ================================
-   Footer
-   ================================ */
-
-.footer {
-    background: var(--light-gray);
-    text-align: center;
-    padding: 3rem 2rem;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-light);
-    font-size: clamp(0.8rem, 2vw, 0.9rem);
-}
 
 /* ================================
    Performance Optimizations
@@ -2175,5 +2163,63 @@ select:focus {
     .section-title {
         font-size: 18pt;
         margin-bottom: 1rem;
+    }
+}
+
+/* ================================
+   Footer amb crèdits del desenvolupador
+   ================================ */
+
+.footer {
+    background: var(--light-gray);
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-light);
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+.footer .container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.footer p {
+    margin-bottom: 0.5rem;
+}
+
+.developer-credits {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(102, 102, 102, 0.2);
+}
+
+.developer-credits p {
+    font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+    color: var(--text-lighter);
+    margin: 0;
+}
+
+.developer-credits a {
+    color: var(--primary-red);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.developer-credits a:hover,
+.developer-credits a:focus {
+    color: var(--dark-red);
+    text-decoration: underline;
+}
+
+/* Responsive per mòbil */
+@media (max-width: 480px) {
+    .developer-credits p {
+        font-size: 0.7rem;
+        line-height: 1.4;
+    }
+
+    .footer {
+        padding: 2rem 1rem;
     }
 }
