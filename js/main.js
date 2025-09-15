@@ -1,11 +1,137 @@
 /**
  * Ball de Diables del Prat - Main JavaScript
- * Fully Responsive with Mobile Menu
+ * Fully Responsive with Mobile Menu + Loading Screen
  * Author: Ball de Diables del Prat
  * Year: 2025
  */
 
+// ================================
+// Loading Screen Management
+// ================================
+
+function initLoadingScreen() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    const percentageText = document.getElementById('percentageText');
+    const body = document.body;
+
+    if (!loadingScreen || !percentageText) return;
+
+    let currentPercentage = 0;
+    let progressInterval;
+    let isLoadingComplete = false;
+
+    // Función para simular el progreso de carga
+    function simulateProgress() {
+        progressInterval = setInterval(() => {
+            if (currentPercentage < 95 && !isLoadingComplete) {
+                // Incrementos variables para hacer más realista
+                const increment = Math.random() * 10 + 3;
+                currentPercentage = Math.min(currentPercentage + increment, 95);
+                updateProgress(Math.floor(currentPercentage));
+            }
+        }, 200);
+    }
+
+    // Actualizar el porcentaje mostrado
+    function updateProgress(percentage) {
+        percentageText.textContent = percentage + '%';
+        loadingScreen.setAttribute('aria-valuenow', percentage);
+    }
+
+    // Completar la carga
+    function completeLoading() {
+        if (isLoadingComplete) return;
+
+        isLoadingComplete = true;
+        clearInterval(progressInterval);
+
+        // Completar al 100%
+        currentPercentage = 100;
+        updateProgress(100);
+
+        // Esperar un momento antes de ocultar
+        setTimeout(() => {
+            hideLoadingScreen();
+        }, 800);
+    }
+
+    // Ocultar el loading screen
+    function hideLoadingScreen() {
+        loadingScreen.classList.add('fade-out');
+        body.classList.remove('loading');
+        body.classList.add('content-loaded');
+
+        // Remover del DOM después de la animación
+        setTimeout(() => {
+            if (loadingScreen && loadingScreen.parentNode) {
+                loadingScreen.parentNode.removeChild(loadingScreen);
+            }
+        }, 600);
+    }
+
+    // Detectar cuando todos los recursos críticos están cargados
+    function checkResourcesLoaded() {
+        const promises = [];
+
+        // Verificar imágenes críticas
+        const criticalImages = [
+            'images/Logo.png',
+            'images/LogoBlanc.png',
+            'images/Carretillada.jpg'
+        ];
+
+        criticalImages.forEach(src => {
+            promises.push(new Promise((resolve) => {
+                const img = new Image();
+                img.onload = resolve;
+                img.onerror = resolve; // Resolver aunque falle para no bloquear
+                img.src = src;
+            }));
+        });
+
+        // Verificar fonts
+        if ('fonts' in document) {
+            promises.push(document.fonts.ready.catch(() => { }));
+        }
+
+        return Promise.all(promises);
+    }
+
+    // Iniciar el loading
+    simulateProgress();
+
+    // Verificar recursos y completar cuando esté todo listo
+    Promise.all([
+        checkResourcesLoaded(),
+        new Promise(resolve => {
+            if (document.readyState === 'complete') {
+                resolve();
+            } else {
+                window.addEventListener('load', resolve);
+            }
+        }),
+        // Asegurar un mínimo de tiempo para mostrar el loading
+        new Promise(resolve => setTimeout(resolve, 1500))
+    ]).then(() => {
+        completeLoading();
+    }).catch(() => {
+        // Si algo falla, completar de todos modos
+        completeLoading();
+    });
+
+    // Máximo tiempo de loading (failsafe)
+    setTimeout(() => {
+        if (!isLoadingComplete) {
+            console.warn('Loading timeout reached, forcing completion');
+            completeLoading();
+        }
+    }, 5000);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Inicializar loading screen PRIMERO
+    initLoadingScreen();
 
     // ================================
     // Mobile Menu Management
@@ -661,21 +787,37 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ================================
-    // Initialize All Functions
+    // Initialize All Functions (modificado)
     // ================================
 
     try {
-        initMobileMenu();
-        initSmoothScrolling();
-        initCountdownTimer();
-        initInteractiveTimeline();
-        initContactForm();
-        initNavbarEffects();
-        initGallery();
-        initPerformanceMonitoring();
-        initErrorHandling();
+        // Solo inicializar las funciones después de que el loading se complete
+        const initializeAfterLoading = () => {
+            initMobileMenu();
+            initSmoothScrolling();
+            initCountdownTimer();
+            initInteractiveTimeline();
+            initContactForm();
+            initNavbarEffects();
+            initGallery();
+            initPerformanceMonitoring();
+            initErrorHandling();
 
-        console.log('Ball de Diables del Prat - Website initialized successfully! 🔥');
+            console.log('Ball de Diables del Prat - Website initialized successfully! 🔥');
+        };
+
+        // Si el loading ya se completó, inicializar inmediatamente
+        if (document.body.classList.contains('content-loaded')) {
+            initializeAfterLoading();
+        } else {
+            // Esperar a que se complete el loading
+            const checkLoadingComplete = setInterval(() => {
+                if (document.body.classList.contains('content-loaded')) {
+                    clearInterval(checkLoadingComplete);
+                    setTimeout(initializeAfterLoading, 300); // Pequeño delay para suavizar
+                }
+            }, 100);
+        }
 
         // Remove loading class if present
         document.body.classList.remove('loading');
@@ -767,3 +909,37 @@ window.addEventListener('resize', function () {
         }
     }
 });
+
+// ================================
+// Utilidad para precargar recursos críticos
+// ================================
+
+function preloadCriticalResources() {
+    const criticalResources = [
+        'css/styles.css',
+        'images/Logo.png',
+        'images/LogoBlanc.png',
+        'images/Carretillada.jpg'
+    ];
+
+    criticalResources.forEach(url => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.href = url;
+
+        if (url.endsWith('.css')) {
+            link.as = 'style';
+        } else if (url.match(/\.(jpg|png|webp)$/)) {
+            link.as = 'image';
+        }
+
+        document.head.appendChild(link);
+    });
+}
+
+// Precargar recursos en cuanto se pueda
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', preloadCriticalResources);
+} else {
+    preloadCriticalResources();
+}

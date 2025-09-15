@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gran Panera Infernal 2024 | Ball de Diables del Prat</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Gran Panera Infernal 2024 - Sorteig de 1.250€ per gastar en comerços locals del Prat de Llobregat. Ball de Diables del Prat de Llobregat.">
+    <meta name="keywords"
+        content="panera infernal, sorteig, Prat de Llobregat, Ball de Diables, comerços locals, premi, 2024">
+    <meta name="author" content="Ball de Diables del Prat de Llobregat">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://balldediablesdelprat.cat/panera.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://balldediablesdelprat.cat/panera.html">
+    <meta property="og:title" content="Gran Panera Infernal 2024 | Ball de Diables del Prat">
+    <meta property="og:description"
+        content="Sorteig de 1.250€ per gastar en comerços locals del Prat. Participa en la Gran Panera Infernal 2024!">
+    <meta property="og:image" content="https://balldediablesdelprat.cat/images/LogoBlanc.png">
+
+    <!-- Fonts and Icons -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Leaflet CSS (FREE Map) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/Rodona.png" type="image/png">
+
+    <!-- Panera specific styles -->
+    <style>
+        /* Map styles */
+        .map-section {
+            background: white;
+            padding: 6rem 2rem;
+        }
+
+        .map-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .map-header {
+            background: var(--primary-red);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .map-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .map-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .map-filter {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .map-filter:hover,
+        .map-filter.active {
+            background: white;
+            color: var(--primary-red);
+        }
+
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            min-height: 400px;
+        }
+
+        #comerciosMap {
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 200px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .comercios-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .toggle-btn {
+            background: var(--border-color);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .toggle-btn.active,
+        .toggle-btn:hover {
+            background: var(--primary-red);
+            color: white;
+        }
+
+        .comercios-list-view {
+            display: none;
+        }
+
+        .comercios-list-view.active {
+            display: block;
+        }
+
+        .comercio-item {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .comercio-item:hover {
+            border-color: var(--primary-red);
+            transform: translateX(5px);
+        }
+
+        .comercio-category {
+            background: var(--primary-red);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .comercio-info h4 {
+            margin: 0 0 0.2rem 0;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .comercio-address {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .map-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 500px;
+            flex-direction: column;
+            gap: 1rem;
+            color: var(--text-light);
+        }
+
+        .map-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-red);
+            border-radius: 50%;
+            animation: mapSpin 1s linear infinite;
+        }
+
+        @keyframes mapSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Rest of styles */
+        .panera-hero {
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            color: white;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panera-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('images/Panera.jpg') center/cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .panera-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .panera-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .panera-subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .prize-highlight {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            margin: 2rem 0;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary-red);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card h3 {
+            color: var(--primary-red);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card i {
+            font-size: 1.5rem;
+        }
+
+        .bases-section {
+            background: var(--light-gray);
+        }
+
+        .bases-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .base-item {
+            background: white;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .base-header {
+            background: var(--primary-red);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .base-header:hover {
+            background: var(--dark-red);
+        }
+
+        .base-content {
+            padding: 1.5rem;
+            display: none;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .base-content.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .comercios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .comercio-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .comercio-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .comercio-number {
+            background: var(--primary-red);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .comercio-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 100px;
+            left: 2rem;
+            background: var(--primary-red);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: var(--dark-red);
+            transform: scale(1.1);
+        }
+
+        .contact-cta {
+            background: var(--primary-red);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .contact-cta h2 {
+            margin-bottom: 1rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+        }
+
+        .contact-cta p {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .contact-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary-red);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact-button:hover {
+            background: var(--light-gray);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .map-header {
+                padding: 1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .map-wrapper {
+                height: 400px;
+            }
+
+            .map-legend {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 1rem;
+                max-width: none;
+            }
+
+            .comercios-toggle {
+                gap: 0.5rem;
+            }
+
+            .toggle-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .back-button {
+                left: 1rem;
+                top: 80px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .panera-hero {
+                padding: 6rem 1rem 3rem;
+            }
+
+            .comercios-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading">
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen" role="progressbar" aria-labelledby="loading-title" aria-valuenow="0"
+        aria-valuemin="0" aria-valuemax="100">
+        <div class="loading-logo">
+            <img src="images/Logo.png" alt="Logo Ball de Diables del Prat" class="loading-logo-image"
+                onerror="this.style.display='none'">
+        </div>
+
+        <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+        </div>
+
+        <div id="loading-title" class="loading-text">Carregant...</div>
+
+        <div class="loading-progress">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div class="loading-percentage">
+            <span id="percentageText">0%</span>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-button" aria-label="Tornar a la pàgina principal">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <!-- Navigation (simplified) -->
+    <nav class="navbar" role="navigation" aria-label="Navegació">
+        <div class="nav-container">
+            <a href="index.html" class="logo" aria-label="Ball de Diables del Prat - Tornar a l'inici">
+                <div class="logo-container">
+                    <img src="images/Logo.png" alt="Logo del Ball de Diables del Prat" class="logo-icon" width="24"
+                        height="24" onerror="this.style.display='none'">
+                    <span class="logo-text">Ball de Diables del Prat</span>
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="panera-hero">
+            <div class="panera-hero-content">
+                <h1 class="panera-title">Gran Panera Infernal 2024</h1>
+                <p class="panera-subtitle">Sorteig solidari per impulsar el comerç local del Prat</p>
+                <div class="prize-highlight">
+                    1.250€ en premis
+                </div>
+                <p>Participa i guanya per gastar en 60 comerços locals!</p>
+                <p><strong>Sorteig:</strong> 31 de desembre de 2024 amb la Grossa de Cap d'Any</p>
+            </div>
+        </section>
+
+        <!-- Info Cards -->
+        <section class="section">
+            <div class="container">
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h3><i class="fas fa-gift"></i> El Premi</h3>
+                        <p>Targeta moneder de <strong>1.250€</strong> per gastar en comerços locals del Prat adherits al
+                            sorteig.</p>
+                        <p><strong>Màxim 150€ per establiment</strong> per donar suport al màxim de comerços possible.
+                        </p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-ticket-alt"></i> Com Participar</h3>
+                        <p><strong>Cost:</strong> 5€ per butlleta</p>
+                        <p><strong>Números:</strong> 10 números per butlleta</p>
+                        <p><strong>Total butlletes:</strong> 1.000 tiquets amb números del 0 al 9.999 (no consecutius)
+                        </p>
+                        <p><strong>Venda:</strong> De l'1 de novembre al 31 de desembre fins les 11h</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-calendar-alt"></i> Sorteig</h3>
+                        <p><strong>Data:</strong> 31 de desembre de 2024</p>
+                        <p>Combinació amb el <strong>primer premi de la Grossa de Cap d'Any</strong> (darrers 4 números)
+                        </p>
+                        <p><strong>Recollida:</strong> Abans del 15 de gener de 2025</p>
+                        <p><strong>Límit d'ús:</strong> 30 de desembre de 2025</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comercios con Mapa Interactivo -->
+        <section class="section map-section">
+            <div class="container">
+                <h2 class="section-title">Comerços Adherits - Ubicacions</h2>
+                <p style="text-align: center; color: var(--text-light); margin-bottom: 3rem;">
+                    Descobreix on es troben els 60 establiments participants en la Gran Panera Infernal 2024
+                </p>
+
+                <!-- Map Container -->
+                <div class="map-container">
+                    <div class="map-header">
+                        <h3 class="map-title">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Mapa Interactiu de Comerços
+                        </h3>
+                        <div class="map-controls">
+                            <button class="map-filter active" data-category="all">Tots</button>
+                            <button class="map-filter" data-category="alimentacio">Alimentació</button>
+                            <button class="map-filter" data-category="moda">Moda</button>
+                            <button class="map-filter" data-category="serveis">Serveis</button>
+                            <button class="map-filter" data-category="cultura">Cultura</button>
+                        </div>
+                    </div>
+
+                    <div class="map-wrapper">
+                        <div class="map-loading" id="mapLoading">
+                            <div class="map-spinner"></div>
+                            <p>Carregant mapa...</p>
+                        </div>
+                        <div id="comerciosMap" style="display: none;"></div>
+
+                        <div class="map-legend">
+                            <div class="legend-item">
+                                <div class="legend-icon" style="background: #e74c3c;"></div>
+                                <span>Alimentació</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-icon" style="background: #3498db;"></div>
+                                <span>Moda</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-icon" style="background: #2ecc71;"></div>
+                                <span>Serveis</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-icon" style="background: #f39c12;"></div>
+                                <span>Cultura</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-icon" style="background: #9b59b6;"></div>
+                                <span>Altres</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid de Comercios -->
+                <div class="comercios-grid" id="mapView">
+                    <div class="comercio-card">
+                        <div class="comercio-number">1</div>
+                        <div class="comercio-name">Bicicletes Balaguer</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">2</div>
+                        <div class="comercio-name">Ferreteria Primer Clau</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">3</div>
+                        <div class="comercio-name">Copisteria Alonso</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">4</div>
+                        <div class="comercio-name">Academia d'Anglès Estela</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">5</div>
+                        <div class="comercio-name">Montse Borràs</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">6</div>
+                        <div class="comercio-name">La Central (Mercat)</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">7</div>
+                        <div class="comercio-name">Carnisseria Piñol (Mercat)</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">8</div>
+                        <div class="comercio-name">La Cuineta de l'Isabel (Mercat)</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">9</div>
+                        <div class="comercio-name">Carnisseria Montserrat (Mercat)</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">10</div>
+                        <div class="comercio-name">Ferreteria La Cresta</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">11</div>
+                        <div class="comercio-name">Passion Beauté</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">12</div>
+                        <div class="comercio-name">Herba Bona</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">13</div>
+                        <div class="comercio-name">M'Enamorau & Tuki</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">14</div>
+                        <div class="comercio-name">Aurora</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">15</div>
+                        <div class="comercio-name">Fonollosa</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">16</div>
+                        <div class="comercio-name">Delcar</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">17</div>
+                        <div class="comercio-name">Party's</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">18</div>
+                        <div class="comercio-name">Flors Muntané</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">19</div>
+                        <div class="comercio-name">Cal Ramonet del Nara</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">20</div>
+                        <div class="comercio-name">Libreria Drac</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">21</div>
+                        <div class="comercio-name">Muy Coqueta</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">22</div>
+                        <div class="comercio-name">Un Pedacito de Ti</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">23</div>
+                        <div class="comercio-name">Fontpell</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">24</div>
+                        <div class="comercio-name">Tàstum</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">25</div>
+                        <div class="comercio-name">La Nova San José</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">26</div>
+                        <div class="comercio-name">Pa i Coca</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">27</div>
+                        <div class="comercio-name">Polleria Antònia (Mercat)</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">28</div>
+                        <div class="comercio-name">Classis Moda</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">29</div>
+                        <div class="comercio-name">Calçats Avenida</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">30</div>
+                        <div class="comercio-name">Cal Picapedrer 2</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">31</div>
+                        <div class="comercio-name">Optica Cottet El Prat</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">32</div>
+                        <div class="comercio-name">Abelló</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">33</div>
+                        <div class="comercio-name">Made with Heart</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">34</div>
+                        <div class="comercio-name">Flors Companys</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">35</div>
+                        <div class="comercio-name">Celler Terra i Sol</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">36</div>
+                        <div class="comercio-name">Cuibel Electrodomèstics</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">37</div>
+                        <div class="comercio-name">Nit i Dia</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">38</div>
+                        <div class="comercio-name">Águeda Herrera Lencería</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">39</div>
+                        <div class="comercio-name">Hoy y Ahora</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">40</div>
+                        <div class="comercio-name">Barroso Esports</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">41</div>
+                        <div class="comercio-name">Pet Naturalia</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">42</div>
+                        <div class="comercio-name">Servei de Secretaria</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">43</div>
+                        <div class="comercio-name">Montserratina</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">44</div>
+                        <div class="comercio-name">Llibreria Atenea</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">45</div>
+                        <div class="comercio-name">Montse Font Moda Dona</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">46</div>
+                        <div class="comercio-name">Cine Capri</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">47</div>
+                        <div class="comercio-name">Xocoprat</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">48</div>
+                        <div class="comercio-name">El Ninot</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">49</div>
+                        <div class="comercio-name">El Cuquet</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">50</div>
+                        <div class="comercio-name">Mandala Patch</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">51</div>
+                        <div class="comercio-name">Colla Bastonera del Prat</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">52</div>
+                        <div class="comercio-name">Perruqueria Monfort</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">53</div>
+                        <div class="comercio-name">Lamaranya</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">54</div>
+                        <div class="comercio-name">Castellers del Prat</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">55</div>
+                        <div class="comercio-name">La Mulassa del Prat</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">56</div>
+                        <div class="comercio-name">Ass. Gegantera Delta Prat</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">57</div>
+                        <div class="comercio-name">Ferretería Llobregat</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">58</div>
+                        <div class="comercio-name">Benessere. Herboristería, Dietética y Minerales</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">59</div>
+                        <div class="comercio-name">Pesca Salada Xarcuteria Puig</div>
+                    </div>
+                    <div class="comercio-card">
+                        <div class="comercio-number">60</div>
+                        <div class="comercio-name">La Peixateria del Barri</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bases Legales -->
+        <section class="section bases-section">
+            <div class="container">
+                <h2 class="section-title">Bases Legals del Sorteig</h2>
+                <div class="bases-content">
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>1. Requisits de Participació</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>Per poder participar en aquest concurs totes aquelles persones que comprin butlletes
+                                hauran de ser majors d'edat i no estar incapacitades legalment.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>2. Descripció del Premi</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>El premi serà de 1.250€ a consumir en els comerços locals del Prat de Llobregat que donin
+                                suport a l'organització d'aquesta panera del Ball de Diables. El llistat i la
+                                localització d'aquests es pot consultar a tot seguit d'aquestes bases dins aquest mateix
+                                document.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>3. Forma d'Entrega del Premi</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>El premiat rebrà una l'entrega d'una targeta moneder amb què farà front a la quantitat de
+                                despesa que contempla en premi.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>4. Particularitat del Premi</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>El premi conté la particularitat que no es pot fer una compra superior a 150€ en un
+                                mateix establiment, així la quantia premiada pot ser repartida en diferents establiments
+                                i donar suport a més comerços com sigui possible.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>5. Període de Venda</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>La venda de les butlletes es farà entre l'1 de novembre i el 31 de desembre, ambdós
+                                inclosos aquest últim fins a les 11h, una hora abans que comenci el Sorteig de la Grossa
+                                de Cap d'Any.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>6. Sorteig</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>El sorteig es farà en combinació amb el primer premi de la Grossa de Cap d'Any,
+                                organitzat per Entitat Autònoma de Jocs i Apostes de la Generalitat (Q-5850004B).</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>7. Participació</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>La participació és de 10 números per butlleta, havent-se fet el total de 1.000 tiquets
+                                que contenen els números, sempre no consecutius, d'entre el 0 i el 9.999.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>8. Cost de Participació</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>El cost individual de participació en el sorteig per butlleta és de 5€.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>9. Data Límit d'Ús</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>La data límit d'ús del premi és del 30 de desembre de 2025.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>10. Recollida del Premi</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>El guanyador/a ha de posar-se en contacte amb l'associació per correu electrònic
+                                (balldediablesdelprat@gmail.com) amb data límit del dia 15 de gener de 2025.
+                                L'organització i el premiat/da concertaran dia de trobada a conveniència entre les parts
+                                per fer l'entrega a La Nau de Cultura Popular (Pl. Xavier Ruiz Millán, 1). El guanyador
+                                haurà de verificar que té en possessió el número premiat fent l'entrega de la butlleta
+                                original on consti la combinació premiada.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>11. Premi Desert</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>Si el premi quedes desert sense que ningú en reclami la titularitat del butlletí
+                                guanyador, l'associació Ball de Diables del Prat decidirà anunciar que serà guanyador/a
+                                del sorteig aquell que contingui el butlletí que contingui la combinació del segon premi
+                                del mateix sorteig de la Grossa de Cap d'Any. En cas també desèrtic serà el premiat el
+                                que contingui els darrers quatre números del Tercer Premi.</p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>12. Penalitzacions</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>L'incompliment d'aquestes bases per part del guanyador/a suposarà la pèrdua del premi.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="base-item">
+                        <div class="base-header" onclick="toggleBase(this)">
+                            <span>13. Acceptació de les Bases</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="base-content">
+                            <p>La participació en el sorteig suposa l'acceptació íntegra de les presents bases i la
+                                submissió expressa de les decisions interpretatives que de les mateixes n'efectuï
+                                l'organització.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact CTA -->
+        <section class="contact-cta">
+            <div class="container">
+                <h2>Vols participar?</h2>
+                <p>Contacta amb nosaltres per comprar les teves butlletes i formar part d'aquest sorteig solidari</p>
+                <a href="mailto:balldediablesdelprat@gmail.com" class="contact-button">
+                    <i class="fas fa-envelope"></i> Contactar
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <p>&copy; 2024 Ball de Diables del Prat de Llobregat (NIF G67063825) - Gran Panera Infernal 2024</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+
+    <!-- Leaflet JS (FREE Map) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        // Datos completos de los 60 comercios con ubicaciones del Prat de Llobregat
+        const comerciosData = [
+            { id: 1, name: "Bicicletes Balaguer", category: "serveis", lat: 41.3275, lng: 2.0973, color: "#2ecc71", description: "Reparació i venda de bicicletes" },
+            { id: 2, name: "Ferreteria Primer Clau", category: "serveis", lat: 41.3265, lng: 2.0983, color: "#2ecc71", description: "Material de ferreteria i bricolatge" },
+            { id: 3, name: "Copisteria Alonso", category: "serveis", lat: 41.3285, lng: 2.0963, color: "#2ecc71", description: "Serveis d'impressió i enquadernació" },
+            { id: 4, name: "Academia d'Anglès Estela", category: "cultura", lat: 41.3295, lng: 2.0953, color: "#f39c12", description: "Formació en idiomes" },
+            { id: 5, name: "Montse Borràs", category: "moda", lat: 41.3255, lng: 2.0993, color: "#3498db", description: "Moda i complements" },
+            { id: 6, name: "La Central (Mercat)", category: "alimentacio", lat: 41.3280, lng: 2.0990, color: "#e74c3c", description: "Productes del mercat" },
+            { id: 7, name: "Carnisseria Piñol (Mercat)", category: "alimentacio", lat: 41.3282, lng: 2.0988, color: "#e74c3c", description: "Carnisseria tradicional" },
+            { id: 8, name: "La Cuineta de l'Isabel (Mercat)", category: "alimentacio", lat: 41.3278, lng: 2.0992, color: "#e74c3c", description: "Menjar casolà" },
+            { id: 9, name: "Carnisseria Montserrat (Mercat)", category: "alimentacio", lat: 41.3281, lng: 2.0989, color: "#e74c3c", description: "Carnisseria de qualitat" },
+            { id: 10, name: "Ferreteria La Cresta", category: "serveis", lat: 41.3270, lng: 2.0980, color: "#2ecc71", description: "Ferreteria i utillatge" },
+            { id: 11, name: "Passion Beauté", category: "serveis", lat: 41.3290, lng: 2.0960, color: "#2ecc71", description: "Centre d'estètica i bellesa" },
+            { id: 12, name: "Herba Bona", category: "alimentacio", lat: 41.3260, lng: 2.0975, color: "#e74c3c", description: "Herboristeria i dietètica" },
+            { id: 13, name: "M'Enamorau & Tuki", category: "moda", lat: 41.3288, lng: 2.0965, color: "#3498db", description: "Moda i complements" },
+            { id: 14, name: "Aurora", category: "alimentacio", lat: 41.3272, lng: 2.0985, color: "#e74c3c", description: "Productes alimentaris" },
+            { id: 15, name: "Fonollosa", category: "serveis", lat: 41.3283, lng: 2.0970, color: "#2ecc71", description: "Serveis locals" },
+            { id: 16, name: "Delcar", category: "serveis", lat: 41.3268, lng: 2.0978, color: "#2ecc71", description: "Serveis d'automoció" },
+            { id: 17, name: "Party's", category: "altres", lat: 41.3276, lng: 2.0967, color: "#9b59b6", description: "Articles de festa" },
+            { id: 18, name: "Flors Muntané", category: "altres", lat: 41.3287, lng: 2.0972, color: "#9b59b6", description: "Floristeria" },
+            { id: 19, name: "Cal Ramonet del Nara", category: "alimentacio", lat: 41.3263, lng: 2.0988, color: "#e74c3c", description: "Restaurant tradicional" },
+            { id: 20, name: "Libreria Drac", category: "cultura", lat: 41.3278, lng: 2.0974, color: "#f39c12", description: "Llibreria local" },
+            { id: 21, name: "Muy Coqueta", category: "moda", lat: 41.3285, lng: 2.0968, color: "#3498db", description: "Botiga de moda" },
+            { id: 22, name: "Un Pedacito de Ti", category: "altres", lat: 41.3271, lng: 2.0982, color: "#9b59b6", description: "Regals i complements" },
+            { id: 23, name: "Fontpell", category: "alimentacio", lat: 41.3279, lng: 2.0976, color: "#e74c3c", description: "Carnisseria" },
+            { id: 24, name: "Tàstum", category: "alimentacio", lat: 41.3266, lng: 2.0979, color: "#e74c3c", description: "Especialitats gastronòmiques" },
+            { id: 25, name: "La Nova San José", category: "alimentacio", lat: 41.3284, lng: 2.0971, color: "#e74c3c", description: "Pastisseria" },
+            { id: 26, name: "Pa i Coca", category: "alimentacio", lat: 41.3273, lng: 2.0986, color: "#e74c3c", description: "Forner" },
+            { id: 27, name: "Polleria Antònia (Mercat)", category: "alimentacio", lat: 41.3281, lng: 2.0991, color: "#e74c3c", description: "Polleria del mercat" },
+            { id: 28, name: "Classis Moda", category: "moda", lat: 41.3289, lng: 2.0964, color: "#3498db", description: "Moda clàssica" },
+            { id: 29, name: "Calçats Avenida", category: "moda", lat: 41.3274, lng: 2.0981, color: "#3498db", description: "Sabateria" },
+            { id: 30, name: "Cal Picapedrer 2", category: "alimentacio", lat: 41.3267, lng: 2.0987, color: "#e74c3c", description: "Restaurant local" },
+            { id: 31, name: "Optica Cottet El Prat", category: "serveis", lat: 41.3277, lng: 2.0975, color: "#2ecc71", description: "Òptica" },
+            { id: 32, name: "Abelló", category: "altres", lat: 41.3286, lng: 2.0969, color: "#9b59b6", description: "Comerç local" },
+            { id: 33, name: "Made with Heart", category: "altres", lat: 41.3269, lng: 2.0984, color: "#9b59b6", description: "Articles fets a mà" },
+            { id: 34, name: "Flors Companys", category: "altres", lat: 41.3282, lng: 2.0973, color: "#9b59b6", description: "Floristeria" },
+            { id: 35, name: "Celler Terra i Sol", category: "alimentacio", lat: 41.3275, lng: 2.0977, color: "#e74c3c", description: "Vins i licors" },
+            { id: 36, name: "Cuibel Electrodomèstics", category: "serveis", lat: 41.3264, lng: 2.0989, color: "#2ecc71", description: "Electrodomèstics" },
+            { id: 37, name: "Nit i Dia", category: "alimentacio", lat: 41.3291, lng: 2.0962, color: "#e74c3c", description: "Supermercat" },
+            { id: 38, name: "Águeda Herrera Lencería", category: "moda", lat: 41.3258, lng: 2.0995, color: "#3498db", description: "Llenceria" },
+            { id: 39, name: "Hoy y Ahora", category: "altres", lat: 41.3270, lng: 2.0983, color: "#9b59b6", description: "Varietats" },
+            { id: 40, name: "Barroso Esports", category: "serveis", lat: 41.3281, lng: 2.0966, color: "#2ecc71", description: "Articles esportius" },
+            { id: 41, name: "Pet Naturalia", category: "altres", lat: 41.3262, lng: 2.0990, color: "#9b59b6", description: "Productes per animals" },
+            { id: 42, name: "Servei de Secretaria", category: "serveis", lat: 41.3287, lng: 2.0971, color: "#2ecc71", description: "Serveis administratius" },
+            { id: 43, name: "Montserratina", category: "alimentacio", lat: 41.3274, lng: 2.0978, color: "#e74c3c", description: "Pastisseria tradicional" },
+            { id: 44, name: "Llibreria Atenea", category: "cultura", lat: 41.3279, lng: 2.0974, color: "#f39c12", description: "Llibreria" },
+            { id: 45, name: "Montse Font Moda Dona", category: "moda", lat: 41.3265, lng: 2.0985, color: "#3498db", description: "Moda femenina" },
+            { id: 46, name: "Cine Capri", category: "cultura", lat: 41.3276, lng: 2.0976, color: "#f39c12", description: "Cinema local" },
+            { id: 47, name: "Xocoprat", category: "alimentacio", lat: 41.3283, lng: 2.0972, color: "#e74c3c", description: "Xocolateria" },
+            { id: 48, name: "El Ninot", category: "altres", lat: 41.3268, lng: 2.0987, color: "#9b59b6", description: "Jogueteria" },
+            { id: 49, name: "El Cuquet", category: "altres", lat: 41.3277, lng: 2.0980, color: "#9b59b6", description: "Articles infantils" },
+            { id: 50, name: "Mandala Patch", category: "altres", lat: 41.3284, lng: 2.0970, color: "#9b59b6", description: "Articles artesanals" },
+            { id: 51, name: "Colla Bastonera del Prat", category: "cultura", lat: 41.3272, lng: 2.0982, color: "#f39c12", description: "Entitat cultural" },
+            { id: 52, name: "Perruqueria Monfort", category: "serveis", lat: 41.3289, lng: 2.0963, color: "#2ecc71", description: "Perruqueria" },
+            { id: 53, name: "Lamaranya", category: "alimentacio", lat: 41.3261, lng: 2.0992, color: "#e74c3c", description: "Botiga gourmet" },
+            { id: 54, name: "Castellers del Prat", category: "cultura", lat: 41.3280, lng: 2.0975, color: "#f39c12", description: "Entitat castellera" },
+            { id: 55, name: "La Mulassa del Prat", category: "cultura", lat: 41.3275, lng: 2.0979, color: "#f39c12", description: "Entitat popular" },
+            { id: 56, name: "Ass. Gegantera Delta Prat", category: "cultura", lat: 41.3278, lng: 2.0977, color: "#f39c12", description: "Entitat gegantera" },
+            { id: 57, name: "Ferretería Llobregat", category: "serveis", lat: 41.3266, lng: 2.0984, color: "#2ecc71", description: "Ferreteria" },
+            { id: 58, name: "Benessere. Herboristería, Dietética y Minerales", category: "alimentacio", lat: 41.3285, lng: 2.0968, color: "#e74c3c", description: "Herboristeria i dietètica" },
+            { id: 59, name: "Pesca Salada Xarcuteria Puig", category: "alimentacio", lat: 41.3271, lng: 2.0986, color: "#e74c3c", description: "Peixateria i xarcuteria" },
+            { id: 60, name: "La Peixateria del Barri", category: "alimentacio", lat: 41.3279, lng: 2.0973, color: "#e74c3c", description: "Peixateria local" }
+        ];
+
+        let map;
+        let markers = [];
+
+        // Render grid of comercios
+        function renderComerciosGrid() {
+            const mapView = document.getElementById('mapView');
+            mapView.innerHTML = '';
+
+            comerciosData.forEach(comercio => {
+                const card = document.createElement('div');
+                card.className = 'comercio-card';
+                card.innerHTML = `
+          <div class="comercio-number">${comercio.id}</div>
+          <div class="comercio-name">${comercio.name}</div>
+        `;
+                card.addEventListener('click', () => focusComercio(comercio.id));
+                mapView.appendChild(card);
+            });
+        }
+
+        // Inicializar mapa con Leaflet (GRATIS)
+        function initMap() {
+            document.getElementById('mapLoading').style.display = 'none';
+            document.getElementById('comerciosMap').style.display = 'block';
+
+            // Centrar en El Prat de Llobregat
+            map = L.map('comerciosMap').setView([41.3278, 2.0978], 14);
+
+            // Añadir tiles de OpenStreetMap (GRATIS)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Añadir marcadores
+            addMarkers();
+            initMapFilters();
+        }
+
+        function addMarkers() {
+            comerciosData.forEach(comercio => {
+                const markerHtml = `
+          <div style="
+            width: 24px; 
+            height: 24px; 
+            background: ${comercio.color}; 
+            border: 3px solid white; 
+            border-radius: 50%; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 11px;
+          ">${comercio.id}</div>
+        `;
+
+                const customIcon = L.divIcon({
+                    html: markerHtml,
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15],
+                    popupAnchor: [0, -15],
+                    className: 'custom-marker'
+                });
+
+                const marker = L.marker([comercio.lat, comercio.lng], {
+                    icon: customIcon
+                }).addTo(map);
+
+                marker.bindPopup(`
+          <div style="padding: 12px; min-width: 220px;">
+            <h4 style="margin: 0 0 8px 0; color: #a3000f; font-weight: 600;">${comercio.name}</h4>
+            <div style="display: inline-block; background: ${comercio.color}; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">
+              ${getCategoryName(comercio.category)}
+            </div>
+            <p style="margin: 0 0 8px 0; color: #666; font-size: 13px;">${comercio.description}</p>
+            <small style="color: #999;">Comerç adherit #${comercio.id}</small>
+          </div>
+        `);
+
+                marker.category = comercio.category;
+                marker.comercioId = comercio.id;
+                markers.push(marker);
+            });
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'alimentacio': 'Alimentació',
+                'moda': 'Moda',
+                'serveis': 'Serveis',
+                'cultura': 'Cultura',
+                'altres': 'Altres'
+            };
+            return names[category] || category;
+        }
+
+        function initMapFilters() {
+            const filters = document.querySelectorAll('.map-filter');
+            filters.forEach(filter => {
+                filter.addEventListener('click', () => {
+                    filters.forEach(f => f.classList.remove('active'));
+                    filter.classList.add('active');
+                    filterMarkers(filter.dataset.category);
+                });
+            });
+        }
+
+        function filterMarkers(category) {
+            markers.forEach(marker => {
+                if (category === 'all' || marker.category === category) {
+                    marker.addTo(map);
+                } else {
+                    map.removeLayer(marker);
+                }
+            });
+        }
+
+        function showMapView() {
+            document.getElementById('mapView').style.display = 'grid';
+            document.getElementById('listView').classList.remove('active');
+            document.querySelectorAll('.toggle-btn')[0].classList.add('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.remove('active');
+        }
+
+        function showListView() {
+            document.getElementById('mapView').style.display = 'none';
+            document.getElementById('listView').classList.add('active');
+            document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.add('active');
+        }
+
+        function focusComercio(comercioId) {
+            const comercio = comerciosData.find(c => c.id === comercioId);
+            if (comercio && map) {
+                map.setView([comercio.lat, comercio.lng], 17);
+                const marker = markers.find(m => m.comercioId === comercioId);
+                if (marker) marker.openPopup();
+                showMapView();
+            }
+        }
+
+        function toggleBase(element) {
+            const content = element.nextElementSibling;
+            const icon = element.querySelector('i');
+
+            document.querySelectorAll('.base-content.active').forEach(item => {
+                if (item !== content) {
+                    item.classList.remove('active');
+                    item.previousElementSibling.querySelector('i').classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+
+            content.classList.toggle('active');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        }
+
+        // Inicializar cuando cargue la página
+        document.addEventListener('DOMContentLoaded', function () {
+            renderComerciosGrid();
+            setTimeout(initMap, 500);
+        });
+    </script>
+</body>
+
+</html>
