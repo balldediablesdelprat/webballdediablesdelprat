@@ -5,31 +5,31 @@
  * Year: 2025
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    
+document.addEventListener('DOMContentLoaded', function () {
+
     // ================================
     // Mobile Menu Management
     // ================================
-    
+
     function initMobileMenu() {
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
         const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
         const body = document.body;
-        
+
         let isMenuOpen = false;
-        
+
         function toggleMenu() {
             isMenuOpen = !isMenuOpen;
-            
+
             // Toggle button animation
             mobileMenuBtn.classList.toggle('active', isMenuOpen);
             mobileMenuBtn.setAttribute('aria-expanded', isMenuOpen);
-            
+
             // Toggle overlay
             mobileNavOverlay.classList.toggle('active', isMenuOpen);
             mobileNavOverlay.setAttribute('aria-hidden', !isMenuOpen);
-            
+
             // Prevent body scroll when menu is open
             if (isMenuOpen) {
                 body.style.overflow = 'hidden';
@@ -47,58 +47,58 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
-        
+
         function closeMenu() {
             if (isMenuOpen) {
                 toggleMenu();
             }
         }
-        
+
         // Menu button click handler
         if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', toggleMenu);
         }
-        
+
         // Close menu when clicking on overlay
         if (mobileNavOverlay) {
-            mobileNavOverlay.addEventListener('click', function(e) {
+            mobileNavOverlay.addEventListener('click', function (e) {
                 if (e.target === mobileNavOverlay) {
                     closeMenu();
                 }
             });
         }
-        
+
         // Close menu when clicking on navigation links
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', closeMenu);
         });
-        
+
         // Close menu on Escape key
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && isMenuOpen) {
                 closeMenu();
             }
         });
-        
+
         // Handle window resize
         function handleResize() {
             if (window.innerWidth > 768 && isMenuOpen) {
                 closeMenu();
             }
         }
-        
+
         window.addEventListener('resize', debounce(handleResize, 250));
-        
+
         // Focus trap for mobile menu accessibility
         function trapFocus(e) {
             if (!isMenuOpen) return;
-            
+
             const focusableElements = mobileNavOverlay.querySelectorAll(
                 'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
             );
             const firstFocusableElement = focusableElements[0];
             const lastFocusableElement = focusableElements[focusableElements.length - 1];
-            
+
             if (e.key === 'Tab') {
                 if (e.shiftKey) {
                     if (document.activeElement === firstFocusableElement) {
@@ -113,14 +113,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
-        
+
         document.addEventListener('keydown', trapFocus);
     }
 
     // ================================
     // Smooth Scrolling Navigation
     // ================================
-    
+
     function initSmoothScrolling() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (target) {
                     const navbarHeight = document.querySelector('.navbar').offsetHeight;
                     const targetPosition = target.offsetTop - navbarHeight - 20;
-                    
+
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // Enhanced Countdown Timer
     // ================================
-    
+
     function initCountdownTimer() {
         function updateCountdown() {
             // Festa Major 2025 - 26 de setembre a les 18:30h
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Event has passed
                 const countdownElements = document.querySelectorAll('.countdown-number');
                 countdownElements.forEach(el => el.textContent = '0');
-                
+
                 // Update title
                 const titleElement = document.querySelector('.counter-title');
                 if (titleElement) {
@@ -189,11 +189,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // Enhanced Interactive Timeline with Fade Out
     // ================================
-    
+
     function initInteractiveTimeline() {
         const timelineItems = document.querySelectorAll('.timeline-item');
         const timelineSection = document.querySelector('.timeline-section');
-        
+
         // Intersection Observer for timeline items with fade in/out
         const observerOptions = {
             threshold: 0.15,
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 const index = Array.from(timelineItems).indexOf(entry.target);
-                
+
                 if (entry.isIntersecting) {
                     // Element enters viewport - fade in
                     setTimeout(() => {
@@ -218,12 +218,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         timelineItems.forEach((item, index) => {
             observer.observe(item);
-            
+
             // Enhanced click interactions
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function () {
                 timelineItems.forEach(i => i.classList.remove('active'));
                 this.classList.add('active');
-                
+
                 // Pulse animation for dot
                 const dot = this.querySelector('.timeline-dot');
                 if (dot) {
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // Keyboard accessibility
-            item.addEventListener('keydown', function(e) {
+            item.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     this.click();
@@ -254,16 +254,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // Enhanced hover effects
-            item.addEventListener('mouseenter', function() {
+            item.addEventListener('mouseenter', function () {
                 if (!this.classList.contains('animate-in')) return;
-                
+
                 const icon = this.querySelector('.timeline-icon');
                 if (icon) {
                     icon.style.transform = 'rotate(15deg) scale(1.1)';
                 }
             });
 
-            item.addEventListener('mouseleave', function() {
+            item.addEventListener('mouseleave', function () {
                 const icon = this.querySelector('.timeline-icon');
                 if (icon) {
                     icon.style.transform = 'rotate(0deg) scale(1)';
@@ -284,11 +284,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const sectionHeight = rect.height;
 
             let scrollProgress = 0;
-            
+
             if (sectionTop <= windowHeight && sectionBottom >= 0) {
                 const totalScrollDistance = windowHeight + sectionHeight;
                 const currentScrolled = windowHeight - sectionTop;
-                
+
                 scrollProgress = Math.max(0, Math.min(1, currentScrolled / totalScrollDistance));
             }
 
@@ -314,21 +314,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // Enhanced Contact Form
     // ================================
-    
+
     function initContactForm() {
         const form = document.querySelector('.contact-form');
         const submitBtn = document.querySelector('.submit-btn');
-        
+
         if (!form) return;
 
         // Real-time validation
         const formFields = form.querySelectorAll('input, textarea');
         formFields.forEach(field => {
-            field.addEventListener('blur', function() {
+            field.addEventListener('blur', function () {
                 validateField(this);
             });
 
-            field.addEventListener('input', function() {
+            field.addEventListener('input', function () {
                 if (this.classList.contains('error')) {
                     validateField(this);
                 }
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const value = field.value.trim();
             const fieldName = field.name;
             const errorElement = document.getElementById(fieldName + '-error');
-            
+
             let isValid = true;
             let errorMessage = '';
 
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         errorMessage = 'El nom ha de tenir almenys 2 caràcters.';
                     }
                     break;
-                
+
                 case 'email':
                     if (!value) {
                         isValid = false;
@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         errorMessage = 'Introdueix una adreça de correu electrònic vàlida.';
                     }
                     break;
-                
+
                 case 'subject':
                     if (!value) {
                         isValid = false;
@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         errorMessage = "L'assumpte ha de tenir almenys 5 caràcters.";
                     }
                     break;
-                
+
                 case 'message':
                     if (!value) {
                         isValid = false;
@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update field appearance
             field.classList.toggle('error', !isValid);
             field.style.borderColor = isValid ? 'var(--border-color)' : 'var(--primary-red)';
-            
+
             // Update error message
             if (errorElement) {
                 errorElement.textContent = errorMessage;
@@ -399,9 +399,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Form submission
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             // Validate all fields
             let isFormValid = true;
             formFields.forEach(field => {
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     field.style.borderColor = 'var(--border-color)';
                     field.classList.remove('error');
                 });
-                
+
                 // Clear error messages
                 document.querySelectorAll('.error-message').forEach(msg => {
                     msg.textContent = '';
@@ -479,14 +479,14 @@ document.addEventListener('DOMContentLoaded', function() {
             transition: transform 0.3s ease;
         `;
         notification.textContent = "Gràcies pel teu missatge! Ens posarem en contacte aviat.";
-        
+
         document.body.appendChild(notification);
-        
+
         // Animate in
         setTimeout(() => {
             notification.style.transform = 'translateX(0)';
         }, 100);
-        
+
         // Remove after delay
         setTimeout(() => {
             notification.style.transform = 'translateX(400px)';
@@ -501,15 +501,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // Enhanced Navbar Effects
     // ================================
-    
+
     function initNavbarEffects() {
         const navbar = document.querySelector('.navbar');
         let lastScrollY = window.scrollY;
-        
+
         if (navbar) {
             function handleNavbarScroll() {
                 const currentScrollY = window.scrollY;
-                
+
                 // Background opacity based on scroll
                 if (currentScrollY > 50) {
                     navbar.style.background = 'rgba(255, 255, 255, 0.98)';
@@ -518,7 +518,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     navbar.style.background = 'rgba(255, 255, 255, 0.95)';
                     navbar.style.boxShadow = 'none';
                 }
-                
+
                 // Hide/show navbar on scroll (mobile only)
                 if (window.innerWidth <= 768) {
                     if (currentScrollY > lastScrollY && currentScrollY > 100) {
@@ -529,10 +529,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         navbar.style.transform = 'translateY(0)';
                     }
                 }
-                
+
                 lastScrollY = currentScrollY;
             }
-            
+
             let ticking = false;
             window.addEventListener('scroll', () => {
                 if (!ticking) {
@@ -549,10 +549,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // Enhanced Gallery
     // ================================
-    
+
     function initGallery() {
         const galleryCards = document.querySelectorAll('.gallery-card');
-        
+
         // Lazy loading with Intersection Observer
         const imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -577,11 +577,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }, index * 100);
 
             // Enhanced hover effects
-            card.addEventListener('mouseenter', function() {
+            card.addEventListener('mouseenter', function () {
                 this.style.transform = 'translateY(-12px) scale(1.02)';
             });
 
-            card.addEventListener('mouseleave', function() {
+            card.addEventListener('mouseleave', function () {
                 this.style.transform = 'translateY(0) scale(1)';
             });
 
@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // Performance Monitoring
     // ================================
-    
+
     function initPerformanceMonitoring() {
         // Web Vitals monitoring (if needed)
         if ('PerformanceObserver' in window) {
@@ -614,7 +614,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Page load metrics
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             setTimeout(() => {
                 const navigationTiming = performance.getEntriesByType('navigation')[0];
                 if (navigationTiming) {
@@ -628,16 +628,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // Error Handling & Recovery
     // ================================
-    
+
     function initErrorHandling() {
         // Global error handler
-        window.addEventListener('error', function(e) {
+        window.addEventListener('error', function (e) {
             console.error('JavaScript error:', e.error);
             // Could send to analytics service
         });
 
         // Promise rejection handler
-        window.addEventListener('unhandledrejection', function(e) {
+        window.addEventListener('unhandledrejection', function (e) {
             console.error('Unhandled promise rejection:', e.reason);
             // Could send to analytics service
         });
@@ -663,7 +663,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     // Initialize All Functions
     // ================================
-    
+
     try {
         initMobileMenu();
         initSmoothScrolling();
@@ -674,15 +674,15 @@ document.addEventListener('DOMContentLoaded', function() {
         initGallery();
         initPerformanceMonitoring();
         initErrorHandling();
-        
+
         console.log('Ball de Diables del Prat - Website initialized successfully! 🔥');
-        
+
         // Remove loading class if present
         document.body.classList.remove('loading');
-        
+
     } catch (error) {
         console.error('Error initializing website:', error);
-        
+
         // Graceful degradation
         document.body.classList.add('js-disabled');
     }
@@ -698,7 +698,7 @@ function debounce(func, wait, immediate) {
     return function executedFunction() {
         const context = this;
         const args = arguments;
-        const later = function() {
+        const later = function () {
             timeout = null;
             if (!immediate) func.apply(context, args);
         };
@@ -711,7 +711,7 @@ function debounce(func, wait, immediate) {
 
 function throttle(func, limit) {
     let inThrottle;
-    return function() {
+    return function () {
         const args = arguments;
         const context = this;
         if (!inThrottle) {
@@ -737,22 +737,22 @@ function isInViewport(element, offset = 0) {
 // ================================
 
 if ('serviceWorker' in navigator && 'production' === 'production') {
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         navigator.serviceWorker.register('/sw.js')
-            .then(function(registration) {
+            .then(function (registration) {
                 console.log('ServiceWorker registration successful');
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 console.log('ServiceWorker registration failed');
             });
     });
 }
 
 // Solució bug redimensionament navbar
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function () {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
-    
+
     // Resetear el menú quan canviï la mida de pantalla
     if (window.innerWidth > 1100) {
         // Desktop: assegurar que el menú mòbil està tancat
