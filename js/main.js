@@ -1,0 +1,945 @@
+/**
+ * Ball de Diables del Prat - Main JavaScript
+ * Fully Responsive with Mobile Menu + Loading Screen
+ * Author: Ball de Diables del Prat
+ * Year: 2025
+ */
+
+// ================================
+// Loading Screen Management
+// ================================
+
+function initLoadingScreen() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    const percentageText = document.getElementById('percentageText');
+    const body = document.body;
+
+    if (!loadingScreen || !percentageText) return;
+
+    let currentPercentage = 0;
+    let progressInterval;
+    let isLoadingComplete = false;
+
+    // Función para simular el progreso de carga
+    function simulateProgress() {
+        progressInterval = setInterval(() => {
+            if (currentPercentage < 95 && !isLoadingComplete) {
+                // Incrementos variables para hacer más realista
+                const increment = Math.random() * 10 + 3;
+                currentPercentage = Math.min(currentPercentage + increment, 95);
+                updateProgress(Math.floor(currentPercentage));
+            }
+        }, 200);
+    }
+
+    // Actualizar el porcentaje mostrado
+    function updateProgress(percentage) {
+        percentageText.textContent = percentage + '%';
+        loadingScreen.setAttribute('aria-valuenow', percentage);
+    }
+
+    // Completar la carga
+    function completeLoading() {
+        if (isLoadingComplete) return;
+
+        isLoadingComplete = true;
+        clearInterval(progressInterval);
+
+        // Completar al 100%
+        currentPercentage = 100;
+        updateProgress(100);
+
+        // Esperar un momento antes de ocultar
+        setTimeout(() => {
+            hideLoadingScreen();
+        }, 800);
+    }
+
+    // Ocultar el loading screen
+    function hideLoadingScreen() {
+        loadingScreen.classList.add('fade-out');
+        body.classList.remove('loading');
+        body.classList.add('content-loaded');
+
+        // Remover del DOM después de la animación
+        setTimeout(() => {
+            if (loadingScreen && loadingScreen.parentNode) {
+                loadingScreen.parentNode.removeChild(loadingScreen);
+            }
+        }, 600);
+    }
+
+    // Detectar cuando todos los recursos críticos están cargados
+    function checkResourcesLoaded() {
+        const promises = [];
+
+        // Verificar imágenes críticas
+        const criticalImages = [
+            'images/Logo.png',
+            'images/LogoBlanc.png',
+            'images/Carretillada.jpg'
+        ];
+
+        criticalImages.forEach(src => {
+            promises.push(new Promise((resolve) => {
+                const img = new Image();
+                img.onload = resolve;
+                img.onerror = resolve; // Resolver aunque falle para no bloquear
+                img.src = src;
+            }));
+        });
+
+        // Verificar fonts
+        if ('fonts' in document) {
+            promises.push(document.fonts.ready.catch(() => { }));
+        }
+
+        return Promise.all(promises);
+    }
+
+    // Iniciar el loading
+    simulateProgress();
+
+    // Verificar recursos y completar cuando esté todo listo
+    Promise.all([
+        checkResourcesLoaded(),
+        new Promise(resolve => {
+            if (document.readyState === 'complete') {
+                resolve();
+            } else {
+                window.addEventListener('load', resolve);
+            }
+        }),
+        // Asegurar un mínimo de tiempo para mostrar el loading
+        new Promise(resolve => setTimeout(resolve, 1500))
+    ]).then(() => {
+        completeLoading();
+    }).catch(() => {
+        // Si algo falla, completar de todos modos
+        completeLoading();
+    });
+
+    // Máximo tiempo de loading (failsafe)
+    setTimeout(() => {
+        if (!isLoadingComplete) {
+            console.warn('Loading timeout reached, forcing completion');
+            completeLoading();
+        }
+    }, 5000);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Inicializar loading screen PRIMERO
+    initLoadingScreen();
+
+    // ================================
+    // Mobile Menu Management
+    // ================================
+
+    function initMobileMenu() {
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
+        const body = document.body;
+
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+
+            // Toggle button animation
+            mobileMenuBtn.classList.toggle('active', isMenuOpen);
+            mobileMenuBtn.setAttribute('aria-expanded', isMenuOpen);
+
+            // Toggle overlay
+            mobileNavOverlay.classList.toggle('active', isMenuOpen);
+            mobileNavOverlay.setAttribute('aria-hidden', !isMenuOpen);
+
+            // Prevent body scroll when menu is open
+            if (isMenuOpen) {
+                body.style.overflow = 'hidden';
+                body.style.position = 'fixed';
+                body.style.width = '100%';
+                body.style.top = `-${window.scrollY}px`;
+            } else {
+                const scrollY = body.style.top;
+                body.style.overflow = '';
+                body.style.position = '';
+                body.style.width = '';
+                body.style.top = '';
+                if (scrollY) {
+                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                }
+            }
+        }
+
+        function closeMenu() {
+            if (isMenuOpen) {
+                toggleMenu();
+            }
+        }
+
+        // Menu button click handler
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleMenu);
+        }
+
+        // Close menu when clicking on overlay
+        if (mobileNavOverlay) {
+            mobileNavOverlay.addEventListener('click', function (e) {
+                if (e.target === mobileNavOverlay) {
+                    closeMenu();
+                }
+            });
+        }
+
+        // Close menu when clicking on navigation links
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Close menu on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMenu();
+            }
+        });
+
+        // Handle window resize
+        function handleResize() {
+            if (window.innerWidth > 768 && isMenuOpen) {
+                closeMenu();
+            }
+        }
+
+        window.addEventListener('resize', debounce(handleResize, 250));
+
+        // Focus trap for mobile menu accessibility
+        function trapFocus(e) {
+            if (!isMenuOpen) return;
+
+            const focusableElements = mobileNavOverlay.querySelectorAll(
+                'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
+            );
+            const firstFocusableElement = focusableElements[0];
+            const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusableElement) {
+                        lastFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusableElement) {
+                        firstFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('keydown', trapFocus);
+    }
+
+    // ================================
+    // Smooth Scrolling Navigation
+    // ================================
+
+    function initSmoothScrolling() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    const targetPosition = target.offsetTop - navbarHeight - 20;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    }
+
+    // ================================
+    // Enhanced Countdown Timer
+    // ================================
+
+    function initCountdownTimer() {
+        function updateCountdown() {
+            // Festa Major 2025 - 26 de setembre a les 18:30h
+            const festaMajor = new Date('2025-09-26T18:30:00').getTime();
+            const now = new Date().getTime();
+            const distance = festaMajor - now;
+
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Update DOM elements with animation
+                animateCounterChange('days', days);
+                animateCounterChange('hours', hours);
+                animateCounterChange('minutes', minutes);
+                animateCounterChange('seconds', seconds);
+            } else {
+                // Event has passed
+                const countdownElements = document.querySelectorAll('.countdown-number');
+                countdownElements.forEach(el => el.textContent = '0');
+
+                // Update title
+                const titleElement = document.querySelector('.counter-title');
+                if (titleElement) {
+                    titleElement.textContent = "Festa Major 2025 Finalitzada!";
+                }
+            }
+        }
+
+        function animateCounterChange(id, newValue) {
+            const element = document.getElementById(id);
+            if (element && element.textContent != newValue) {
+                element.textContent = newValue;
+            }
+        }
+
+        // Update countdown every second
+        updateCountdown(); // Initial call
+        setInterval(updateCountdown, 1000);
+    }
+
+    // ================================
+    // Enhanced Interactive Timeline with Fade Out
+    // ================================
+
+    function initInteractiveTimeline() {
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const timelineSection = document.querySelector('.timeline-section');
+
+        // Intersection Observer for timeline items with fade in/out
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                const index = Array.from(timelineItems).indexOf(entry.target);
+
+                if (entry.isIntersecting) {
+                    // Element enters viewport - fade in
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                    }, index * 150);
+                } else {
+                    // Element leaves viewport - fade out
+                    entry.target.classList.remove('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        timelineItems.forEach((item, index) => {
+            observer.observe(item);
+
+            // Enhanced click interactions
+            item.addEventListener('click', function () {
+                timelineItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+
+                // Pulse animation for dot
+                const dot = this.querySelector('.timeline-dot');
+                if (dot) {
+                    dot.style.transform = 'translateX(-50%) scale(1.5)';
+                    dot.style.boxShadow = '0 0 0 8px var(--primary-red), 0 0 30px rgba(163, 0, 15, 0.6)';
+                    setTimeout(() => {
+                        dot.style.transform = 'translateX(-50%) scale(1.2)';
+                        dot.style.boxShadow = '0 0 0 4px var(--primary-red), 0 0 20px rgba(163, 0, 15, 0.4)';
+                    }, 300);
+                }
+
+                // Analytics tracking
+                const eventName = this.getAttribute('data-event');
+                if (eventName && typeof gtag !== 'undefined') {
+                    gtag('event', 'timeline_click', {
+                        'event_category': 'engagement',
+                        'event_label': eventName
+                    });
+                }
+            });
+
+            // Keyboard accessibility
+            item.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+
+            // Enhanced hover effects
+            item.addEventListener('mouseenter', function () {
+                if (!this.classList.contains('animate-in')) return;
+
+                const icon = this.querySelector('.timeline-icon');
+                if (icon) {
+                    icon.style.transform = 'rotate(15deg) scale(1.1)';
+                }
+            });
+
+            item.addEventListener('mouseleave', function () {
+                const icon = this.querySelector('.timeline-icon');
+                if (icon) {
+                    icon.style.transform = 'rotate(0deg) scale(1)';
+                }
+            });
+
+            item.setAttribute('tabindex', '0');
+        });
+
+        // Enhanced scroll-based timeline progress
+        function updateTimelineProgress() {
+            if (!timelineSection) return;
+
+            const rect = timelineSection.getBoundingClientRect();
+            const sectionTop = rect.top;
+            const sectionBottom = rect.bottom;
+            const windowHeight = window.innerHeight;
+            const sectionHeight = rect.height;
+
+            let scrollProgress = 0;
+
+            if (sectionTop <= windowHeight && sectionBottom >= 0) {
+                const totalScrollDistance = windowHeight + sectionHeight;
+                const currentScrolled = windowHeight - sectionTop;
+
+                scrollProgress = Math.max(0, Math.min(1, currentScrolled / totalScrollDistance));
+            }
+
+            // Update CSS custom property with easing
+            document.documentElement.style.setProperty('--timeline-progress', (scrollProgress * 100) + '%');
+        }
+
+        // Optimized scroll listener
+        let ticking = false;
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateTimelineProgress();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick, { passive: true });
+    }
+
+    // ================================
+    // Enhanced Contact Form
+    // ================================
+
+    function initContactForm() {
+        const form = document.querySelector('.contact-form');
+        const submitBtn = document.querySelector('.submit-btn');
+
+        if (!form) return;
+
+        // Real-time validation
+        const formFields = form.querySelectorAll('input, textarea');
+        formFields.forEach(field => {
+            field.addEventListener('blur', function () {
+                validateField(this);
+            });
+
+            field.addEventListener('input', function () {
+                if (this.classList.contains('error')) {
+                    validateField(this);
+                }
+            });
+        });
+
+        function validateField(field) {
+            const value = field.value.trim();
+            const fieldName = field.name;
+            const errorElement = document.getElementById(fieldName + '-error');
+
+            let isValid = true;
+            let errorMessage = '';
+
+            switch (fieldName) {
+                case 'name':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'El nom és obligatori.';
+                    } else if (value.length < 2) {
+                        isValid = false;
+                        errorMessage = 'El nom ha de tenir almenys 2 caràcters.';
+                    }
+                    break;
+
+                case 'email':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'El correu electrònic és obligatori.';
+                    } else if (!isValidEmail(value)) {
+                        isValid = false;
+                        errorMessage = 'Introdueix una adreça de correu electrònic vàlida.';
+                    }
+                    break;
+
+                case 'subject':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = "L'assumpte és obligatori.";
+                    } else if (value.length < 5) {
+                        isValid = false;
+                        errorMessage = "L'assumpte ha de tenir almenys 5 caràcters.";
+                    }
+                    break;
+
+                case 'message':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'El missatge és obligatori.';
+                    } else if (value.length < 10) {
+                        isValid = false;
+                        errorMessage = 'El missatge ha de tenir almenys 10 caràcters.';
+                    }
+                    break;
+            }
+
+            // Update field appearance
+            field.classList.toggle('error', !isValid);
+            field.style.borderColor = isValid ? 'var(--border-color)' : 'var(--primary-red)';
+
+            // Update error message
+            if (errorElement) {
+                errorElement.textContent = errorMessage;
+                errorElement.style.opacity = errorMessage ? '1' : '0';
+            }
+
+            return isValid;
+        }
+
+        // Form submission
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Validate all fields
+            let isFormValid = true;
+            formFields.forEach(field => {
+                if (!validateField(field)) {
+                    isFormValid = false;
+                }
+            });
+
+            if (!isFormValid) {
+                // Focus first error field
+                const firstErrorField = form.querySelector('.error');
+                if (firstErrorField) {
+                    firstErrorField.focus();
+                }
+                return;
+            }
+
+            // Show loading state
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Enviant...';
+            submitBtn.disabled = true;
+            submitBtn.style.background = 'var(--text-light)';
+
+            // Simulate form submission (replace with actual form submission)
+            setTimeout(() => {
+                showFormSuccess();
+                form.reset();
+                formFields.forEach(field => {
+                    field.style.borderColor = 'var(--border-color)';
+                    field.classList.remove('error');
+                });
+
+                // Clear error messages
+                document.querySelectorAll('.error-message').forEach(msg => {
+                    msg.textContent = '';
+                    msg.style.opacity = '0';
+                });
+
+                // Reset button
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = 'var(--primary-red)';
+                    submitBtn.disabled = false;
+                }, 3000);
+            }, 2000);
+        });
+    }
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function showFormSuccess() {
+        const submitBtn = document.querySelector('.submit-btn');
+        if (submitBtn) {
+            submitBtn.textContent = 'Enviat ✓';
+            submitBtn.style.background = '#28a745';
+        }
+
+        // Create success notification
+        const notification = document.createElement('div');
+        notification.className = 'success-notification';
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 9999;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        `;
+        notification.textContent = "Gràcies pel teu missatge! Ens posarem en contacte aviat.";
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+
+        // Remove after delay
+        setTimeout(() => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 4000);
+    }
+
+    // ================================
+    // Enhanced Navbar Effects
+    // ================================
+
+    function initNavbarEffects() {
+        const navbar = document.querySelector('.navbar');
+        let lastScrollY = window.scrollY;
+
+        if (navbar) {
+            function handleNavbarScroll() {
+                const currentScrollY = window.scrollY;
+
+                // Background opacity based on scroll
+                if (currentScrollY > 50) {
+                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                    navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+                } else {
+                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    navbar.style.boxShadow = 'none';
+                }
+
+                // Hide/show navbar on scroll (mobile only)
+                if (window.innerWidth <= 768) {
+                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                        // Scrolling down
+                        navbar.style.transform = 'translateY(-100%)';
+                    } else {
+                        // Scrolling up
+                        navbar.style.transform = 'translateY(0)';
+                    }
+                }
+
+                lastScrollY = currentScrollY;
+            }
+
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        handleNavbarScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+        }
+    }
+
+    // ================================
+    // Enhanced Gallery
+    // ================================
+
+    function initGallery() {
+        const galleryCards = document.querySelectorAll('.gallery-card');
+
+        // Lazy loading with Intersection Observer
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target.querySelector('img');
+                    if (img && img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(entry.target);
+                    }
+                }
+            });
+        }, {
+            rootMargin: '50px'
+        });
+
+        galleryCards.forEach((card, index) => {
+            // Staggered animation
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+
+            // Enhanced hover effects
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-12px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+
+            // Observe for lazy loading
+            imageObserver.observe(card);
+        });
+    }
+
+    // ================================
+    // Performance Monitoring
+    // ================================
+
+    function initPerformanceMonitoring() {
+        // Web Vitals monitoring (if needed)
+        if ('PerformanceObserver' in window) {
+            const observer = new PerformanceObserver((list) => {
+                list.getEntries().forEach((entry) => {
+                    if (entry.entryType === 'paint') {
+                        console.log(`${entry.name}: ${entry.startTime}ms`);
+                    }
+                });
+            });
+
+            try {
+                observer.observe({ type: 'paint', buffered: true });
+            } catch (e) {
+                // Fallback for older browsers
+                console.log('Performance Observer not supported');
+            }
+        }
+
+        // Page load metrics
+        window.addEventListener('load', function () {
+            setTimeout(() => {
+                const navigationTiming = performance.getEntriesByType('navigation')[0];
+                if (navigationTiming) {
+                    const loadTime = navigationTiming.loadEventEnd - navigationTiming.fetchStart;
+                    console.log(`Page load time: ${loadTime}ms`);
+                }
+            }, 0);
+        });
+    }
+
+    // ================================
+    // Error Handling & Recovery
+    // ================================
+
+    function initErrorHandling() {
+        // Global error handler
+        window.addEventListener('error', function (e) {
+            console.error('JavaScript error:', e.error);
+            // Could send to analytics service
+        });
+
+        // Promise rejection handler
+        window.addEventListener('unhandledrejection', function (e) {
+            console.error('Unhandled promise rejection:', e.reason);
+            // Could send to analytics service
+        });
+
+        // Service availability checks
+        function checkServices() {
+            // Check if external services are available
+            const services = [
+                { name: 'FontAwesome', check: () => document.querySelector('[class*="fa-"]') },
+                { name: 'Google Fonts', check: () => getComputedStyle(document.body).fontFamily.includes('Montserrat') }
+            ];
+
+            services.forEach(service => {
+                if (!service.check()) {
+                    console.warn(`${service.name} may not be loaded properly`);
+                }
+            });
+        }
+
+        setTimeout(checkServices, 2000);
+    }
+
+    // ================================
+    // Initialize All Functions (modificado)
+    // ================================
+
+    try {
+        // Solo inicializar las funciones después de que el loading se complete
+        const initializeAfterLoading = () => {
+            initMobileMenu();
+            initSmoothScrolling();
+            initCountdownTimer();
+            initInteractiveTimeline();
+            initContactForm();
+            initNavbarEffects();
+            initGallery();
+            initPerformanceMonitoring();
+            initErrorHandling();
+
+            console.log('Ball de Diables del Prat - Website initialized successfully! 🔥');
+        };
+
+        // Si el loading ya se completó, inicializar inmediatamente
+        if (document.body.classList.contains('content-loaded')) {
+            initializeAfterLoading();
+        } else {
+            // Esperar a que se complete el loading
+            const checkLoadingComplete = setInterval(() => {
+                if (document.body.classList.contains('content-loaded')) {
+                    clearInterval(checkLoadingComplete);
+                    setTimeout(initializeAfterLoading, 300); // Pequeño delay para suavizar
+                }
+            }, 100);
+        }
+
+        // Remove loading class if present
+        document.body.classList.remove('loading');
+
+    } catch (error) {
+        console.error('Error initializing website:', error);
+
+        // Graceful degradation
+        document.body.classList.add('js-disabled');
+    }
+
+});
+
+// ================================
+// Utility Functions
+// ================================
+
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function executedFunction() {
+        const context = this;
+        const args = arguments;
+        const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
+function throttle(func, limit) {
+    let inThrottle;
+    return function () {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
+function isInViewport(element, offset = 0) {
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.top >= -offset &&
+        rect.left >= -offset &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + offset &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth) + offset
+    );
+}
+
+// ================================
+// Service Worker Registration (Optional)
+// ================================
+
+if ('serviceWorker' in navigator && 'production' === 'production') {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function (registration) {
+                console.log('ServiceWorker registration successful');
+            })
+            .catch(function (err) {
+                console.log('ServiceWorker registration failed');
+            });
+    });
+}
+
+// Solució bug redimensionament navbar
+window.addEventListener('resize', function () {
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+
+    // Resetear el menú quan canviï la mida de pantalla
+    if (window.innerWidth > 1100) {
+        // Desktop: assegurar que el menú mòbil està tancat
+        if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
+        if (mobileNavOverlay) mobileNavOverlay.classList.remove('active');
+        if (mobileNavOverlay) mobileNavOverlay.setAttribute('aria-hidden', 'true');
+        if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    } else {
+        // Mobile/Tablet: assegurar visibilitat correcta
+        if (mobileNavOverlay && !mobileNavOverlay.classList.contains('active')) {
+            mobileNavOverlay.setAttribute('aria-hidden', 'true');
+        }
+    }
+});
+
+// ================================
+// Utilidad para precargar recursos críticos
+// ================================
+
+function preloadCriticalResources() {
+    const criticalResources = [
+        'css/styles.css',
+        'images/Logo.png',
+        'images/LogoBlanc.png',
+        'images/Carretillada.jpg'
+    ];
+
+    criticalResources.forEach(url => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.href = url;
+
+        if (url.endsWith('.css')) {
+            link.as = 'style';
+        } else if (url.match(/\.(jpg|png|webp)$/)) {
+            link.as = 'image';
+        }
+
+        document.head.appendChild(link);
+    });
+}
+
+// Precargar recursos en cuanto se pueda
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', preloadCriticalResources);
+} else {
+    preloadCriticalResources();
+}
