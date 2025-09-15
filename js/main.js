@@ -177,11 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
         function animateCounterChange(id, newValue) {
             const element = document.getElementById(id);
             if (element && element.textContent != newValue) {
-                element.style.transform = 'scale(1.1)';
                 element.textContent = newValue;
-                setTimeout(() => {
-                    element.style.transform = 'scale(1)';
-                }, 200);
             }
         }
 
