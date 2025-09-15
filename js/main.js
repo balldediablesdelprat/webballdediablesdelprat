@@ -1,11 +1,122 @@
 /**
  * Ball de Diables del Prat - Main JavaScript
+ * Fully Responsive with Mobile Menu
  * Author: Ball de Diables del Prat
  * Year: 2025
  */
 
 document.addEventListener('DOMContentLoaded', function() {
     
+    // ================================
+    // Mobile Menu Management
+    // ================================
+    
+    function initMobileMenu() {
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
+        const body = document.body;
+        
+        let isMenuOpen = false;
+        
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            
+            // Toggle button animation
+            mobileMenuBtn.classList.toggle('active', isMenuOpen);
+            mobileMenuBtn.setAttribute('aria-expanded', isMenuOpen);
+            
+            // Toggle overlay
+            mobileNavOverlay.classList.toggle('active', isMenuOpen);
+            mobileNavOverlay.setAttribute('aria-hidden', !isMenuOpen);
+            
+            // Prevent body scroll when menu is open
+            if (isMenuOpen) {
+                body.style.overflow = 'hidden';
+                body.style.position = 'fixed';
+                body.style.width = '100%';
+                body.style.top = `-${window.scrollY}px`;
+            } else {
+                const scrollY = body.style.top;
+                body.style.overflow = '';
+                body.style.position = '';
+                body.style.width = '';
+                body.style.top = '';
+                if (scrollY) {
+                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                }
+            }
+        }
+        
+        function closeMenu() {
+            if (isMenuOpen) {
+                toggleMenu();
+            }
+        }
+        
+        // Menu button click handler
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleMenu);
+        }
+        
+        // Close menu when clicking on overlay
+        if (mobileNavOverlay) {
+            mobileNavOverlay.addEventListener('click', function(e) {
+                if (e.target === mobileNavOverlay) {
+                    closeMenu();
+                }
+            });
+        }
+        
+        // Close menu when clicking on navigation links
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+        
+        // Close menu on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMenu();
+            }
+        });
+        
+        // Handle window resize
+        function handleResize() {
+            if (window.innerWidth > 768 && isMenuOpen) {
+                closeMenu();
+            }
+        }
+        
+        window.addEventListener('resize', debounce(handleResize, 250));
+        
+        // Focus trap for mobile menu accessibility
+        function trapFocus(e) {
+            if (!isMenuOpen) return;
+            
+            const focusableElements = mobileNavOverlay.querySelectorAll(
+                'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
+            );
+            const firstFocusableElement = focusableElements[0];
+            const lastFocusableElement = focusableElements[focusableElements.length - 1];
+            
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusableElement) {
+                        lastFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusableElement) {
+                        firstFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+        }
+        
+        document.addEventListener('keydown', trapFocus);
+    }
+
     // ================================
     // Smooth Scrolling Navigation
     // ================================
@@ -16,9 +127,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    const targetPosition = target.offsetTop - navbarHeight - 20;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
                     });
                 }
             });
@@ -26,44 +140,50 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================
-    // Countdown Timer
+    // Enhanced Countdown Timer
     // ================================
     
     function initCountdownTimer() {
         function updateCountdown() {
-    // Festa Major 2025 - 26 de setembre a les 18:30h
-    const festaMajor = new Date('2025-09-26T18:30:00').getTime();
-    const now = new Date().getTime();
-    const distance = festaMajor - now;
+            // Festa Major 2025 - 26 de setembre a les 18:30h
+            const festaMajor = new Date('2025-09-26T18:30:00').getTime();
+            const now = new Date().getTime();
+            const distance = festaMajor - now;
 
-    if (distance > 0) {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Update DOM elements
-        const daysElement = document.getElementById('days');
-        const hoursElement = document.getElementById('hours');
-        const minutesElement = document.getElementById('minutes');
-        const secondsElement = document.getElementById('seconds');
-
-        if (daysElement) daysElement.textContent = days;
-        if (hoursElement) hoursElement.textContent = hours;
-        if (minutesElement) minutesElement.textContent = minutes;
-        if (secondsElement) secondsElement.textContent = seconds;
-    } else {
-        // Event has passed
-        const countdownElements = document.querySelectorAll('.countdown-number');
-        countdownElements.forEach(el => el.textContent = '0');
-        
-        // Update title
-        const titleElement = document.querySelector('.counter-title');
-        if (titleElement) {
-            titleElement.textContent = "Festa Major 2025 Finalitzada!";
+                // Update DOM elements with animation
+                animateCounterChange('days', days);
+                animateCounterChange('hours', hours);
+                animateCounterChange('minutes', minutes);
+                animateCounterChange('seconds', seconds);
+            } else {
+                // Event has passed
+                const countdownElements = document.querySelectorAll('.countdown-number');
+                countdownElements.forEach(el => el.textContent = '0');
+                
+                // Update title
+                const titleElement = document.querySelector('.counter-title');
+                if (titleElement) {
+                    titleElement.textContent = "Festa Major 2025 Finalitzada!";
+                }
+            }
         }
-    }
-}
+
+        function animateCounterChange(id, newValue) {
+            const element = document.getElementById(id);
+            if (element && element.textContent != newValue) {
+                element.style.transform = 'scale(1.1)';
+                element.textContent = newValue;
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                }, 200);
+            }
+        }
 
         // Update countdown every second
         updateCountdown(); // Initial call
@@ -71,53 +191,61 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================
-    // Interactive Animated Timeline
+    // Enhanced Interactive Timeline with Fade Out
     // ================================
     
     function initInteractiveTimeline() {
         const timelineItems = document.querySelectorAll('.timeline-item');
-        const timelineLine = document.querySelector('.timeline-line');
+        const timelineSection = document.querySelector('.timeline-section');
         
-        // Intersection Observer per animar els elements quan entren en vista
+        // Intersection Observer for timeline items with fade in/out
         const observerOptions = {
-            threshold: 0.3,
+            threshold: 0.15,
             rootMargin: '0px 0px -100px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
+                const index = Array.from(timelineItems).indexOf(entry.target);
+                
                 if (entry.isIntersecting) {
-                    // Animar l'element amb delay escalonat
-                    const index = Array.from(timelineItems).indexOf(entry.target);
+                    // Element enters viewport - fade in
                     setTimeout(() => {
                         entry.target.classList.add('animate-in');
-                        updateTimelineProgress();
-                    }, index * 200);
+                    }, index * 150);
+                } else {
+                    // Element leaves viewport - fade out
+                    entry.target.classList.remove('animate-in');
                 }
             });
         }, observerOptions);
 
-        timelineItems.forEach(item => {
+        timelineItems.forEach((item, index) => {
             observer.observe(item);
             
-            // Efectes hover i click
+            // Enhanced click interactions
             item.addEventListener('click', function() {
                 timelineItems.forEach(i => i.classList.remove('active'));
                 this.classList.add('active');
                 
-                // Efecte de pulsació
+                // Pulse animation for dot
                 const dot = this.querySelector('.timeline-dot');
                 if (dot) {
                     dot.style.transform = 'translateX(-50%) scale(1.5)';
+                    dot.style.boxShadow = '0 0 0 8px var(--primary-red), 0 0 30px rgba(163, 0, 15, 0.6)';
                     setTimeout(() => {
                         dot.style.transform = 'translateX(-50%) scale(1.2)';
-                    }, 200);
+                        dot.style.boxShadow = '0 0 0 4px var(--primary-red), 0 0 20px rgba(163, 0, 15, 0.4)';
+                    }, 300);
                 }
 
-                // Log per analytics
+                // Analytics tracking
                 const eventName = this.getAttribute('data-event');
-                if (eventName) {
-                    console.log(`Timeline event clicked: ${eventName}`);
+                if (eventName && typeof gtag !== 'undefined') {
+                    gtag('event', 'timeline_click', {
+                        'event_category': 'engagement',
+                        'event_label': eventName
+                    });
                 }
             });
 
@@ -129,80 +257,201 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Make items focusable
+            // Enhanced hover effects
+            item.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('animate-in')) return;
+                
+                const icon = this.querySelector('.timeline-icon');
+                if (icon) {
+                    icon.style.transform = 'rotate(15deg) scale(1.1)';
+                }
+            });
+
+            item.addEventListener('mouseleave', function() {
+                const icon = this.querySelector('.timeline-icon');
+                if (icon) {
+                    icon.style.transform = 'rotate(0deg) scale(1)';
+                }
+            });
+
             item.setAttribute('tabindex', '0');
         });
 
+        // Enhanced scroll-based timeline progress
         function updateTimelineProgress() {
-            const animatedItems = document.querySelectorAll('.timeline-item.animate-in');
-            const totalItems = timelineItems.length;
-            const progress = (animatedItems.length / totalItems) * 100;
-            
-            if (timelineLine) {
-                const progressLine = timelineLine.querySelector('::after');
-                if (progressLine) {
-                    progressLine.style.height = progress + '%';
-                }
-            }
-        }
-
-        // Scroll-based timeline progress
-        function handleTimelineScroll() {
-            const timelineSection = document.querySelector('.timeline-section');
             if (!timelineSection) return;
 
             const rect = timelineSection.getBoundingClientRect();
-            const sectionHeight = timelineSection.offsetHeight;
+            const sectionTop = rect.top;
+            const sectionBottom = rect.bottom;
             const windowHeight = window.innerHeight;
+            const sectionHeight = rect.height;
+
+            let scrollProgress = 0;
             
-            if (rect.top < windowHeight && rect.bottom > 0) {
-                const scrollProgress = Math.max(0, Math.min(1, 
-                    (windowHeight - rect.top) / (sectionHeight + windowHeight)
-                ));
+            if (sectionTop <= windowHeight && sectionBottom >= 0) {
+                const totalScrollDistance = windowHeight + sectionHeight;
+                const currentScrolled = windowHeight - sectionTop;
                 
-                if (timelineLine) {
-                    timelineLine.style.setProperty('--scroll-progress', scrollProgress * 100 + '%');
-                }
+                scrollProgress = Math.max(0, Math.min(1, currentScrolled / totalScrollDistance));
+            }
+
+            // Update CSS custom property with easing
+            document.documentElement.style.setProperty('--timeline-progress', (scrollProgress * 100) + '%');
+        }
+
+        // Optimized scroll listener
+        let ticking = false;
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateTimelineProgress();
+                    ticking = false;
+                });
+                ticking = true;
             }
         }
 
-        window.addEventListener('scroll', debounce(handleTimelineScroll, 10));
+        window.addEventListener('scroll', requestTick, { passive: true });
     }
 
     // ================================
-    // Contact Form Handling
+    // Enhanced Contact Form
     // ================================
     
     function initContactForm() {
         const form = document.querySelector('.contact-form');
+        const submitBtn = document.querySelector('.submit-btn');
         
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Basic form validation
-                const name = form.querySelector('#name').value.trim();
-                const email = form.querySelector('#email').value.trim();
-                const subject = form.querySelector('#subject').value.trim();
-                const message = form.querySelector('#message').value.trim();
+        if (!form) return;
 
-                if (!name || !email || !subject || !message) {
-                    alert('Si us plau, omple tots els camps del formulari.');
-                    return;
-                }
-
-                if (!isValidEmail(email)) {
-                    alert('Si us plau, introdueix una adreça de correu electrònic vàlida.');
-                    return;
-                }
-
-                // Show success message
-                showFormSuccess();
-                
-                // Here you would normally submit to your backend
-                // For now we just show the success message
+        // Real-time validation
+        const formFields = form.querySelectorAll('input, textarea');
+        formFields.forEach(field => {
+            field.addEventListener('blur', function() {
+                validateField(this);
             });
+
+            field.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validateField(this);
+                }
+            });
+        });
+
+        function validateField(field) {
+            const value = field.value.trim();
+            const fieldName = field.name;
+            const errorElement = document.getElementById(fieldName + '-error');
+            
+            let isValid = true;
+            let errorMessage = '';
+
+            switch (fieldName) {
+                case 'name':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'El nom és obligatori.';
+                    } else if (value.length < 2) {
+                        isValid = false;
+                        errorMessage = 'El nom ha de tenir almenys 2 caràcters.';
+                    }
+                    break;
+                
+                case 'email':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'El correu electrònic és obligatori.';
+                    } else if (!isValidEmail(value)) {
+                        isValid = false;
+                        errorMessage = 'Introdueix una adreça de correu electrònic vàlida.';
+                    }
+                    break;
+                
+                case 'subject':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = "L'assumpte és obligatori.";
+                    } else if (value.length < 5) {
+                        isValid = false;
+                        errorMessage = "L'assumpte ha de tenir almenys 5 caràcters.";
+                    }
+                    break;
+                
+                case 'message':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'El missatge és obligatori.';
+                    } else if (value.length < 10) {
+                        isValid = false;
+                        errorMessage = 'El missatge ha de tenir almenys 10 caràcters.';
+                    }
+                    break;
+            }
+
+            // Update field appearance
+            field.classList.toggle('error', !isValid);
+            field.style.borderColor = isValid ? 'var(--border-color)' : 'var(--primary-red)';
+            
+            // Update error message
+            if (errorElement) {
+                errorElement.textContent = errorMessage;
+                errorElement.style.opacity = errorMessage ? '1' : '0';
+            }
+
+            return isValid;
         }
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate all fields
+            let isFormValid = true;
+            formFields.forEach(field => {
+                if (!validateField(field)) {
+                    isFormValid = false;
+                }
+            });
+
+            if (!isFormValid) {
+                // Focus first error field
+                const firstErrorField = form.querySelector('.error');
+                if (firstErrorField) {
+                    firstErrorField.focus();
+                }
+                return;
+            }
+
+            // Show loading state
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Enviant...';
+            submitBtn.disabled = true;
+            submitBtn.style.background = 'var(--text-light)';
+
+            // Simulate form submission (replace with actual form submission)
+            setTimeout(() => {
+                showFormSuccess();
+                form.reset();
+                formFields.forEach(field => {
+                    field.style.borderColor = 'var(--border-color)';
+                    field.classList.remove('error');
+                });
+                
+                // Clear error messages
+                document.querySelectorAll('.error-message').forEach(msg => {
+                    msg.textContent = '';
+                    msg.style.opacity = '0';
+                });
+
+                // Reset button
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = 'var(--primary-red)';
+                    submitBtn.disabled = false;
+                }, 3000);
+            }, 2000);
+        });
     }
 
     function isValidEmail(email) {
@@ -213,130 +462,206 @@ document.addEventListener('DOMContentLoaded', function() {
     function showFormSuccess() {
         const submitBtn = document.querySelector('.submit-btn');
         if (submitBtn) {
-            const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Enviat ✓';
             submitBtn.style.background = '#28a745';
-            submitBtn.disabled = true;
-
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.style.background = 'var(--primary-red)';
-                submitBtn.disabled = false;
-            }, 3000);
         }
 
-        alert('Gràcies pel teu missatge! Ens posarem en contacte aviat.');
+        // Create success notification
+        const notification = document.createElement('div');
+        notification.className = 'success-notification';
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 9999;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        `;
+        notification.textContent = "Gràcies pel teu missatge! Ens posarem en contacte aviat.";
+        
+        document.body.appendChild(notification);
+        
+        // Animate in
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remove after delay
+        setTimeout(() => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 4000);
     }
 
     // ================================
-    // Navbar Scroll Effects
+    // Enhanced Navbar Effects
     // ================================
     
     function initNavbarEffects() {
         const navbar = document.querySelector('.navbar');
+        let lastScrollY = window.scrollY;
         
         if (navbar) {
             function handleNavbarScroll() {
-                if (window.scrollY > 50) {
+                const currentScrollY = window.scrollY;
+                
+                // Background opacity based on scroll
+                if (currentScrollY > 50) {
                     navbar.style.background = 'rgba(255, 255, 255, 0.98)';
                     navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
                 } else {
                     navbar.style.background = 'rgba(255, 255, 255, 0.95)';
                     navbar.style.boxShadow = 'none';
                 }
+                
+                // Hide/show navbar on scroll (mobile only)
+                if (window.innerWidth <= 768) {
+                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                        // Scrolling down
+                        navbar.style.transform = 'translateY(-100%)';
+                    } else {
+                        // Scrolling up
+                        navbar.style.transform = 'translateY(0)';
+                    }
+                }
+                
+                lastScrollY = currentScrollY;
             }
             
-            window.addEventListener('scroll', debounce(handleNavbarScroll, 10));
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        handleNavbarScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
         }
     }
 
     // ================================
-    // Gallery Image Loading
+    // Enhanced Gallery
     // ================================
     
-    function initGalleryImages() {
-        const galleryItems = document.querySelectorAll('.gallery-item img');
+    function initGallery() {
+        const galleryCards = document.querySelectorAll('.gallery-card');
         
-        galleryItems.forEach(img => {
-            // Add loading state
-            img.addEventListener('load', function() {
-                this.style.opacity = '1';
+        // Lazy loading with Intersection Observer
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target.querySelector('img');
+                    if (img && img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(entry.target);
+                    }
+                }
+            });
+        }, {
+            rootMargin: '50px'
+        });
+
+        galleryCards.forEach((card, index) => {
+            // Staggered animation
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+
+            // Enhanced hover effects
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-12px) scale(1.02)';
             });
 
-            // Handle loading errors
-            img.addEventListener('error', function() {
-                this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbGUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjVmNWY1Ii8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiBmaWxsPSIjOTk5IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPkltYXRnZSBubyBkaXNwb25pYmxlPC90ZXh0Pgo8L3N2Zz4K';
-                this.alt = 'Imatge no disponible';
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
             });
 
-            // Set initial opacity for smooth loading
-            img.style.opacity = '0';
-            img.style.transition = 'opacity 0.3s ease';
+            // Observe for lazy loading
+            imageObserver.observe(card);
         });
     }
 
     // ================================
-    // Mobile Menu (Future Implementation)
+    // Performance Monitoring
     // ================================
     
-    function initMobileMenu() {
-        const mobileBreakpoint = 768;
-        
-        function handleResize() {
-            const navLinks = document.querySelector('.nav-links');
-            if (window.innerWidth <= mobileBreakpoint) {
-                if (navLinks) {
-                    navLinks.style.display = 'none';
-                }
-            } else {
-                if (navLinks) {
-                    navLinks.style.display = 'flex';
-                }
-            }
-        }
-
-        window.addEventListener('resize', handleResize);
-        handleResize(); // Initial call
-    }
-
-    // ================================
-    // Performance Optimizations
-    // ================================
-    
-    function initPerformanceOptimizations() {
-        // Lazy loading for images (if needed)
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        if (img.dataset.src) {
-                            img.src = img.dataset.src;
-                            img.classList.remove('lazy');
-                            imageObserver.unobserve(img);
-                        }
+    function initPerformanceMonitoring() {
+        // Web Vitals monitoring (if needed)
+        if ('PerformanceObserver' in window) {
+            const observer = new PerformanceObserver((list) => {
+                list.getEntries().forEach((entry) => {
+                    if (entry.entryType === 'paint') {
+                        console.log(`${entry.name}: ${entry.startTime}ms`);
                     }
                 });
             });
 
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                imageObserver.observe(img);
-            });
+            try {
+                observer.observe({ type: 'paint', buffered: true });
+            } catch (e) {
+                // Fallback for older browsers
+                console.log('Performance Observer not supported');
+            }
         }
+
+        // Page load metrics
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const navigationTiming = performance.getEntriesByType('navigation')[0];
+                if (navigationTiming) {
+                    const loadTime = navigationTiming.loadEventEnd - navigationTiming.fetchStart;
+                    console.log(`Page load time: ${loadTime}ms`);
+                }
+            }, 0);
+        });
     }
 
     // ================================
-    // Error Handling
+    // Error Handling & Recovery
     // ================================
     
     function initErrorHandling() {
+        // Global error handler
         window.addEventListener('error', function(e) {
             console.error('JavaScript error:', e.error);
+            // Could send to analytics service
         });
 
+        // Promise rejection handler
         window.addEventListener('unhandledrejection', function(e) {
             console.error('Unhandled promise rejection:', e.reason);
+            // Could send to analytics service
         });
+
+        // Service availability checks
+        function checkServices() {
+            // Check if external services are available
+            const services = [
+                { name: 'FontAwesome', check: () => document.querySelector('[class*="fa-"]') },
+                { name: 'Google Fonts', check: () => getComputedStyle(document.body).fontFamily.includes('Montserrat') }
+            ];
+
+            services.forEach(service => {
+                if (!service.check()) {
+                    console.warn(`${service.name} may not be loaded properly`);
+                }
+            });
+        }
+
+        setTimeout(checkServices, 2000);
     }
 
     // ================================
@@ -344,19 +669,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     
     try {
+        initMobileMenu();
         initSmoothScrolling();
         initCountdownTimer();
         initInteractiveTimeline();
         initContactForm();
         initNavbarEffects();
-        initGalleryImages();
-        initMobileMenu();
-        initPerformanceOptimizations();
+        initGallery();
+        initPerformanceMonitoring();
         initErrorHandling();
         
         console.log('Ball de Diables del Prat - Website initialized successfully! 🔥');
+        
+        // Remove loading class if present
+        document.body.classList.remove('loading');
+        
     } catch (error) {
         console.error('Error initializing website:', error);
+        
+        // Graceful degradation
+        document.body.classList.add('js-disabled');
     }
 
 });
@@ -381,53 +713,61 @@ function debounce(func, wait, immediate) {
     };
 }
 
-function isInViewport(element) {
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
+function isInViewport(element, offset = 0) {
     const rect = element.getBoundingClientRect();
     return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        rect.top >= -offset &&
+        rect.left >= -offset &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + offset &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth) + offset
     );
 }
 
-function scrollToElement(element, offset = 0) {
-    const elementPosition = element.offsetTop - offset;
-    window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
+// ================================
+// Service Worker Registration (Optional)
+// ================================
+
+if ('serviceWorker' in navigator && 'production' === 'production') {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+                console.log('ServiceWorker registration successful');
+            })
+            .catch(function(err) {
+                console.log('ServiceWorker registration failed');
+            });
     });
 }
-function updateTimelineProgressOnScroll() {
-    const timelineSection = document.querySelector('.timeline-section');
-    const timelineLine = document.querySelector('.timeline-line');
-    
-    if (!timelineSection || !timelineLine) return;
 
-    const rect = timelineSection.getBoundingClientRect();
-    const sectionTop = rect.top;
-    const sectionBottom = rect.bottom;
-    const windowHeight = window.innerHeight;
-    const sectionHeight = rect.height;
-
-    let scrollProgress = 0;
+// Solució bug redimensionament navbar
+window.addEventListener('resize', function() {
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
     
-    // Començar quan la secció entra per la part inferior de la pantalla
-    const startPoint = windowHeight;
-    // Acabar quan la secció surt per la part superior
-    const endPoint = -sectionHeight;
-    
-    if (sectionTop <= startPoint && sectionBottom >= 0) {
-        // Càlcul més precís del progress
-        const totalScrollDistance = startPoint + sectionHeight;
-        const currentScrolled = startPoint - sectionTop;
-        
-        scrollProgress = Math.max(0, Math.min(1, currentScrolled / totalScrollDistance));
+    // Resetear el menú quan canviï la mida de pantalla
+    if (window.innerWidth > 1100) {
+        // Desktop: assegurar que el menú mòbil està tancat
+        if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
+        if (mobileNavOverlay) mobileNavOverlay.classList.remove('active');
+        if (mobileNavOverlay) mobileNavOverlay.setAttribute('aria-hidden', 'true');
+        if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    } else {
+        // Mobile/Tablet: assegurar visibilitat correcta
+        if (mobileNavOverlay && !mobileNavOverlay.classList.contains('active')) {
+            mobileNavOverlay.setAttribute('aria-hidden', 'true');
+        }
     }
-
-    // Actualitzar la variable CSS amb smooth transition
-    document.documentElement.style.setProperty('--timeline-progress', (scrollProgress * 100) + '%');
-}
-
-// Utilitzar un interval més petit per més fluïdesa
-window.addEventListener('scroll', debounce(updateTimelineProgressOnScroll, 8));
+});

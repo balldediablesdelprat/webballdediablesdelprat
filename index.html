@@ -4,397 +4,546 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ball de Diables del Prat</title>
+  <title>Ball de Diables del Prat | Cultura Tradicional Catalana amb Foc</title>
+
+  <!-- SEO Meta Tags -->
   <meta name="description"
-    content="Ball de Diables del Prat de Llobregat. Cultura tradicional catalana amb foc i passió des de 2017.">
+    content="Ball de Diables del Prat de Llobregat. Grup de foc tradicional català fundat el 2017. Descobreix els nostres esdeveniments, tocs de tabal i la cultura diabòlica pratenca.">
+  <meta name="keywords"
+    content="Ball de Diables, Prat de Llobregat, cultura catalana, foc, diables, correfoc, festa major, versots, tabal, tradició">
+  <meta name="author" content="Ball de Diables del Prat de Llobregat">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://balldediablesdelprat.cat/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://balldediablesdelprat.cat/">
+  <meta property="og:title" content="Ball de Diables del Prat | Cultura Tradicional Catalana">
+  <meta property="og:description"
+    content="Grup de foc tradicional del Prat de Llobregat. Cultura diabòlica catalana des de 2017 amb correfocs, versots i tocs de tabal tradicionals.">
+  <meta property="og:image" content="https://balldediablesdelprat.cat/images/LogoBlanc.png">
+  <meta property="og:locale" content="ca_ES">
+  <meta property="og:site_name" content="Ball de Diables del Prat">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://balldediablesdelprat.cat/">
+  <meta property="twitter:title" content="Ball de Diables del Prat | Cultura Tradicional Catalana">
+  <meta property="twitter:description"
+    content="Grup de foc tradicional del Prat de Llobregat. Cultura diabòlica catalana des de 2017.">
+  <meta property="twitter:image" content="https://balldediablesdelprat.cat/images/LogoBlanc.png">
+  <meta property="twitter:site" content="@balldiablesprat">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CulturalOrganization",
+    "name": "Ball de Diables del Prat de Llobregat",
+    "alternateName": "Ball de Diables del Prat",
+    "url": "https://balldediablesdelprat.cat",
+    "logo": "https://balldediablesdelprat.cat/images/Logo.png",
+    "description": "Grup de foc tradicional català del Prat de Llobregat fundat el 2017. Cultura diabòlica tradicional amb correfocs, versots i tocs de tabal.",
+    "foundingDate": "2017",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "El Prat de Llobregat",
+      "addressRegion": "Catalunya",
+      "addressCountry": "ES"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "balldediablesdelprat@gmail.com",
+      "contactType": "customer service"
+    },
+    "sameAs": [
+      "https://www.facebook.com/BalldeDiablesPrat/",
+      "https://www.instagram.com/balldediablesdelprat/",
+      "https://twitter.com/balldiablesprat"
+    ],
+    "event": [
+      {
+        "@type": "Event",
+        "name": "Festa Major del Prat",
+        "startDate": "2025-09-26",
+        "location": {
+          "@type": "Place",
+          "name": "El Prat de Llobregat",
+          "address": "El Prat de Llobregat, Catalunya"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Fonts and Icons -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Favicon -->
   <link rel="icon" href="images/Rodona.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/Rodona.png">
+
+  <!-- Performance hints -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://formspree.io">
 </head>
 
 <body>
+  <!-- Skip to content for accessibility -->
+  <a href="#main" class="sr-only sr-only-focusable">Saltar al contingut principal</a>
+
   <!-- Navigation -->
-  <nav class="navbar">
+  <nav class="navbar" role="navigation" aria-label="Navegació principal">
     <div class="nav-container">
-      <a href="#home" class="logo">
+      <a href="#home" class="logo" aria-label="Ball de Diables del Prat - Pàgina d'inici">
         <div class="logo-container">
-          <img src="images/Logo.png" alt="Ball de Diables" class="logo-icon" onerror="this.style.display='none'">
+          <img src="images/Logo.png" alt="Logo del Ball de Diables del Prat" class="logo-icon" width="24" height="24"
+            onerror="this.style.display='none'">
           <span class="logo-text">Ball de Diables del Prat</span>
         </div>
       </a>
-      <ul class="nav-links">
-        <li><a href="#home">Inici</a></li>
-        <li><a href="#about">Qui som</a></li>
-        <li><a href="#events">Esdeveniments</a></li>
-        <li><a href="#panera">Panera 2025</a></li>
-        <li><a href="#gallery">Galeria</a></li>
-        <li><a href="#tocs">Tocs de Tabal</a></li>
-        <li><a href="#contact">Contacte</a></li>
+
+      <!-- Desktop Navigation -->
+      <ul class="nav-links desktop-nav" role="menubar">
+        <li role="none"><a href="#home" role="menuitem">Inici</a></li>
+        <li role="none"><a href="#about" role="menuitem">Qui som</a></li>
+        <li role="none"><a href="#events" role="menuitem">Esdeveniments</a></li>
+        <li role="none"><a href="#panera" role="menuitem">Panera 2025</a></li>
+        <li role="none"><a href="#gallery" role="menuitem">Galeria</a></li>
+        <li role="none"><a href="#tocs" role="menuitem">Tocs de Tabal</a></li>
+        <li role="none"><a href="#contact" role="menuitem">Contacte</a></li>
       </ul>
+
+      <!-- Mobile Menu Button -->
+      <button class="mobile-menu-btn" aria-label="Obre menú de navegació" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" aria-hidden="true">
+      <div class="mobile-nav-content">
+        <ul class="mobile-nav-links" role="menubar">
+          <li role="none"><a href="#home" role="menuitem">Inici</a></li>
+          <li role="none"><a href="#about" role="menuitem">Qui som</a></li>
+          <li role="none"><a href="#events" role="menuitem">Esdeveniments</a></li>
+          <li role="none"><a href="#panera" role="menuitem">Panera 2025</a></li>
+          <li role="none"><a href="#gallery" role="menuitem">Galeria</a></li>
+          <li role="none"><a href="#tocs" role="menuitem">Tocs de Tabal</a></li>
+          <li role="none"><a href="#contact" role="menuitem">Contacte</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section id="home" class="hero">
-    <div class="hero-background"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <div class="hero-logo">
-        <img src="images/LogoBlanc.png" alt="Ball de Diables del Prat" class="hero-logo-image"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <div class="hero-fallback" style="display: none;">
-          <h1>Ball de Diables del Prat</h1>
+  <main id="main">
+    <!-- Hero Section -->
+    <section id="home" class="hero" aria-label="Secció principal">
+      <div class="hero-background" role="img" aria-label="Imatge de fons del correfoc"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-logo">
+          <img src="images/LogoBlanc.png" alt="Logo blanc del Ball de Diables del Prat de Llobregat"
+            class="hero-logo-image" width="600" height="auto"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="hero-fallback" style="display: none;">
+            <h1>Ball de Diables del Prat</h1>
+          </div>
         </div>
+        <p class="hero-subtitle">SOM FOC, CULTURA I FESTA!</p>
+        <a href="#about" class="cta-button" aria-label="Descobreix més sobre nosaltres">Descobreix-nos</a>
       </div>
-      <p class="hero-subtitle">Cultura tradicional catalana amb foc i passió des de 2017</p>
-      <a href="#about" class="cta-button">Descobreix-nos</a>
-    </div>
-  </section>
+    </section>
 
-  <!-- About Section -->
-  <section id="about" class="section about">
-    <div class="container">
-      <h2 class="section-title">Qui Som</h2>
-      <div class="about-content">
-        <div class="about-text">
-          <p>Som un grup de foc creat l'estiu del 2017 que segueix el model tradicional del món dels diables. Busquem
-            fomentar la participació activa del públic i la cultura catalana arreu del territori.</p>
+    <!-- About Section -->
+    <section id="about" class="section about" aria-labelledby="about-title">
+      <div class="container">
+        <h2 id="about-title" class="section-title">Qui Som</h2>
+        <div class="about-content">
+          <div class="about-text">
+            <p>Som un grup de foc creat l'estiu del 2017 que segueix el model tradicional del món dels diables. Busquem
+              fomentar la participació activa del públic i la cultura catalana arreu del territori.</p>
 
-          <p>Els nostres fonaments es basen en el model tradicional: percussió amb tambors de membrana de pell, vestuari
-            uniforme amb espardenyes d'espart i la implicació directa amb la població del Prat de Llobregat.</p>
-        </div>
-        <div class="about-image">
-          <div class="placeholder-image">
-            <img src="images/Versots2.JPG" alt="Ball de Diables del Prat en seguici" />
+            <p>Els nostres fonaments es basen en el model tradicional: percussió amb tambors de membrana de pell,
+              vestuari
+              uniforme amb espardenyes d'espart i la implicació directa amb la població del Prat de Llobregat.</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Countdown Section -->
-  <section class="counter-section">
-    <div class="container">
-      <h2 class="counter-title">Pròxima Festa Major</h2>
-      <div class="countdown" id="countdown">
-        <div class="countdown-item">
-          <span class="countdown-number" id="days">0</span>
-          <span class="countdown-label">Dies</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-number" id="hours">0</span>
-          <span class="countdown-label">Hores</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-number" id="minutes">0</span>
-          <span class="countdown-label">Minuts</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-number" id="seconds">0</span>
-          <span class="countdown-label">Segons</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Timeline -->
-  <section id="events" class="section timeline-section">
-    <div class="container">
-      <h2 class="section-title">Esdeveniments 2025</h2>
-      <div class="timeline-wrapper">
-        <div class="timeline-line" id="timeline-progress"></div>
-        <div class="timeline-container">
-          <div class="timeline-item" data-event="santjordi" data-date="2025-04">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content-wrapper">
-              <div class="timeline-left">
-                <div class="timeline-icon">
-                  <i class="fas fa-heart"></i>
-                </div>
-                <div class="timeline-content">
-                  <div class="timeline-date">Abril 2025</div>
-                  <div class="timeline-title">Diada de Sant Jordi</div>
-                  <div class="timeline-description">Paradeta al carrer Ferran Puig amb productes de l'entitat i
-                    activitats culturals.</div>
-                </div>
-              </div>
-              <div class="timeline-image">
-                <img src="images/SantJordi.jpg" alt="Diada de Sant Jordi">
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-event="pratifolk" data-date="2025-05">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content-wrapper">
-              <div class="timeline-left">
-                <div class="timeline-icon">
-                  <i class="fas fa-music"></i>
-                </div>
-                <div class="timeline-content">
-                  <div class="timeline-date">Maig 2025</div>
-                  <div class="timeline-title">Pratifolk</div>
-                  <div class="timeline-description">Participació en el festival de cultura popular amb el nostre model
-                    tradicional.</div>
-                </div>
-              </div>
-              <div class="timeline-image">
-                <img src="images/Pratifolk.jpg" alt="Pratifolk">
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-event="santpere" data-date="2025-06">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content-wrapper">
-              <div class="timeline-left">
-                <div class="timeline-icon">
-                  <i class="fas fa-star"></i>
-                </div>
-                <div class="timeline-content">
-                  <div class="timeline-date">Juny 2025</div>
-                  <div class="timeline-title">Festes de Sant Pere i Sant Pau</div>
-                  <div class="timeline-description">Des de la recuperació de les festes de Sant Pere i Sant Pau, hi té
-                    lloc el Correfoc i la Carretillada.</div>
-                </div>
-              </div>
-              <div class="timeline-image">
-                <img src="images/Carretillada.jpg" alt="Sant Pere i Sant Pau">
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-event="festamajor" data-date="2025-09">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content-wrapper">
-              <div class="timeline-left">
-                <div class="timeline-icon">
-                  <i class="fas fa-crown"></i>
-                </div>
-                <div class="timeline-content">
-                  <div class="timeline-date">Setembre 2025</div>
-                  <div class="timeline-title">Festa Major</div>
-                  <div class="timeline-description">La festa de l'any per excel·lència, la més esperada: Cercavila
-                    d'inici, Versots diabòlics, Correfoc, Matinades i Cercavila final.</div>
-                </div>
-              </div>
-              <div class="timeline-image">
-                <img src="images/Esclat1.JPG" alt="Festa Major">
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-item" data-event="campanades" data-date="2025-12">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content-wrapper">
-              <div class="timeline-left">
-                <div class="timeline-icon">
-                  <i class="fas fa-rocket"></i>
-                </div>
-                <div class="timeline-content">
-                  <div class="timeline-date">Desembre 2025</div>
-                  <div class="timeline-title">Campanades de Foc</div>
-                  <div class="timeline-description">Dotze coets de tro com a campanades i un castell de focs per donar
-                    la benvinguda al nou any.</div>
-                </div>
-              </div>
-              <div class="timeline-image">
-                <img src="images/Campanades.jpg" alt="Campanades de Foc">
-              </div>
+          <div class="about-image">
+            <div class="placeholder-image">
+              <img src="images/Versots2.JPG"
+                alt="Membres del Ball de Diables del Prat durant els Versots Diabòlics a la plaça de la Vila"
+                width="400" height="300" loading="lazy" />
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Panera Section -->
-  <section id="panera" class="section panera">
-    <div class="panera-background"></div>
-    <div class="panera-overlay"></div>
-    <div class="container">
-      <div class="panera-content">
-        <h2 class="section-title">Gran Panera Infernal 2025</h2>
-        <div class="prize-amount">1.250€</div>
-        <p class="panera-description">
-          Sorteig per gastar en comerços locals del Prat. El premi es determina pels darrers quatre números del primer
-          premi de la Grossa de Cap d'Any 2025.
-        </p>
-        <a href="#contact" class="cta-button">Més informació</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Gallery -->
-  <section id="gallery" class="section gallery gallery-modern">
-    <div class="container">
-      <h2 class="section-title">Galeria</h2>
-      <div class="gallery-masonry">
-        <div class="gallery-card">
-          <div class="gallery-image">
-            <img src="images/Esclat1.JPG" alt="Esclat de Festa" />
-            <div class="gallery-overlay">
-              <h3>Esclat de Festa</h3>
-              <p>Festa Major 2024</p>
-            </div>
+    <!-- Countdown Section -->
+    <section class="counter-section" aria-labelledby="countdown-title">
+      <div class="container">
+        <h2 id="countdown-title" class="counter-title">Pròxima Festa Major</h2>
+        <div class="countdown" id="countdown" role="timer" aria-live="polite">
+          <div class="countdown-item">
+            <span class="countdown-number" id="days" aria-label="Dies restants">0</span>
+            <span class="countdown-label">Dies</span>
           </div>
-        </div>
-        <div class="gallery-card">
-          <div class="gallery-image">
-            <img src="images/Versots2.JPG" alt="Versots Diabòlics" />
-            <div class="gallery-overlay">
-              <h3>Versots Diabòlics</h3>
-              <p>Crítica social tradicional</p>
-            </div>
+          <div class="countdown-item">
+            <span class="countdown-number" id="hours" aria-label="Hores restants">0</span>
+            <span class="countdown-label">Hores</span>
           </div>
-        </div>
-        <div class="gallery-card">
-          <div class="gallery-image">
-            <img src="images/Correfoc1.jpg" alt="Correfoc" />
-            <div class="gallery-overlay">
-              <h3>Correfoc Nocturn</h3>
-              <p>Foc i tradició</p>
-            </div>
+          <div class="countdown-item">
+            <span class="countdown-number" id="minutes" aria-label="Minuts restants">0</span>
+            <span class="countdown-label">Minuts</span>
           </div>
-        </div>
-        <div class="gallery-card">
-          <div class="gallery-image">
-            <img src="images/Seguici2.JPG" alt="Seguici Popular" />
-            <div class="gallery-overlay">
-              <h3>Seguici Popular</h3>
-              <p>Cultura al carrer</p>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-card">
-          <div class="gallery-image">
-            <img src="images/Correfoc3.JPG" alt="Correfoc Nocturn" />
-            <div class="gallery-overlay">
-              <h3>Flames Diabòliques</h3>
-              <p>Espectacle de foc</p>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-card">
-          <div class="gallery-image">
-            <img src="images/Correfoc5.jpg" alt="Correfoc amb foc" />
-            <div class="gallery-overlay">
-              <h3>Tradició Vivint</h3>
-              <p>Ball de diables en acció</p>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-card">
-          <div class="gallery-image">
-            <img src="images/Tabals.jpg" alt="Tocs de Tabal" />
-            <div class="gallery-overlay">
-              <h3>Tocs de Tabal</h3>
-              <p>Ritmes tradicionals</p>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-card">
-          <div class="gallery-image">
-            <img src="images/Carretillada.jpg" alt="Carretillada" />
-            <div class="gallery-overlay">
-              <h3>Carretillada</h3>
-              <p>Sant Pere i Sant Pau</p>
-            </div>
+          <div class="countdown-item">
+            <span class="countdown-number" id="seconds" aria-label="Segons restants">0</span>
+            <span class="countdown-label">Segons</span>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Tocs de Tabal Section -->
-  <section id="tocs" class="section tocs tocs-split">
-    <div class="tocs-split-container">
-      <div class="tocs-image-half">
-        <img src="images/Tabals.jpg" alt="Tocs de Tabal tradicionals" />
-      </div>
-      <div class="tocs-content-half">
-        <h2 class="section-title">Tocs de Tabal</h2>
-        <p class="tocs-description">
-          Els nostres tocs de tabal tradicionals, enregistrats per preservar i compartir la nostra cultura musical
-          diabòlica.
-        </p>
-        <div class="spotify-list-vertical">
-          <a href="#" class="spotify-link-clean" data-track="coming-soon">
-            <i class="fab fa-spotify"></i>
-            <span>Cercavila</span>
-            <small>(Pròximament)</small>
-          </a>
-          <a href="#" class="spotify-link-clean" data-track="coming-soon">
-            <i class="fab fa-spotify"></i>
-            <span>Correfoc</span>
-            <small>(Pròximament)</small>
-          </a>
-          <a href="#" class="spotify-link-clean" data-track="coming-soon">
-            <i class="fab fa-spotify"></i>
-            <span>Versots</span>
-            <small>(Pròximament)</small>
-          </a>
-          <a href="#" class="spotify-link-clean" data-track="coming-soon">
-            <i class="fab fa-spotify"></i>
-            <span>Carretillada</span>
-            <small>(Pròximament)</small>
-          </a>
+    <!-- Timeline -->
+    <section id="events" class="section timeline-section" aria-labelledby="events-title">
+      <div class="container">
+        <h2 id="events-title" class="section-title">Esdeveniments 2025</h2>
+        <div class="timeline-wrapper">
+          <div class="timeline-line" id="timeline-progress" aria-hidden="true"></div>
+          <div class="timeline-container">
+
+            <article class="timeline-item" data-event="santjordi" data-date="2025-04">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-content-wrapper">
+                <div class="timeline-left">
+                  <div class="timeline-icon" aria-hidden="true">
+                    <i class="fas fa-heart"></i>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Abril 2025</div>
+                    <h3 class="timeline-title">Diada de Sant Jordi</h3>
+                    <div class="timeline-description">Paradeta al carrer Ferran Puig amb productes de l'entitat i
+                      activitats culturals.</div>
+                  </div>
+                </div>
+                <div class="timeline-image">
+                  <img src="images/SantJordi.jpg"
+                    alt="Paradeta del Ball de Diables durant la Diada de Sant Jordi al carrer Ferran Puig" width="450"
+                    height="280" loading="lazy">
+                </div>
+              </div>
+            </article>
+
+            <article class="timeline-item" data-event="pratifolk" data-date="2025-05">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-content-wrapper">
+                <div class="timeline-left">
+                  <div class="timeline-icon" aria-hidden="true">
+                    <i class="fas fa-music"></i>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Maig 2025</div>
+                    <h3 class="timeline-title">Pratifolk</h3>
+                    <div class="timeline-description">Participació en el festival de cultura popular amb el nostre model
+                      tradicional.</div>
+                  </div>
+                </div>
+                <div class="timeline-image">
+                  <img src="images/Pratifolk.jpg"
+                    alt="Ball de Diables participant al festival Pratifolk amb vestuari tradicional" width="450"
+                    height="280" loading="lazy">
+                </div>
+              </div>
+            </article>
+
+            <article class="timeline-item" data-event="santpere" data-date="2025-06">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-content-wrapper">
+                <div class="timeline-left">
+                  <div class="timeline-icon" aria-hidden="true">
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Juny 2025</div>
+                    <h3 class="timeline-title">Festes de Sant Pere i Sant Pau</h3>
+                    <div class="timeline-description">Des de la recuperació de les festes de Sant Pere i Sant Pau, hi té
+                      lloc el Correfoc i la Carretillada.</div>
+                  </div>
+                </div>
+                <div class="timeline-image">
+                  <img src="images/Carretillada.jpg"
+                    alt="Espectacular Carretillada durant les festes de Sant Pere i Sant Pau amb focs artificials"
+                    width="450" height="280" loading="lazy">
+                </div>
+              </div>
+            </article>
+
+            <article class="timeline-item" data-event="festamajor" data-date="2025-09">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-content-wrapper">
+                <div class="timeline-left">
+                  <div class="timeline-icon" aria-hidden="true">
+                    <i class="fas fa-crown"></i>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Setembre 2025</div>
+                    <h3 class="timeline-title">Festa Major</h3>
+                    <div class="timeline-description">La festa de l'any per excel·lència, la més esperada: Cercavila
+                      d'inici, Versots diabòlics, Correfoc, Matinades i Cercavila final.</div>
+                  </div>
+                </div>
+                <div class="timeline-image">
+                  <img src="images/Esclat1.JPG" alt="Esclat de Festa Major amb espectacle pirotècnic i diables en acció"
+                    width="450" height="280" loading="lazy">
+                </div>
+              </div>
+            </article>
+
+            <article class="timeline-item" data-event="campanades" data-date="2025-12">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-content-wrapper">
+                <div class="timeline-left">
+                  <div class="timeline-icon" aria-hidden="true">
+                    <i class="fas fa-rocket"></i>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Desembre 2025</div>
+                    <h3 class="timeline-title">Campanades de Foc</h3>
+                    <div class="timeline-description">Dotze coets de tro com a campanades i un castell de focs per donar
+                      la benvinguda al nou any.</div>
+                  </div>
+                </div>
+                <div class="timeline-image">
+                  <img src="images/Campanades.jpg"
+                    alt="Campanades de Foc de Cap d'Any amb castell de focs artificials a la plaça de la Vila"
+                    width="450" height="280" loading="lazy">
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact -->
-  <section id="contact" class="section contact">
-    <div class="container">
-      <h2 class="section-title">Contacte</h2>
-      <div class="contact-content">
-        <form class="contact-form" action="https://formspree.io/xyydrnjd" method="POST">
-          <div class="form-group">
-            <label for="name">Nom</label>
-            <input type="text" id="name" name="name" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Correu electrònic</label>
-            <input type="email" id="email" name="email" required>
-          </div>
-          <div class="form-group">
-            <label for="subject">Assumpte</label>
-            <input type="text" id="subject" name="subject" required>
-          </div>
-          <div class="form-group">
-            <label for="message">Missatge</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-          </div>
-          <button type="submit" class="submit-btn">Enviar</button>
-        </form>
+    <!-- Panera Section -->
+    <section id="panera" class="section panera" aria-labelledby="panera-title">
+      <div class="panera-background" role="img" aria-label="Fons decoratiu de la Gran Panera Infernal"></div>
+      <div class="panera-overlay"></div>
+      <div class="container">
+        <div class="panera-content">
+          <h2 id="panera-title" class="section-title">Gran Panera Infernal 2025</h2>
+          <div class="prize-amount" aria-label="Premi de mil dos-cents cinquanta euros">1.250€</div>
+          <p class="panera-description">
+            Sorteig per gastar en comerços locals del Prat. El premi es determina pels darrers quatre números del primer
+            premi de la Grossa de Cap d'Any 2025!
+          </p>
+          <a href="#contact" class="cta-button" aria-label="Contacta per més informació sobre la panera">Més
+            informació</a>
+        </div>
+      </div>
+    </section>
 
-        <div class="contact-info">
-          <h3>Contacta amb nosaltres</h3>
-          <p>Per a qualsevol consulta, proposta de col·laboració o si vols formar part del Ball de Diables del Prat.</p>
+    <!-- Gallery -->
+    <section id="gallery" class="section gallery gallery-modern" aria-labelledby="gallery-title">
+      <div class="container">
+        <h2 id="gallery-title" class="section-title">Galeria</h2>
+        <div class="gallery-masonry" role="grid">
+          <article class="gallery-card" role="gridcell">
+            <div class="gallery-image">
+              <img src="images/Esclat1.JPG" alt="Esclat de Festa Major amb diables i espurnes de foc il·luminant la nit"
+                width="300" height="225" loading="lazy" />
+              <div class="gallery-overlay">
+                <h3>Esclat de Festa</h3>
+                <p>Festa Major 2024</p>
+              </div>
+            </div>
+          </article>
+          <article class="gallery-card" role="gridcell">
+            <div class="gallery-image">
+              <img src="images/Seguici3.jpg" alt="Actuació dels Versots Diabòlics a la plaça amb públic assistent"
+                width="300" height="225" loading="lazy" />
+              <div class="gallery-overlay">
+                <h3>Seguici</h3>
+                <p>Sant Pere i Sant Pau 2025</p>
+              </div>
+            </div>
+          </article>
+          <article class="gallery-card" role="gridcell">
+            <div class="gallery-image">
+              <img src="images/Correfoc1.jpg" alt="Correfoc nocturn amb diables portant maces enceses entre el públic"
+                width="300" height="225" loading="lazy" />
+              <div class="gallery-overlay">
+                <h3>Correfoc</h3>
+                <p>Festa Major 2024</p>
+              </div>
+            </div>
+          </article>
+          <article class="gallery-card" role="gridcell">
+            <div class="gallery-image">
+              <img src="images/Seguici2.JPG" alt="Seguici Popular del Ball de Diables pels carrers del Prat" width="300"
+                height="225" loading="lazy" />
+              <div class="gallery-overlay">
+                <h3>Seguici</h3>
+                <p>Festa Major 2024</p>
+              </div>
+            </div>
+          </article>
+          <article class="gallery-card" role="gridcell">
+            <div class="gallery-image">
+              <img src="images/Correfoc2.JPG" alt="Flames diabòliques il·luminant els carrers durant el correfoc"
+                width="300" height="225" loading="lazy" />
+              <div class="gallery-overlay">
+                <h3>Correfoc</h3>
+                <p>Festa Major 2024</p>
+              </div>
+            </div>
+          </article>
+          <article class="gallery-card" role="gridcell">
+            <div class="gallery-image">
+              <img src="images/Esclat2.JPG" alt="Ball de diables en plena acció amb maces de foc i vestuari tradicional"
+                width="300" height="225" loading="lazy" />
+              <div class="gallery-overlay">
+                <h3>Esclat</h3>
+                <p>Festa Major 2022</p>
+              </div>
+            </div>
+          </article>
+          <article class="gallery-card" role="gridcell">
+            <div class="gallery-image">
+              <img src="images/Versots1.JPG"
+                alt="Tambors tradicionals de membrana de pell utilitzats pels Ball de Diables" width="300" height="225"
+                loading="lazy" />
+              <div class="gallery-overlay">
+                <h3>Versots Diabòlics</h3>
+                <p>Festa Major 2024</p>
+              </div>
+            </div>
+          </article>
+          <article class="gallery-card" role="gridcell">
+            <div class="gallery-image">
+              <img src="images/Carretillada.jpg" alt="Carretillada espectacular amb efectes pirotècnics i diables"
+                width="300" height="225" loading="lazy" />
+              <div class="gallery-overlay">
+                <h3>Carretillada</h3>
+                <p>Sant Pere i Sant Pau 2025</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-          <p><strong>Correu:</strong> balldediablesdelprat@gmail.com</p>
-
-          <div class="social-links">
-            <a href="https://www.facebook.com/BalldeDiablesPrat/" title="Facebook" target="_blank" rel="noopener">
-              <i class="fab fa-facebook-f"></i>
+    <!-- Tocs de Tabal Section -->
+    <section id="tocs" class="section tocs tocs-split" aria-labelledby="tocs-title">
+      <div class="tocs-split-container">
+        <div class="tocs-image-half">
+          <img src="images/Tabals.jpg" alt="Tambors tradicionals de pell del Ball de Diables amb baquetes" width="500"
+            height="400" loading="lazy" />
+        </div>
+        <div class="tocs-content-half">
+          <h2 id="tocs-title" class="section-title">Tocs de Tabal</h2>
+          <p class="tocs-description">
+            Els tocs de tabal tradicionals, enregistrats per preservar-los i compartir-los!
+          </p>
+          <div class="spotify-list-vertical" role="list">
+            <a href="#" class="spotify-link-clean" data-track="coming-soon" role="listitem"
+              aria-label="Toc de Cercavila - Pròximament disponible a Spotify">
+              <i class="fab fa-spotify" aria-hidden="true"></i>
+              <span>Cercavila</span>
+              <small>(Pròximament)</small>
             </a>
-            <a href="https://www.instagram.com/balldediablesdelprat/" title="Instagram" target="_blank" rel="noopener">
-              <i class="fab fa-instagram"></i>
+            <a href="#" class="spotify-link-clean" data-track="coming-soon" role="listitem"
+              aria-label="Toc de Correfoc - Pròximament disponible a Spotify">
+              <i class="fab fa-spotify" aria-hidden="true"></i>
+              <span>Correfoc</span>
+              <small>(Pròximament)</small>
             </a>
-            <a href="https://twitter.com/balldiablesprat" title="Twitter" target="_blank" rel="noopener">
-              <i class="fab fa-twitter"></i>
+            <a href="#" class="spotify-link-clean" data-track="coming-soon" role="listitem"
+              aria-label="Toc de Versots - Pròximament disponible a Spotify">
+              <i class="fab fa-spotify" aria-hidden="true"></i>
+              <span>Versots</span>
+              <small>(Pròximament)</small>
+            </a>
+            <a href="#" class="spotify-link-clean" data-track="coming-soon" role="listitem"
+              aria-label="Toc de Carretillada - Pròximament disponible a Spotify">
+              <i class="fab fa-spotify" aria-hidden="true"></i>
+              <span>Carretillada</span>
+              <small>(Pròximament)</small>
             </a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section contact" aria-labelledby="contact-title">
+      <div class="container">
+        <h2 id="contact-title" class="section-title">Contacte</h2>
+        <div class="contact-content">
+          <form class="contact-form" action="https://formspree.io/xyydrnjd" method="POST"
+            aria-label="Formulari de contacte">
+            <div class="form-group">
+              <label for="name">Nom *</label>
+              <input type="text" id="name" name="name" required aria-describedby="name-error">
+              <span id="name-error" class="error-message" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Correu electrònic *</label>
+              <input type="email" id="email" name="email" required aria-describedby="email-error">
+              <span id="email-error" class="error-message" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="subject">Assumpte *</label>
+              <input type="text" id="subject" name="subject" required aria-describedby="subject-error">
+              <span id="subject-error" class="error-message" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="message">Missatge *</label>
+              <textarea id="message" name="message" rows="5" required aria-describedby="message-error"></textarea>
+              <span id="message-error" class="error-message" aria-live="polite"></span>
+            </div>
+            <button type="submit" class="submit-btn">Enviar</button>
+          </form>
+
+          <div class="contact-info">
+            <h3>Contacta amb nosaltres</h3>
+            <p>Per a qualsevol consulta, proposta de col·laboració o si vols formar part del Ball de Diables del Prat.
+            </p>
+
+            <p><strong>Correu:</strong> <a
+                href="mailto:balldediablesdelprat@gmail.com">balldediablesdelprat@gmail.com</a></p>
+
+            <div class="social-links" role="list" aria-label="Xarxes socials">
+              <a href="https://www.facebook.com/BalldeDiablesPrat/" title="Segueix-nos a Facebook" target="_blank"
+                rel="noopener" role="listitem">
+                <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                <span class="sr-only">Facebook</span>
+              </a>
+              <a href="https://www.instagram.com/balldediablesdelprat/" title="Segueix-nos a Instagram" target="_blank"
+                rel="noopener" role="listitem">
+                <i class="fab fa-instagram" aria-hidden="true"></i>
+                <span class="sr-only">Instagram</span>
+              </a>
+              <a href="https://twitter.com/balldiablesprat" title="Segueix-nos a Twitter" target="_blank" rel="noopener"
+                role="listitem">
+                <i class="fab fa-twitter" aria-hidden="true"></i>
+                <span class="sr-only">Twitter</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer class="footer" role="contentinfo">
     <div class="container">
       <p>&copy; 2025 Ball de Diables del Prat de Llobregat. Endavant diables!</p>
     </div>
