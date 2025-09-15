@@ -31,39 +31,39 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function initCountdownTimer() {
         function updateCountdown() {
-            // Festa Major 2025 - Last weekend of September (assumed Sept 27, 2025)
-            const festaMajor = new Date('2025-09-27T00:00:00').getTime();
-            const now = new Date().getTime();
-            const distance = festaMajor - now;
+    // Festa Major 2025 - 26 de setembre a les 18:30h
+    const festaMajor = new Date('2025-09-26T18:30:00').getTime();
+    const now = new Date().getTime();
+    const distance = festaMajor - now;
 
-            if (distance > 0) {
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    if (distance > 0) {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                // Update DOM elements
-                const daysElement = document.getElementById('days');
-                const hoursElement = document.getElementById('hours');
-                const minutesElement = document.getElementById('minutes');
-                const secondsElement = document.getElementById('seconds');
+        // Update DOM elements
+        const daysElement = document.getElementById('days');
+        const hoursElement = document.getElementById('hours');
+        const minutesElement = document.getElementById('minutes');
+        const secondsElement = document.getElementById('seconds');
 
-                if (daysElement) daysElement.textContent = days;
-                if (hoursElement) hoursElement.textContent = hours;
-                if (minutesElement) minutesElement.textContent = minutes;
-                if (secondsElement) secondsElement.textContent = seconds;
-            } else {
-                // Event has passed
-                const countdownElements = document.querySelectorAll('.countdown-number');
-                countdownElements.forEach(el => el.textContent = '0');
-                
-                // Update title
-                const titleElement = document.querySelector('.counter-title');
-                if (titleElement) {
-                    titleElement.textContent = "Festa Major 2025 Finalitzada!";
-                }
-            }
+        if (daysElement) daysElement.textContent = days;
+        if (hoursElement) hoursElement.textContent = hours;
+        if (minutesElement) minutesElement.textContent = minutes;
+        if (secondsElement) secondsElement.textContent = seconds;
+    } else {
+        // Event has passed
+        const countdownElements = document.querySelectorAll('.countdown-number');
+        countdownElements.forEach(el => el.textContent = '0');
+        
+        // Update title
+        const titleElement = document.querySelector('.counter-title');
+        if (titleElement) {
+            titleElement.textContent = "Festa Major 2025 Finalitzada!";
         }
+    }
+}
 
         // Update countdown every second
         updateCountdown(); // Initial call
@@ -71,27 +71,57 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================
-    // Interactive Timeline
+    // Interactive Animated Timeline
     // ================================
     
     function initInteractiveTimeline() {
         const timelineItems = document.querySelectorAll('.timeline-item');
+        const timelineLine = document.querySelector('.timeline-line');
         
+        // Intersection Observer per animar els elements quan entren en vista
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    // Animar l'element amb delay escalonat
+                    const index = Array.from(timelineItems).indexOf(entry.target);
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                        updateTimelineProgress();
+                    }, index * 200);
+                }
+            });
+        }, observerOptions);
+
         timelineItems.forEach(item => {
+            observer.observe(item);
+            
+            // Efectes hover i click
             item.addEventListener('click', function() {
-                // Remove active class from all items
                 timelineItems.forEach(i => i.classList.remove('active'));
-                // Add active class to clicked item
                 this.classList.add('active');
                 
-                // Optional: Add analytics or tracking here
+                // Efecte de pulsació
+                const dot = this.querySelector('.timeline-dot');
+                if (dot) {
+                    dot.style.transform = 'translateX(-50%) scale(1.5)';
+                    setTimeout(() => {
+                        dot.style.transform = 'translateX(-50%) scale(1.2)';
+                    }, 200);
+                }
+
+                // Log per analytics
                 const eventName = this.getAttribute('data-event');
                 if (eventName) {
                     console.log(`Timeline event clicked: ${eventName}`);
                 }
             });
 
-            // Add keyboard accessibility
+            // Keyboard accessibility
             item.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -102,6 +132,41 @@ document.addEventListener('DOMContentLoaded', function() {
             // Make items focusable
             item.setAttribute('tabindex', '0');
         });
+
+        function updateTimelineProgress() {
+            const animatedItems = document.querySelectorAll('.timeline-item.animate-in');
+            const totalItems = timelineItems.length;
+            const progress = (animatedItems.length / totalItems) * 100;
+            
+            if (timelineLine) {
+                const progressLine = timelineLine.querySelector('::after');
+                if (progressLine) {
+                    progressLine.style.height = progress + '%';
+                }
+            }
+        }
+
+        // Scroll-based timeline progress
+        function handleTimelineScroll() {
+            const timelineSection = document.querySelector('.timeline-section');
+            if (!timelineSection) return;
+
+            const rect = timelineSection.getBoundingClientRect();
+            const sectionHeight = timelineSection.offsetHeight;
+            const windowHeight = window.innerHeight;
+            
+            if (rect.top < windowHeight && rect.bottom > 0) {
+                const scrollProgress = Math.max(0, Math.min(1, 
+                    (windowHeight - rect.top) / (sectionHeight + windowHeight)
+                ));
+                
+                if (timelineLine) {
+                    timelineLine.style.setProperty('--scroll-progress', scrollProgress * 100 + '%');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', debounce(handleTimelineScroll, 10));
     }
 
     // ================================
@@ -131,9 +196,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
 
-                // If using Formspree or similar service, submit the form
-                // For now, show success message
+                // Show success message
                 showFormSuccess();
+                
+                // Here you would normally submit to your backend
+                // For now we just show the success message
             });
         }
     }
@@ -169,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const navbar = document.querySelector('.navbar');
         
         if (navbar) {
-            window.addEventListener('scroll', function() {
+            function handleNavbarScroll() {
                 if (window.scrollY > 50) {
                     navbar.style.background = 'rgba(255, 255, 255, 0.98)';
                     navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
@@ -177,7 +244,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     navbar.style.background = 'rgba(255, 255, 255, 0.95)';
                     navbar.style.boxShadow = 'none';
                 }
-            });
+            }
+            
+            window.addEventListener('scroll', debounce(handleNavbarScroll, 10));
         }
     }
 
@@ -211,20 +280,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // ================================
     
     function initMobileMenu() {
-        // Mobile menu toggle functionality can be added here
-        // For now, the mobile menu is hidden in CSS
-        
         const mobileBreakpoint = 768;
         
         function handleResize() {
             const navLinks = document.querySelector('.nav-links');
             if (window.innerWidth <= mobileBreakpoint) {
-                // Mobile view logic
                 if (navLinks) {
                     navLinks.style.display = 'none';
                 }
             } else {
-                // Desktop view logic
                 if (navLinks) {
                     navLinks.style.display = 'flex';
                 }
@@ -262,28 +326,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================
-    // Analytics and Tracking
-    // ================================
-    
-    function initAnalytics() {
-        // Add Google Analytics or other tracking code here
-        // Example:
-        /*
-        gtag('config', 'GA_TRACKING_ID', {
-            page_title: 'Ball de Diables del Prat',
-            page_location: window.location.href
-        });
-        */
-    }
-
-    // ================================
     // Error Handling
     // ================================
     
     function initErrorHandling() {
         window.addEventListener('error', function(e) {
             console.error('JavaScript error:', e.error);
-            // You can send errors to a logging service here
         });
 
         window.addEventListener('unhandledrejection', function(e) {
@@ -304,7 +352,6 @@ document.addEventListener('DOMContentLoaded', function() {
         initGalleryImages();
         initMobileMenu();
         initPerformanceOptimizations();
-        initAnalytics();
         initErrorHandling();
         
         console.log('Ball de Diables del Prat - Website initialized successfully! 🔥');
@@ -318,9 +365,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // Utility Functions
 // ================================
 
-/**
- * Debounce function to limit the rate of function execution
- */
 function debounce(func, wait, immediate) {
     let timeout;
     return function executedFunction() {
@@ -337,9 +381,6 @@ function debounce(func, wait, immediate) {
     };
 }
 
-/**
- * Check if element is in viewport
- */
 function isInViewport(element) {
     const rect = element.getBoundingClientRect();
     return (
@@ -350,9 +391,6 @@ function isInViewport(element) {
     );
 }
 
-/**
- * Smooth scroll to element
- */
 function scrollToElement(element, offset = 0) {
     const elementPosition = element.offsetTop - offset;
     window.scrollTo({
@@ -360,3 +398,36 @@ function scrollToElement(element, offset = 0) {
         behavior: 'smooth'
     });
 }
+function updateTimelineProgressOnScroll() {
+    const timelineSection = document.querySelector('.timeline-section');
+    const timelineLine = document.querySelector('.timeline-line');
+    
+    if (!timelineSection || !timelineLine) return;
+
+    const rect = timelineSection.getBoundingClientRect();
+    const sectionTop = rect.top;
+    const sectionBottom = rect.bottom;
+    const windowHeight = window.innerHeight;
+    const sectionHeight = rect.height;
+
+    let scrollProgress = 0;
+    
+    // Començar quan la secció entra per la part inferior de la pantalla
+    const startPoint = windowHeight;
+    // Acabar quan la secció surt per la part superior
+    const endPoint = -sectionHeight;
+    
+    if (sectionTop <= startPoint && sectionBottom >= 0) {
+        // Càlcul més precís del progress
+        const totalScrollDistance = startPoint + sectionHeight;
+        const currentScrolled = startPoint - sectionTop;
+        
+        scrollProgress = Math.max(0, Math.min(1, currentScrolled / totalScrollDistance));
+    }
+
+    // Actualitzar la variable CSS amb smooth transition
+    document.documentElement.style.setProperty('--timeline-progress', (scrollProgress * 100) + '%');
+}
+
+// Utilitzar un interval més petit per més fluïdesa
+window.addEventListener('scroll', debounce(updateTimelineProgressOnScroll, 8));
