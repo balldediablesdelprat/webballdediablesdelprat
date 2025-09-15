@@ -1,150 +1,279 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-<title>Lloc web del Ball de Diables del Prat</title>
-<meta name="description" content="Lloc web del Ball de Diables del Prat de Llobregat.">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="estil.css">
-<link rel="icon" href="/images/logo1.ico" type="image/x-icon" />
-<div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/ca_ES/sdk.js#xfbml=1&version=v6.0"></script>
-<style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
-.w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-.fa-anchor,.fa-coffee {font-size:200px}
-@font-face {
-    font-family:"Ringbearer";
-    src: url(ring.TTF);
-}
-.titol {
-    font-family: "Ringbearer";
-}
-.fons{
-   background-image:url(images/portada.jpg);
-   background-position: center center;
-   background-repeat: no-repeat;
-   background-attachment: fixed;
-   background-size: cover;
-}
-.fons-pc{
-   background-image:url(images/portada-pc.jpg);
-   background-position: center center;
-   background-repeat: no-repeat;
-   background-attachment: fixed;
-   background-size: cover;
-}
-w3-image {
-  max-width: 100%;
-  height: auto;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ball de Diables del Prat</title>
+    <meta name="description" content="Ball de Diables del Prat de Llobregat. Cultura tradicional catalana amb foc i passió des de 2017.">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/Rodona.png" type="image/png">
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <div class="logo-container">
+                    <img src="images/Logo.png" alt="Ball de Diables" class="logo-icon" onerror="this.style.display='none'">
+                    <span class="logo-text">Ball de Diables del Prat</span>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Inici</a></li>
+                <li><a href="#about">Qui som</a></li>
+                <li><a href="#events">Esdeveniments</a></li>
+                <li><a href="#panera">Panera 2025</a></li>
+                <li><a href="#gallery">Galeria</a></li>
+                <li><a href="#contact">Contacte</a></li>
+            </ul>
+        </div>
+    </nav>
 
-<!-- Navbar -->
-<div class="w3-top">
-  <div class="w3-bar w3-theme w3-card w3-left-align w3-large">
-    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large w3-white">Pàgina d'inici</a>
-    <a href="actuacions.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Actuacions</a>
-    <a href="model.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Model</a>
-    <a href="panera.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Panera</a>
-    <a href="multimedia.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Multimèdia</a>
-    <a href="contacte.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Contacte</a>
-  </div>
-  <!-- Navbar on small screens -->
-  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
-    <a href="actuacions.html" class="w3-bar-item w3-button w3-padding-large">Actuacions</a>
-    <a href="model.html" class="w3-bar-item w3-button w3-padding-large">Model</a>
-    <a href="panera.html" class="w3-bar-item w3-button w3-padding-large">Panera</a>
-    <a href="multimedia.html" class="w3-bar-item w3-button w3-padding-large">Multimèdia</a>
-    <a href="contacte.html" class="w3-bar-item w3-button w3-padding-large">Contacte</a>
-  </div>
-</div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img src="images/LogoBlanc.png" alt="Ball de Diables del Prat" class="hero-logo-image" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="hero-fallback" style="display: none;">
+                    <h1>Ball de Diables del Prat</h1>
+                </div>
+            </div>
+            <p class="hero-subtitle">Cultura tradicional catalana amb foc i passió des de 2017</p>
+            <a href="#about" class="cta-button">Descobreix-nos</a>
+        </div>
+    </section>
 
-<!-- Header  ordinador -->
-<header class="w3-container w3-hide-small w3-theme w3-center fons-pc" style="padding:128px 16px">
-   <h1 class="w3-margin w3-jumbo titol" style="color:black">BALL DE DIABLES DEL PRAT DE LLOBREGAT</h1>
-  <a href="model.html"><button class="w3-button w3-black w3-padding-large w3-large w3-margin-top titol">Coneix-nos</button></a>
-</header>
-<!-- Header  mobil -->
-<header class="w3-container w3-hide-medium w3-hide-large w3-center fons" style="padding:128px 16px">
-   <h1 class="w3-margin w3-jumbo titol">Ball de Diables del Prat de Llobregat</h1>
-  <a href="model.html"><button class="w3-button w3-black w3-padding-large w3-large w3-margin-top titol">Coneix-nos</button></a>
-</header>
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <div class="container">
+            <h2 class="section-title">Qui Som</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Som un grup de foc creat l'estiu del 2017 que segueix el model tradicional del món dels diables. Busquem fomentar la participació activa del públic i la cultura catalana arreu del territori.</p>
+                    
+                    <p>Els nostres fonaments es basen en el model tradicional: percussió amb tambors de membrana de pell, vestuari uniforme amb espardenyes d'espart i la implicació directa amb la població del Prat de Llobregat.</p>
+                </div>
+                <div class="about-image">
+                    <div class="placeholder-image">
+                        <img src="images/Versots2.JPG" alt="Ball de Diables del Prat en seguici" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- First Grid -->
-<div class="w3-row-padding w3-padding-32 w3-container">
-  <div class="w3-content">
-    <div class="w3-twothird">
-      <h5 class="w3-padding-32">Benvinguts i benvingudes a l'espai web del Ball de Diables del Prat de Llobregat. Som un grup de foc creat l'estiu del 2017 que segueix el model tradicional del món dels diables i que busca fomentar la participació activa del públic i la cultura catalana arreu del territori on s’extengui la seva activitat.
-Els membres del Ball són majoritàriament joves, però també comptem amb el suport i reconeixement dels primers pratencs que van impulsar la cultura del foc a la nostra ciutat l'any 1983, i que hem sapigut unir forces en aquest Ball de Diables.</h5>
-      <h5 class="w3-padding-32">
-        Ens vàrem estrenar el maig del 2018 i durant aquest temps no hem deixat indiferent a ningú. Han estat moltes les festes en què hem participat il·luminant la foscor amb les nostres espurnes i donant ritme al so dels tabals de pell, també n'hem recuperat i creat de noves per tal d'enriquir el teixit social i el cicle festiu del Prat de Llobregat.</h5>
-        <h5 class="w3-padding-32">
-          En aquesta web trobaràs informació sobre nosaltres, perquè defensem el model tradicional del Ball de Diables i quines són les nostres grans actuacions al llarg de l'any. A més, tindràs l’oportunitat de veure imatges, al mateix temps que podràs accedir a les nostres xarxes socials on som molt actius. I per últim, no dubtis en contactar amb nosaltres per qualsevol idea en què hagis pensat incloure'ns, estem oberts a les vostres propostes. Si ens vols enviar més imatges o tens algun dubte també pots contactar-nos <a href="contacte.html">fent clic aquí</a>.</h5>
-          <h5 class="w3-padding-32">
-            Endavant diables!
-            </h5>
-        </h5>
-    </div>
-    <div class="w3-third w3-center">
-      <img class="w3-image" src="images/logo2.jpg" alt="Logotip del ball de diables." class="inline"/>
-    </div>
+    <!-- Countdown Section -->
+    <section class="counter-section">
+        <div class="container">
+            <h2 class="counter-title">Pròxima Festa Major</h2>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">0</span>
+                    <span class="countdown-label">Dies</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">0</span>
+                    <span class="countdown-label">Hores</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">0</span>
+                    <span class="countdown-label">Minuts</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">0</span>
+                    <span class="countdown-label">Segons</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    </div>
+    <!-- Timeline -->
+    <section id="events" class="section timeline-section">
+        <div class="container">
+            <h2 class="section-title">Esdeveniments 2025</h2>
+            <div class="timeline-container">
+                <div class="timeline-item" data-event="carnaval">
+                    <div class="timeline-icon">
+                        <i class="fas fa-mask"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Febrer 2025</div>
+                        <div class="timeline-title">Dijous Gras - Carnaval</div>
+                        <div class="timeline-description">Donem la benvinguda a Carnestoltes i els set Pecats Capitals amb bengales vermelles i focs artificials.</div>
+                    </div>
+                </div>
 
-</div>
+                <div class="timeline-item" data-event="santjordi">
+                    <div class="timeline-icon">
+                        <i class="fas fa-rose"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">23 d'Abril</div>
+                        <div class="timeline-title">Diada de Sant Jordi</div>
+                        <div class="timeline-description">Paradeta al carrer Ferran Puig amb productes de l'entitat i activitats culturals.</div>
+                    </div>
+                </div>
 
-<!-- Second Grid -->
-<div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
-  <h1 class="w3-center">Xarxes Socials</h1>
-  <div class="w3-half w3-center" style="margin-top:1em">
-    <h3> Twitter </h3>
-    <a class="twitter-timeline" lang="ca" href="https://twitter.com/BallDiablesPrat?ref_src=twsrc%5Etfw" data-width="400" data-height="600">Tweets del Ball de Diables del Prat</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  </div>
-    <div class="w3-half w3-center" style="margin-top:1em">
-      <h3> Facebook </h3>
-      <div class="fb-page" data-href="https://www.facebook.com/BalldeDiablesPrat/" data-tabs="timeline,messages" data-width="400" data-height="600" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/BalldeDiablesPrat/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/BalldeDiablesPrat/">Ball de Diables del Prat</a></blockquote></div>
-    </div>
-  </div>
+                <div class="timeline-item" data-event="pratifolk">
+                    <div class="timeline-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Maig 2025</div>
+                        <div class="timeline-title">Pratifolk</div>
+                        <div class="timeline-description">Participació en el festival de cultura popular amb el nostre model tradicional.</div>
+                    </div>
+                </div>
 
-<div class="w3-container w3-black w3-center w3-opacity w3-padding-64">
-<!-- Aquí hi podem posar un comentari -->
-    <h1 class="w3-margin w3-xlarge">2024 - Ball de Diables del Prat de Llobregat</h1>
-</div>
+                <div class="timeline-item" data-event="santjoan">
+                    <div class="timeline-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">23-24 de Juny</div>
+                        <div class="timeline-title">Revetlla de Sant Joan</div>
+                        <div class="timeline-description">Organitzem una revetlla popular amb sopar comunitari i festa fins a l'alba.</div>
+                    </div>
+                </div>
 
-<!-- Footer -->
-<footer class="w3-container w3-padding-64 w3-center w3-opacity">
-  <div class="w3-xlarge">
-    <a href="https://www.facebook.com/BalldeDiablesPrat/" class="fa fa-facebook-official w3-hover-opacity"></a>
-    <a href="https://www.instagram.com/balldediablesdelprat/" class="fa fa-instagram w3-hover-opacity"></a>
-    <a href="https://twitter.com/balldiablesprat" class="fa fa-twitter w3-hover-opacity"></a>
- </div>
-   <div class="w3-xlarge">
-     <a id="custom_logo" class="logo_wrapper" href="index.html">
-             <img src="images/logo2.jpg" width="70" height="50" alt="">
-           </a>
-   </div>
+                <div class="timeline-item" data-event="festamajor">
+                    <div class="timeline-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Setembre 2025</div>
+                        <div class="timeline-title">Festa Major</div>
+                        <div class="timeline-description">Els actes principals: cercavila, versots diabòlics i participació al Pratifoc.</div>
+                    </div>
+                </div>
 
-</footer>
+                <div class="timeline-item" data-event="campanades">
+                    <div class="timeline-icon">
+                        <i class="fas fa-fireworks"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">31 de Desembre</div>
+                        <div class="timeline-title">Campanades de Foc</div>
+                        <div class="timeline-description">12 coets de tro com a campanades i castell de focs per donar la benvinguda al nou any.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script>
-// Used to toggle the menu on small screens when clicking on the menu button
-function myFunction() {
-  var x = document.getElementById("navDemo");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else {
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-</script>
+    <!-- Panera Section -->
+    <section id="panera" class="section panera">
+        <div class="container">
+            <div class="panera-content">
+                <h2 class="section-title">Gran Panera Infernal 2025</h2>
+                <div class="prize-amount">1.250€</div>
+                <p class="panera-description">
+                    Sorteig per gastar en comerços locals del Prat. El premi es determina pels darrers quatre números del primer premi de la Grossa de Cap d'Any 2025.
+                </p>
+                <a href="#contact" class="cta-button">Més informació</a>
+            </div>
+        </div>
+    </section>
 
+    <!-- Gallery -->
+    <section id="gallery" class="section gallery">
+        <div class="container">
+            <h2 class="section-title">Galeria</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="placeholder-image">
+                        <img src="images/Esclat1.JPG" alt="Esclat de Festa" />
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">
+                        <img src="images/Versots2.JPG" alt="Versots Diabòlics" />
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">
+                        <img src="images/Correfoc1.jpg" alt="Correfoc" />
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">
+                        <img src="images/Seguici2.JPG" alt="Seguici Popular" />
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">
+                        <img src="images/Correfoc3.JPG" alt="Correfoc Nocturn" />
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-image">
+                        <img src="images/Correfoc5.jpg" alt="Correfoc amb foc" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <h2 class="section-title">Contacte</h2>
+            <div class="contact-content">
+                <form class="contact-form" action="https://formspree.io/xyydrnjd" method="POST">
+                    <div class="form-group">
+                        <label for="name">Nom</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correu electrònic</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Assumpte</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Missatge</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Enviar</button>
+                </form>
+                
+                <div class="contact-info">
+                    <h3>Contacta amb nosaltres</h3>
+                    <p>Per a qualsevol consulta, proposta de col·laboració o si vols formar part del Ball de Diables del Prat.</p>
+                    
+                    <p><strong>Correu:</strong> balldediablesdelprat@gmail.com</p>
+                    
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/BalldeDiablesPrat/" title="Facebook" target="_blank" rel="noopener">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/balldediablesdelprat/" title="Instagram" target="_blank" rel="noopener">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://twitter.com/balldiablesprat" title="Twitter" target="_blank" rel="noopener">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Ball de Diables del Prat de Llobregat. Endavant diables!</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
 </body>
 </html>
