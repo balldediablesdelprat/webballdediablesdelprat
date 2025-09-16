@@ -2413,3 +2413,223 @@ select:focus {
         padding: 2rem 1rem;
     }
 }
+/* ================================
+   ARREGLOS ESPECÍFICOS PARA WINDOWS
+   ================================ */
+
+/* 1. Hardware Acceleration Forzada */
+.timeline-item,
+.gallery-card,
+.mobile-nav-overlay,
+.loading-screen,
+.hero-background,
+.timeline-dot,
+.timeline-icon {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+}
+
+/* 2. Timeline Animations - Windows Compatible */
+.timeline-item {
+    opacity: 0;
+    -webkit-transform: translateY(50px) translateZ(0);
+    transform: translateY(50px) translateZ(0);
+    -webkit-transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform, opacity;
+}
+
+.timeline-item.animate-in {
+    opacity: 1;
+    -webkit-transform: translateY(0) translateZ(0);
+    transform: translateY(0) translateZ(0);
+}
+
+/* 3. Timeline Progress Bar - Alternativa más compatible */
+.timeline-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to bottom, var(--primary-red), var(--light-red));
+    background: -webkit-linear-gradient(to bottom, var(--primary-red), var(--light-red));
+    -webkit-transition: height 0.2s ease-out;
+    transition: height 0.2s ease-out;
+    border-radius: 2px;
+    will-change: height;
+}
+
+/* 4. Loading Screen - Windows Compatible */
+.loading-screen {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: opacity, visibility;
+}
+
+.loading-logo-image {
+    -webkit-transform: scale(0.8) translateZ(0);
+    transform: scale(0.8) translateZ(0);
+    -webkit-animation: logoFadeIn 1.2s ease-out 0.3s forwards;
+    animation: logoFadeIn 1.2s ease-out 0.3s forwards;
+    will-change: transform, opacity;
+}
+
+.spinner-ring {
+    -webkit-animation: spin 1.2s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+    animation: spin 1.2s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+    will-change: transform;
+}
+
+/* 5. Mobile Menu - Más compatible */
+.mobile-nav-overlay {
+    -webkit-transform: translateY(-100%) translateZ(0);
+    transform: translateY(-100%) translateZ(0);
+    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform, opacity;
+}
+
+.mobile-nav-overlay.active {
+    -webkit-transform: translateY(0) translateZ(0);
+    transform: translateY(0) translateZ(0);
+}
+
+/* 6. Gallery Cards - Windows optimizado */
+.gallery-card {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    will-change: transform;
+}
+
+.gallery-card:hover {
+    -webkit-transform: translateY(-8px) translateZ(0);
+    transform: translateY(-8px) translateZ(0);
+}
+
+/* 7. Timeline Dots - Más estable en Windows */
+.timeline-dot {
+    -webkit-transform: translateX(-50%) translateZ(0);
+    transform: translateX(-50%) translateZ(0);
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    will-change: transform, box-shadow;
+}
+
+.timeline-item.animate-in .timeline-dot {
+    -webkit-transform: translateX(-50%) scale(1.2) translateZ(0);
+    transform: translateX(-50%) scale(1.2) translateZ(0);
+}
+
+/* 8. Images - Mejor rendering en Windows */
+img {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* 9. Navbar - Windows smooth scrolling */
+.navbar {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: background, box-shadow, transform;
+}
+
+/* 10. Hover effects - Más consistentes */
+.timeline-content-wrapper:hover {
+    -webkit-transform: translateY(-5px) translateZ(0);
+    transform: translateY(-5px) translateZ(0);
+}
+
+.timeline-content-wrapper:hover .timeline-icon {
+    -webkit-transform: rotate(360deg) scale(1.1) translateZ(0);
+    transform: rotate(360deg) scale(1.1) translateZ(0);
+}
+
+/* 11. Flecos animation - Windows compatible */
+.mobile-nav-overlay::after {
+    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: opacity, visibility;
+}
+
+/* 12. Detectar si es Windows y aplicar fixes específicos */
+@media screen and (-ms-high-contrast: active), 
+       screen and (-ms-high-contrast: none) {
+    /* Internet Explorer 10+ y Edge Legacy */
+    .timeline-item {
+        transition: all 0.6s ease !important;
+    }
+    
+    .loading-logo-image {
+        animation-duration: 1.8s !important;
+    }
+}
+
+/* 13. Keyframes con prefijos para Windows */
+@-webkit-keyframes logoFadeIn {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(0.8) translateY(-20px) translateZ(0);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1) translateY(0) translateZ(0);
+    }
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg) translateZ(0);
+    }
+    100% {
+        -webkit-transform: rotate(360deg) translateZ(0);
+    }
+}
+
+@-webkit-keyframes textPulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes progressFill {
+    0% { width: 0%; }
+    20% { width: 15%; }
+    40% { width: 35%; }
+    60% { width: 60%; }
+    80% { width: 85%; }
+    100% { width: 100%; }
+}
+
+/* AÑADIR AL FINAL DE STYLES.CSS */
+
+.timeline-line {
+    overflow: hidden;
+}
+
+.timeline-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to bottom, var(--primary-red), var(--light-red));
+    background: -webkit-linear-gradient(to bottom, var(--primary-red), var(--light-red));
+    border-radius: 2px;
+    transition: height 0.1s ease-out;
+    -webkit-transition: height 0.1s ease-out;
+    z-index: 1;
+    will-change: height;
+}

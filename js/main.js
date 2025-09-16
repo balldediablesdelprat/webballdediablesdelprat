@@ -1,6 +1,6 @@
 /**
  * Ball de Diables del Prat - Main JavaScript
- * Fully Responsive with Mobile Menu + Loading Screen
+ * Windows Compatible + Loading Screen + Mobile Menu
  * Author: Ball de Diables del Prat
  * Year: 2025
  */
@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ================================
-    // Enhanced Interactive Timeline with Fade Out
+    // TIMELINE WINDOWS-COMPATIBLE
     // ================================
 
     function initInteractiveTimeline() {
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
             item.setAttribute('tabindex', '0');
         });
 
-        // Enhanced scroll-based timeline progress
+        // ===== WINDOWS COMPATIBLE TIMELINE PROGRESS =====
         function updateTimelineProgress() {
             if (!timelineSection) return;
 
@@ -414,27 +414,76 @@ document.addEventListener('DOMContentLoaded', function () {
             if (sectionTop <= windowHeight && sectionBottom >= 0) {
                 const totalScrollDistance = windowHeight + sectionHeight;
                 const currentScrolled = windowHeight - sectionTop;
-
                 scrollProgress = Math.max(0, Math.min(1, currentScrolled / totalScrollDistance));
             }
 
-            // Update CSS custom property with easing
-            document.documentElement.style.setProperty('--timeline-progress', (scrollProgress * 100) + '%');
-        }
-
-        // Optimized scroll listener
-        let ticking = false;
-        function requestTick() {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    updateTimelineProgress();
-                    ticking = false;
-                });
-                ticking = true;
+            // WINDOWS FIX: Usar tanto CSS custom property como style directo
+            const progressPercentage = (scrollProgress * 100) + '%';
+            
+            // Método 1: CSS Custom Property
+            document.documentElement.style.setProperty('--timeline-progress', progressPercentage);
+            
+            // Método 2: Direct style para Windows (más compatible)
+            const timelineLineAfter = document.querySelector('.timeline-line');
+            if (timelineLineAfter) {
+                // Forzar el update usando ::after con CSS
+                timelineLineAfter.style.setProperty('--progress', progressPercentage);
+                
+                // También crear un elemento hijo si no existe para mayor compatibilidad
+                let progressBar = timelineLineAfter.querySelector('.timeline-progress-bar');
+                if (!progressBar) {
+                    progressBar = document.createElement('div');
+                    progressBar.className = 'timeline-progress-bar';
+                    progressBar.style.cssText = `
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: ${progressPercentage};
+                        background: linear-gradient(to bottom, var(--primary-red), var(--light-red));
+                        border-radius: 2px;
+                        transition: height 0.1s ease-out;
+                        z-index: 1;
+                    `;
+                    timelineLineAfter.appendChild(progressBar);
+                } else {
+                    progressBar.style.height = progressPercentage;
+                }
             }
         }
 
-        window.addEventListener('scroll', requestTick, { passive: true });
+        // DETECCIÓN WINDOWS Y OPTIMIZACIÓN
+        const isWindows = navigator.platform.indexOf('Win') > -1;
+        
+        if (isWindows) {
+            // Windows: usar throttle optimizado
+            const optimizedUpdateTimeline = throttleWindows(updateTimelineProgress, 16);
+            window.addEventListener('scroll', optimizedUpdateTimeline, { 
+                passive: true,
+                capture: false 
+            });
+            
+            // Force repaint en Windows
+            requestAnimationFrame(() => {
+                document.body.style.transform = 'translateZ(0)';
+                setTimeout(() => {
+                    document.body.style.transform = '';
+                }, 100);
+            });
+        } else {
+            // Mac/Linux: método original optimizado
+            let ticking = false;
+            const requestTick = () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateTimelineProgress();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            };
+            window.addEventListener('scroll', requestTick, { passive: true });
+        }
     }
 
     // ================================
@@ -787,7 +836,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ================================
-    // Initialize All Functions (modificado)
+    // Initialize All Functions
     // ================================
 
     try {
@@ -814,7 +863,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const checkLoadingComplete = setInterval(() => {
                 if (document.body.classList.contains('content-loaded')) {
                     clearInterval(checkLoadingComplete);
-                    setTimeout(initializeAfterLoading, 300); // Pequeño delay para suavizar
+                    setTimeout(initializeAfterLoading, 300);
                 }
             }, 100);
         }
@@ -824,7 +873,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     } catch (error) {
         console.error('Error initializing website:', error);
-
         // Graceful degradation
         document.body.classList.add('js-disabled');
     }
@@ -864,6 +912,32 @@ function throttle(func, limit) {
     };
 }
 
+// THROTTLE ESPECÍFICO PARA WINDOWS
+function throttleWindows(func, limit) {
+    let inThrottle;
+    let lastFunc;
+    let lastRan;
+    
+    return function() {
+        const context = this;
+        const args = arguments;
+        
+        if (!inThrottle) {
+            func.apply(context, args);
+            lastRan = Date.now();
+            inThrottle = true;
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function() {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                }
+            }, Math.max(limit - (Date.now() - lastRan), 0));
+        }
+    }
+}
+
 function isInViewport(element, offset = 0) {
     const rect = element.getBoundingClientRect();
     return (
@@ -890,7 +964,7 @@ if ('serviceWorker' in navigator && 'production' === 'production') {
     });
 }
 
-// Solució bug redimensionament navbar
+// Solución bug redimensionament navbar
 window.addEventListener('resize', function () {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
@@ -942,4 +1016,21 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', preloadCriticalResources);
 } else {
     preloadCriticalResources();
+}
+
+// Detectar Windows y aplicar optimizaciones
+if (navigator.platform.indexOf('Win') > -1) {
+    document.body.classList.add('windows-os');
+    
+    // CSS específico para Windows
+    const style = document.createElement('style');
+    style.textContent = `
+        .windows-os .timeline-item {
+            transition: all 0.6s ease !important;
+        }
+        .windows-os .loading-logo-image {
+            animation-duration: 1.8s !important;
+        }
+    `;
+    document.head.appendChild(style);
 }
