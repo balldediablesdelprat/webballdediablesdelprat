@@ -4,37 +4,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ball de Diables del Prat</title>
+  <title>Ball de Diables del Prat de Llobregat</title>
 
-  <!-- SEO Meta Tags -->
-  <meta name="description"
-    content="Ball de Diables del Prat de Llobregat. Grup de foc tradicional català fundat el 2017. Descobreix els nostres esdeveniments, tocs de tabal i la cultura diabòlica pratenca.">
+  <!-- SEO Meta Tags millorats -->
+  <meta name="description" content="Ball de Diables del Prat de Llobregat">
   <meta name="keywords"
-    content="Ball de Diables, Prat de Llobregat, cultura catalana, foc, diables, correfoc, festa major, versots, tabal, tradició">
+    content="Ball de Diables, Prat de Llobregat, cultura catalana, foc, diables, correfoc, festa major, versots, tabal, tradició, carretillada">
   <meta name="author" content="Ball de Diables del Prat de Llobregat">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://balldediablesdelprat.cat/">
 
-  <!-- Open Graph / Facebook -->
+  <!-- Open Graph / Facebook - ARREGLAT PER WHATSAPP -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://balldediablesdelprat.cat/">
-  <meta property="og:title" content="Ball de Diables del Prat | Cultura Tradicional Catalana">
-  <meta property="og:description"
-    content="Grup de foc tradicional del Prat de Llobregat. Cultura diabòlica catalana des de 2017 amb correfocs, versots i tocs de tabal tradicionals.">
-  <meta property="og:image" content="https://balldediablesdelprat.cat/images/LogoBlanc.png">
+  <meta property="og:title" content="Ball de Diables del Prat">
+  <meta property="og:description" content="Ball de Diables del Prat">
+  <meta property="og:image" content="https://balldediablesdelprat.cat/images/Carretillada.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Carretillada espectacular del Ball de Diables del Prat amb focs artificials">
   <meta property="og:locale" content="ca_ES">
   <meta property="og:site_name" content="Ball de Diables del Prat">
 
-  <!-- Twitter -->
+  <!-- Twitter Cards - ARREGLAT -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://balldediablesdelprat.cat/">
-  <meta property="twitter:title" content="Ball de Diables del Prat | Cultura Tradicional Catalana">
+  <meta property="twitter:title" content="Ball de Diables del Prat - Cultura Diabòlica Catalana">
   <meta property="twitter:description"
     content="Grup de foc tradicional del Prat de Llobregat. Cultura diabòlica catalana des de 2017.">
-  <meta property="twitter:image" content="https://balldediablesdelprat.cat/images/LogoBlanc.png">
+  <meta property="twitter:image" content="https://balldediablesdelprat.cat/images/Carretillada.jpg">
+  <meta property="twitter:image:alt" content="Carretillada espectacular amb efectes pirotècnics">
   <meta property="twitter:site" content="@balldiablesprat">
 
-  <!-- Structured Data (JSON-LD) -->
+  <!-- WhatsApp específic -->
+  <meta property="whatsapp:image" content="https://balldediablesdelprat.cat/images/Carretillada.jpg">
+
+  <!-- Structured Data (JSON-LD) - MILLORAT -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -43,6 +48,7 @@
     "alternateName": "Ball de Diables del Prat",
     "url": "https://balldediablesdelprat.cat",
     "logo": "https://balldediablesdelprat.cat/images/Logo.png",
+    "image": "https://balldediablesdelprat.cat/images/Carretillada.jpg",
     "description": "Grup de foc tradicional català del Prat de Llobregat fundat el 2017. Cultura diabòlica tradicional amb correfocs, versots i tocs de tabal.",
     "foundingDate": "2017",
     "address": {
@@ -90,6 +96,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://formspree.io">
+
+  <!-- Preload imatges crítiques per Windows -->
+  <link rel="preload" href="images/Logo.png" as="image">
+  <link rel="preload" href="images/LogoBlanc.png" as="image">
+  <link rel="preload" href="images/Carretillada.jpg" as="image">
 </head>
 
 <body class="loading">
@@ -563,8 +574,7 @@
       <div class="container">
         <h2 id="contact-title" class="section-title">Contacte</h2>
         <div class="contact-content">
-          <form class="contact-form" action="https://formspree.io/xyydrnjd" method="POST"
-            aria-label="Formulari de contacte">
+          <form class="contact-form" action="https://formspree.io/f/xyydrnjd" method="POST">
             <div class="form-group">
               <label for="name">Nom *</label>
               <input type="text" id="name" name="name" required aria-describedby="name-error">
