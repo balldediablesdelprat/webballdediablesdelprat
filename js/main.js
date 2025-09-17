@@ -140,73 +140,111 @@ function isChromeWindows() {
     
     return isChrome && isWindows && isNotEdge;
 }
-
-// Fix para Smooth Scroll en Chrome Windows - Millorat
+// Fix para Smooth Scroll en Chrome Windows - Ultra agressiu
 function initSmoothScrollChrome() {
     if (!isChromeWindows()) return;
     
     console.log('Applying Chrome Windows smooth scroll fix');
     
-    // Deshabilitar scroll behavior natiu
-    document.documentElement.style.scrollBehavior = 'auto';
-    document.body.style.scrollBehavior = 'auto';
+    // Desactivar completament scroll behavior
+    document.documentElement.style.scrollBehavior = 'auto !important';
+    document.body.style.scrollBehavior = 'auto !important';
     
-    // Interceptar tots els enllaços de navegació
-    document.addEventListener('click', function(e) {
+    // Override de la funció scroll nativa per Chrome Windows
+    let isCustomScrolling = false;
+    
+    // Interceptar TOTS els enllaços, inclosos els del menú mòbil
+    function handleClick(e) {
         const link = e.target.closest('a[href^="#"]');
-        if (!link) return;
+        if (!link || isCustomScrolling) return;
         
         e.preventDefault();
         e.stopPropagation();
+        e.stopImmediatePropagation();
         
         const targetId = link.getAttribute('href');
         const target = document.querySelector(targetId);
         
         if (target) {
-            const navbarHeight = document.querySelector('.navbar').offsetHeight || 0;
+            isCustomScrolling = true;
+            
+            const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
             const targetPosition = target.offsetTop - navbarHeight - 20;
             
             console.log(`Smooth scrolling to: ${targetId}, position: ${targetPosition}`);
             
-            // Smooth scroll personalitzat amb easing millorat
-            smoothScrollToChrome(targetPosition, 1000);
+            // Tancar menú mòbil si està obert
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            if (mobileNavOverlay && mobileNavOverlay.classList.contains('active')) {
+                mobileNavOverlay.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+            }
+            
+            // Scroll personalitzat amb delay per tancar menú
+            setTimeout(() => {
+                smoothScrollToChrome(targetPosition, 1200).then(() => {
+                    isCustomScrolling = false;
+                });
+            }, mobileNavOverlay && mobileNavOverlay.classList.contains('active') ? 300 : 0);
         }
+    }
+    
+    // Aplicar event listener amb alta prioritat
+    document.addEventListener('click', handleClick, true); // true = capture phase
+    
+    // També aplicar als links després de que es carreguin
+    setTimeout(() => {
+        const allLinks = document.querySelectorAll('a[href^="#"]');
+        allLinks.forEach(link => {
+            link.addEventListener('click', handleClick, true);
+        });
+    }, 1000);
+}// Smooth scroll millorat amb Promise
+function smoothScrollToChrome(targetPosition, duration = 1200) {
+    return new Promise((resolve) => {
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const startTime = performance.now();
+        
+        // Easing més pronunciat
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+        
+        function scrollStep(currentTime) {
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+            
+            const easeProgress = easeInOutCubic(progress);
+            const currentPosition = startPosition + (distance * easeProgress);
+            
+            // Scroll forçat
+            window.scrollTo({
+                top: Math.round(currentPosition),
+                behavior: 'auto'
+            });
+            
+            if (progress < 1) {
+                requestAnimationFrame(scrollStep);
+            } else {
+                // Posició exacta final
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'auto'
+                });
+                console.log('Smooth scroll completed');
+                resolve();
+            }
+        }
+        
+        requestAnimationFrame(scrollStep);
     });
 }
 
-// Funció de smooth scroll millorada específica per Chrome Windows
-function smoothScrollToChrome(targetPosition, duration = 1000) {
-    const startPosition = window.pageYOffset;
-    const distance = targetPosition - startPosition;
-    const startTime = performance.now();
-    
-    // Easing function més suau (ease-out cubic)
-    function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
-    }
-    
-    function scrollStep(currentTime) {
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / duration, 1);
-        
-        // Aplicar easing
-        const easeProgress = easeOutCubic(progress);
-        const currentPosition = startPosition + (distance * easeProgress);
-        
-        // Fer el scroll
-        window.scrollTo(0, Math.round(currentPosition));
-        
-        if (progress < 1) {
-            requestAnimationFrame(scrollStep);
-        } else {
-            // Assegurar posició exacta al final
-            window.scrollTo(0, targetPosition);
-            console.log('Smooth scroll completed');
-        }
-    }
-    
-    requestAnimationFrame(scrollStep);
-}
 
 // Fix para Gallery hover en Chrome Windows - Animación por JavaScript
 function initGalleryChrome() {
