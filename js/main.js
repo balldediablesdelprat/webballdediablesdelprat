@@ -496,11 +496,17 @@ document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('keydown', trapFocus);
     }
 
-    // ================================
+   // ================================
     // Smooth Scrolling Navigation
     // ================================
 
     function initSmoothScrolling() {
+        // NO executar si és Chrome Windows (ja té el seu propi fix)
+        if (isChromeWindows()) {
+            console.log('Skipping original smooth scroll - Chrome Windows has custom fix');
+            return;
+        }
+        
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
