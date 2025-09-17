@@ -495,39 +495,63 @@ function initLoadingChrome() {
                 }
             }
             requestAnimationFrame(animateProgress);
-            // TEXTO "Carregant..." - Animació forçada
+            // TEXTO "Carregant..." - Fade-in + Pulse
         const loadingText = document.querySelector('.loading-text');
         if (loadingText) {
-            console.log('🔤 Force animating loading text');
+            console.log('🔤 Force animating loading text with fade-in');
             
-            // Cancel·lar animació CSS
+            // Reset completo
             loadingText.style.animation = 'none';
             loadingText.style.webkitAnimation = 'none';
-            loadingText.style.opacity = '0.6';
+            loadingText.style.opacity = '0';
             
-            // Animació JavaScript
-            let textOpacity = 0.6;
-            let increasing = true;
-            
-            function animateText() {
-                if (increasing) {
-                    textOpacity += 0.015;
-                    if (textOpacity >= 1) {
-                        increasing = false;
-                    }
-                } else {
-                    textOpacity -= 0.015;
-                    if (textOpacity <= 0.6) {
-                        increasing = true;
+            // Fade-in después de un delay
+            setTimeout(() => {
+                const fadeStartTime = performance.now();
+                
+                function fadeInText(currentTime) {
+                    const elapsed = currentTime - fadeStartTime;
+                    const progress = Math.min(elapsed / 800, 1);
+                    const opacity = progress * 0.6;
+                    
+                    loadingText.style.opacity = opacity;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(fadeInText);
+                    } else {
+                        console.log('✅ Fade-in completed, starting pulse');
+                        startPulse();
                     }
                 }
                 
-                loadingText.style.opacity = textOpacity;
-                requestAnimationFrame(animateText);
-            }
-            
-            requestAnimationFrame(animateText);
-            console.log('✅ Loading text animation started');
+                function startPulse() {
+                    let textOpacity = 0.6;
+                    let increasing = true;
+                    
+                    function pulseText() {
+                        if (increasing) {
+                            textOpacity += 0.015;
+                            if (textOpacity >= 1) {
+                                increasing = false;
+                            }
+                        } else {
+                            textOpacity -= 0.015;
+                            if (textOpacity <= 0.6) {
+                                increasing = true;
+                            }
+                        }
+                        
+                        loadingText.style.opacity = textOpacity;
+                        requestAnimationFrame(pulseText);
+                    }
+                    
+                    requestAnimationFrame(pulseText);
+                    console.log('✅ Pulse animation started');
+                }
+                
+                requestAnimationFrame(fadeInText);
+                console.log('✅ Fade-in animation started');
+            }, 600);
         }
         }
         
@@ -700,6 +724,9 @@ if (isChromeWindows()) {
             
 // Gallery fixes
 initGalleryChrome();
+
+// Timeline hover fixes
+initTimelineChrome();
 
 // Loading screen fixes
 initLoadingChrome();
@@ -1617,4 +1644,104 @@ if (navigator.platform.indexOf('Win') > -1) {
         }
     `;
     document.head.appendChild(style);
+}
+// Fix para Timeline hover en Chrome Windows - Animación por JavaScript
+function initTimelineChrome() {
+    if (!isChromeWindows()) return;
+    
+    console.log('🎯 Applying Chrome Windows timeline hover fixes');
+    
+    const timelineWrappers = document.querySelectorAll('.timeline-content-wrapper');
+    
+    timelineWrappers.forEach(wrapper => {
+        let isAnimating = false;
+        
+        wrapper.addEventListener('mouseenter', function() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            animateTimelineElement(this, { translateY: -5 }, 300);
+            
+            const icon = this.querySelector('.timeline-icon');
+            if (icon) {
+                animateTimelineElement(icon, { rotate: 360, scale: 1.1 }, 300);
+            }
+            
+            const img = this.querySelector('.timeline-image img');
+            if (img) {
+                animateTimelineElement(img, { scale: 1.05 }, 400);
+            }
+            
+            setTimeout(() => { isAnimating = false; }, 400);
+        });
+        
+        wrapper.addEventListener('mouseleave', function() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            animateTimelineElement(this, { translateY: 0 }, 300);
+            
+            const icon = this.querySelector('.timeline-icon');
+            if (icon) {
+                animateTimelineElement(icon, { rotate: 0, scale: 1 }, 300);
+            }
+            
+            const img = this.querySelector('.timeline-image img');
+            if (img) {
+                animateTimelineElement(img, { scale: 1 }, 400);
+            }
+            
+            setTimeout(() => { isAnimating = false; }, 400);
+        });
+    });
+}
+
+function animateTimelineElement(element, properties, duration) {
+    const startTime = performance.now();
+    const startValues = {};
+    
+    const currentTransform = element.style.transform || '';
+    
+    Object.keys(properties).forEach(prop => {
+        if (prop === 'translateY') {
+            const match = currentTransform.match(/translateY\(([^)]+)\)/);
+            startValues[prop] = match ? parseFloat(match[1]) : 0;
+        } else if (prop === 'scale') {
+            const match = currentTransform.match(/scale\(([^)]+)\)/);
+            startValues[prop] = match ? parseFloat(match[1]) : 1;
+        } else if (prop === 'rotate') {
+            const match = currentTransform.match(/rotate\(([^)]+)deg\)/);
+            startValues[prop] = match ? parseFloat(match[1]) : 0;
+        }
+    });
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        let transform = '';
+        
+        Object.keys(properties).forEach(prop => {
+            const startValue = startValues[prop];
+            const endValue = properties[prop];
+            const currentValue = startValue + (endValue - startValue) * easeProgress;
+            
+            if (prop === 'translateY') {
+                transform += `translateY(${currentValue}px) `;
+            } else if (prop === 'scale') {
+                transform += `scale(${currentValue}) `;
+            } else if (prop === 'rotate') {
+                transform += `rotate(${currentValue}deg) `;
+            }
+        });
+        
+        element.style.transform = transform.trim();
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    
+    requestAnimationFrame(animate);
 }
