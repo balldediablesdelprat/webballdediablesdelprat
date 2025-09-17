@@ -352,7 +352,131 @@ function animateElement(element, properties, duration) {
     
     requestAnimationFrame(animate);
 }
+// Afegir aquesta funció al bloc dels Chrome Windows fixes, després de animateElement()
 
+// Fix específic per Loading Screen en Chrome Windows
+function initLoadingChrome() {
+    if (!isChromeWindows()) return;
+    
+    console.log('Applying Chrome Windows loading screen fixes');
+    
+    // Esperar a que existeixin els elements
+    setTimeout(() => {
+        const loadingLogo = document.querySelector('.loading-logo-image');
+        const spinnerRings = document.querySelectorAll('.spinner-ring');
+        const progressFill = document.querySelector('.progress-fill');
+        
+        // Animar logo amb JavaScript
+        if (loadingLogo) {
+            // Cancel·lar animació CSS
+            loadingLogo.style.animation = 'none';
+            loadingLogo.style.opacity = '0';
+            loadingLogo.style.transform = 'scale(0.8)';
+            
+            // Animació JavaScript després de 500ms
+            setTimeout(() => {
+                animateLoadingLogo(loadingLogo);
+            }, 500);
+        }
+        
+        // Animar spinners amb JavaScript
+        spinnerRings.forEach((ring, index) => {
+            ring.style.animation = 'none';
+            animateSpinner(ring, index === 0 ? 1200 : 1800);
+        });
+        
+        // Animar progress bar amb JavaScript
+        if (progressFill) {
+            progressFill.style.animation = 'none';
+            progressFill.style.width = '0%';
+            animateProgressBar(progressFill);
+        }
+        
+    }, 100);
+}
+
+// Animació del logo per Chrome Windows
+function animateLoadingLogo(logo) {
+    const startTime = performance.now();
+    const duration = 1200;
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        const opacity = easeProgress;
+        const scale = 0.8 + (0.2 * easeProgress);
+        const translateY = -20 + (20 * easeProgress);
+        
+        logo.style.opacity = opacity;
+        logo.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    
+    requestAnimationFrame(animate);
+}
+
+// Animació del spinner per Chrome Windows
+function animateSpinner(ring, duration) {
+    let rotation = 0;
+    
+    function spin() {
+        rotation = (rotation + 3) % 360;
+        ring.style.transform = `rotate(${rotation}deg)`;
+        requestAnimationFrame(spin);
+    }
+    
+    requestAnimationFrame(spin);
+}
+
+// Animació de la progress bar per Chrome Windows
+function animateProgressBar(progressBar) {
+    const keyFrames = [
+        { time: 0, width: 0 },
+        { time: 20, width: 15 },
+        { time: 40, width: 35 },
+        { time: 60, width: 60 },
+        { time: 80, width: 85 },
+        { time: 100, width: 100 }
+    ];
+    
+    const startTime = performance.now();
+    const duration = 2500;
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min((elapsed / duration) * 100, 100);
+        
+        // Trobar el keyframe actual
+        let currentWidth = 0;
+        for (let i = 0; i < keyFrames.length - 1; i++) {
+            const current = keyFrames[i];
+            const next = keyFrames[i + 1];
+            
+            if (progress >= current.time && progress <= next.time) {
+                const segmentProgress = (progress - current.time) / (next.time - current.time);
+                currentWidth = current.width + (next.width - current.width) * segmentProgress;
+                break;
+            }
+        }
+        
+        progressBar.style.width = `${currentWidth}%`;
+        
+        if (progress < 100) {
+            requestAnimationFrame(animate);
+        }
+    }
+    
+    requestAnimationFrame(animate);
+}
+
+// Modificar el bloc de Chrome Windows per afegir aquest fix
+// Afegir aquesta línia al setTimeout dins del DOMContentLoaded:
+// initLoadingChrome();
 // Solo aplicar fix si es Chrome Windows
 if (isChromeWindows()) {
     console.log('Chrome Windows detected - applying minimal fixes');
@@ -376,9 +500,12 @@ if (isChromeWindows()) {
                 item.style.backfaceVisibility = 'hidden';
             });
             
-            // Gallery fixes
-            initGalleryChrome();
-        }, 1000);
+// Gallery fixes
+initGalleryChrome();
+
+// Loading screen fixes
+initLoadingChrome();
+}, 1000);
     });
 }
 document.addEventListener('DOMContentLoaded', function () {
