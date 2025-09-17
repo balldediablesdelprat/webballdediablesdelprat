@@ -191,7 +191,7 @@ function smoothScrollTo(targetPosition, duration) {
     requestAnimationFrame(scrollAnimation);
 }
 
-// Fix para Gallery hover en Chrome Windows
+// Fix para Gallery hover en Chrome Windows - Animación por JavaScript
 function initGalleryChrome() {
     if (!isChromeWindows()) return;
     
@@ -200,56 +200,102 @@ function initGalleryChrome() {
     const galleryCards = document.querySelectorAll('.gallery-card');
     
     galleryCards.forEach(card => {
-        // Force hardware acceleration
-        card.style.webkitBackfaceVisibility = 'hidden';
-        card.style.backfaceVisibility = 'hidden';
-        card.style.willChange = 'transform';
+        let isAnimating = false;
         
-        // Hover personalizado para Chrome Windows
+        // Hover personalizado con animación por JavaScript
         card.addEventListener('mouseenter', function() {
-            this.style.webkitTransition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            this.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            this.style.webkitTransform = 'translateY(-8px)';
-            this.style.transform = 'translateY(-8px)';
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            animateElement(this, { translateY: -8 }, 300);
             
             // Imagen scale
             const img = this.querySelector('.gallery-image img');
             if (img) {
-                img.style.webkitTransition = 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                img.style.transition = 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                img.style.webkitTransform = 'scale(1.1)';
-                img.style.transform = 'scale(1.1)';
+                animateElement(img, { scale: 1.1 }, 400);
             }
             
             // Overlay
             const overlay = this.querySelector('.gallery-overlay');
             if (overlay) {
-                overlay.style.webkitTransition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                overlay.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                overlay.style.webkitTransform = 'translateY(0)';
-                overlay.style.transform = 'translateY(0)';
+                animateElement(overlay, { translateY: 0 }, 300);
             }
+            
+            setTimeout(() => { isAnimating = false; }, 400);
         });
         
         card.addEventListener('mouseleave', function() {
-            this.style.webkitTransform = 'translateY(0)';
-            this.style.transform = 'translateY(0)';
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            animateElement(this, { translateY: 0 }, 300);
             
             // Imagen reset
             const img = this.querySelector('.gallery-image img');
             if (img) {
-                img.style.webkitTransform = 'scale(1)';
-                img.style.transform = 'scale(1)';
+                animateElement(img, { scale: 1 }, 400);
             }
             
             // Overlay reset
             const overlay = this.querySelector('.gallery-overlay');
             if (overlay) {
-                overlay.style.webkitTransform = 'translateY(100%)';
-                overlay.style.transform = 'translateY(100%)';
+                animateElement(overlay, { translateY: 100, unit: '%' }, 300);
             }
+            
+            setTimeout(() => { isAnimating = false; }, 400);
         });
     });
+}
+
+// Función de animación personalizada para Chrome Windows
+function animateElement(element, properties, duration) {
+    const startTime = performance.now();
+    const startValues = {};
+    
+    // Obtener valores iniciales
+    Object.keys(properties).forEach(prop => {
+        if (prop === 'translateY') {
+            const currentTransform = element.style.transform || '';
+            const match = currentTransform.match(/translateY\(([^)]+)\)/);
+            startValues[prop] = match ? parseFloat(match[1]) : 0;
+        } else if (prop === 'scale') {
+            const currentTransform = element.style.transform || '';
+            const match = currentTransform.match(/scale\(([^)]+)\)/);
+            startValues[prop] = match ? parseFloat(match[1]) : 1;
+        }
+    });
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        // Aplicar transformaciones
+        let transform = '';
+        Object.keys(properties).forEach(prop => {
+            const startValue = startValues[prop];
+            const endValue = properties[prop];
+            const unit = properties.unit || (prop === 'translateY' ? 'px' : '');
+            
+            if (prop === 'translateY') {
+                const currentValue = startValue + (endValue - startValue) * easeProgress;
+                transform += `translateY(${currentValue}${unit}) `;
+            } else if (prop === 'scale') {
+                const currentValue = startValue + (endValue - startValue) * easeProgress;
+                transform += `scale(${currentValue}) `;
+            }
+        });
+        
+        element.style.transform = transform.trim();
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    
+    requestAnimationFrame(animate);
 }
 
 // Solo aplicar fix si es Chrome Windows
