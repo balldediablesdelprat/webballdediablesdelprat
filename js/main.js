@@ -1,138 +1,480 @@
 /**
  * Ball de Diables del Prat - Main JavaScript
+ * CON SISTEMA DE CARGA REAL INTEGRADO
  * Windows Compatible + Loading Screen + Mobile Menu
  * Author: Ball de Diables del Prat
  * Year: 2025
  */
 
 // ================================
-// Loading Screen Management
+// SISTEMA DE CARGA REAL AVANZADO
 // ================================
 
-function initLoadingScreen() {
-    const loadingScreen = document.getElementById('loadingScreen');
-    const percentageText = document.getElementById('percentageText');
-    const body = document.body;
+class RealLoadingManager {
+    constructor() {
+        this.loadingScreen = document.getElementById('loadingScreen');
+        this.percentageText = document.getElementById('percentageText');
+        this.progressFill = document.querySelector('.progress-fill');
+        this.body = document.body;
+        
+        this.totalResources = 0;
+        this.loadedResources = 0;
+        this.currentPercentage = 0;
+        this.isLoadingComplete = false;
+        
+        // Recursos críticos que DEBEN cargarse
+        this.criticalResources = {
+            images: [
+                'images/Logo.png',
+                'images/LogoBlanc.png',
+                'images/Carretillada.jpg',
+                'images/Versots2.JPG',
+                'images/SantJordi.jpg',
+                'images/Pratifolk.jpg',
+                'images/Esclat1.JPG',
+                'images/Campanades.jpg',
+                'images/Seguici3.jpg',
+                'images/Correfoc1.jpg',
+                'images/Seguici2.JPG',
+                'images/Correfoc2.JPG',
+                'images/Esclat2.JPG',
+                'images/Versots1.JPG',
+                'images/Tabals.jpg'
+            ],
+            fonts: [
+                'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap'
+            ],
+            styles: [
+                'css/styles.css'
+            ],
+            scripts: [
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
+            ]
+        };
+        
+        this.preloadedAssets = new Map();
+this.loadingMessages = [
+    'Endavant diables!'
+];
+    }
 
-    if (!loadingScreen || !percentageText) return;
+    async init() {
+        console.log('🔥 Iniciando carga real de recursos...');
+        
+        // Calcular total de recursos
+        this.calculateTotalResources();
+        
+        // Iniciar animaciones de la pantalla de carga
+        this.startLoadingAnimations();
+        
+        // Cargar todos los recursos en paralelo
+        await this.loadAllResources();
+        
+        // Completar la carga
+        await this.completeLoading();
+    }
 
-    let currentPercentage = 0;
-    let progressInterval;
-    let isLoadingComplete = false;
+    calculateTotalResources() {
+        this.totalResources = 
+            this.criticalResources.images.length +
+            this.criticalResources.fonts.length +
+            this.criticalResources.styles.length +
+            this.criticalResources.scripts.length +
+            3; // DOM ready, fonts ready, minimum time
+            
+        console.log(`📊 Total recursos a cargar: ${this.totalResources}`);
+    }
 
-    // Función para simular el progreso de carga
-    function simulateProgress() {
-        progressInterval = setInterval(() => {
-            if (currentPercentage < 95 && !isLoadingComplete) {
-                // Incrementos variables para hacer más realista
-                const increment = Math.random() * 10 + 3;
-                currentPercentage = Math.min(currentPercentage + increment, 95);
-                updateProgress(Math.floor(currentPercentage));
+    startLoadingAnimations() {
+        // Cambiar mensaje cada cierto tiempo
+        let messageIndex = 0;
+        this.messageInterval = setInterval(() => {
+            if (messageIndex < this.loadingMessages.length - 1) {
+                const loadingTitle = document.getElementById('loading-title');
+                if (loadingTitle) {
+                    loadingTitle.textContent = this.loadingMessages[messageIndex];
+                }
+                messageIndex++;
             }
-        }, 200);
+        }, 2500);
+
+        // Animación suave del porcentaje
+        this.smoothProgressInterval = setInterval(() => {
+            this.updateSmoothProgress();
+        }, 50);
     }
 
-    // Actualizar el porcentaje mostrado
-    function updateProgress(percentage) {
-        percentageText.textContent = percentage + '%';
-        loadingScreen.setAttribute('aria-valuenow', percentage);
+    async loadAllResources() {
+        const promises = [];
+
+        // 1. Cargar imágenes críticas
+        promises.push(...this.criticalResources.images.map(src => 
+            this.loadImage(src)
+        ));
+
+        // 2. Cargar fuentes
+        promises.push(...this.criticalResources.fonts.map(href => 
+            this.loadFont(href)
+        ));
+
+        // 3. Cargar estilos adicionales
+        promises.push(...this.criticalResources.styles.map(href => 
+            this.loadStylesheet(href)
+        ));
+
+        // 4. Cargar scripts externos
+        promises.push(...this.criticalResources.scripts.map(src => 
+            this.loadExternalScript(src)
+        ));
+
+        // 5. Esperar DOM completamente listo
+        promises.push(this.waitForDOMReady());
+
+        // 6. Esperar fuentes del navegador
+        promises.push(this.waitForFonts());
+
+        // 7. Tiempo mínimo de carga (UX)
+        promises.push(this.waitMinimumTime(2000));
+
+        // Ejecutar todas las cargas
+        const results = await Promise.allSettled(promises);
+        
+        // Analizar resultados
+        const failed = results.filter(r => r.status === 'rejected');
+        if (failed.length > 0) {
+            console.warn(`⚠️ ${failed.length} recursos fallaron al cargar:`, failed);
+        }
+        
+        console.log('✅ Todos los recursos críticos cargados');
     }
 
-    // Completar la carga
-    function completeLoading() {
-        if (isLoadingComplete) return;
+    loadImage(src) {
+        return new Promise((resolve, reject) => {
+            // Verificar si ya está en caché
+            if (this.preloadedAssets.has(src)) {
+                this.onResourceLoaded(`Imagen ${src} (cache)`);
+                resolve(this.preloadedAssets.get(src));
+                return;
+            }
 
-        isLoadingComplete = true;
-        clearInterval(progressInterval);
+            const img = new Image();
+            
+            const cleanup = () => {
+                img.onload = null;
+                img.onerror = null;
+                img.onabort = null;
+            };
 
+            img.onload = () => {
+                cleanup();
+                this.preloadedAssets.set(src, img);
+                this.onResourceLoaded(`Imagen: ${src.split('/').pop()}`);
+                resolve(img);
+            };
+
+            img.onerror = (error) => {
+                cleanup();
+                console.error(`❌ Error cargando imagen: ${src}`, error);
+                this.onResourceLoaded(`Error: ${src.split('/').pop()}`);
+                reject(error);
+            };
+
+            img.onabort = () => {
+                cleanup();
+                console.warn(`⚠️ Carga abortada: ${src}`);
+                this.onResourceLoaded(`Abortada: ${src.split('/').pop()}`);
+                reject(new Error('Load aborted'));
+            };
+
+            // Configurar timeout
+            setTimeout(() => {
+                if (!this.preloadedAssets.has(src)) {
+                    cleanup();
+                    console.warn(`⏰ Timeout cargando: ${src}`);
+                    this.onResourceLoaded(`Timeout: ${src.split('/').pop()}`);
+                    reject(new Error('Timeout'));
+                }
+            }, 10000);
+
+            img.src = src;
+        });
+    }
+
+    loadFont(href) {
+        return new Promise((resolve, reject) => {
+            // Verificar si ya está cargada
+            const existingLink = document.querySelector(`link[href="${href}"]`);
+            if (existingLink) {
+                this.onResourceLoaded(`Font: ${href.split('/').pop()}`);
+                resolve();
+                return;
+            }
+
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = href;
+            link.crossOrigin = 'anonymous';
+
+            link.onload = () => {
+                this.onResourceLoaded(`Font: Montserrat`);
+                resolve();
+            };
+
+            link.onerror = (error) => {
+                console.error(`❌ Error cargando fuente: ${href}`, error);
+                this.onResourceLoaded(`Error font: Montserrat`);
+                reject(error);
+            };
+
+            document.head.appendChild(link);
+
+            // Timeout para fuentes
+            setTimeout(() => {
+                this.onResourceLoaded(`Timeout font: Montserrat`);
+                resolve(); // No bloquear por fuentes
+            }, 5000);
+        });
+    }
+
+    loadStylesheet(href) {
+        return new Promise((resolve, reject) => {
+            // Verificar si ya está cargado
+            const existingLink = document.querySelector(`link[href="${href}"]`);
+            if (existingLink) {
+                this.onResourceLoaded(`CSS: ${href.split('/').pop()}`);
+                resolve();
+                return;
+            }
+
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = href;
+
+            link.onload = () => {
+                this.onResourceLoaded(`CSS: ${href.split('/').pop()}`);
+                resolve();
+            };
+
+            link.onerror = (error) => {
+                console.error(`❌ Error cargando CSS: ${href}`, error);
+                this.onResourceLoaded(`Error CSS: ${href.split('/').pop()}`);
+                reject(error);
+            };
+
+            document.head.appendChild(link);
+        });
+    }
+
+    loadExternalScript(src) {
+        return new Promise((resolve) => {
+            // Para CSS como FontAwesome, crear link
+            if (src.includes('.css')) {
+                return this.loadStylesheet(src).then(resolve).catch(resolve);
+            }
+
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+
+            script.onload = () => {
+                this.onResourceLoaded(`Script: ${src.split('/').pop()}`);
+                resolve();
+            };
+
+            script.onerror = () => {
+                console.warn(`⚠️ Error cargando script: ${src}`);
+                this.onResourceLoaded(`Error script: ${src.split('/').pop()}`);
+                resolve(); // No bloquear por scripts externos
+            };
+
+            document.head.appendChild(script);
+        });
+    }
+
+    waitForDOMReady() {
+        return new Promise((resolve) => {
+            if (document.readyState === 'complete') {
+                this.onResourceLoaded('DOM Ready');
+                resolve();
+            } else {
+                window.addEventListener('load', () => {
+                    this.onResourceLoaded('DOM Ready');
+                    resolve();
+                });
+            }
+        });
+    }
+
+    waitForFonts() {
+        return new Promise((resolve) => {
+            if ('fonts' in document) {
+                document.fonts.ready.then(() => {
+                    this.onResourceLoaded('Fonts Ready');
+                    resolve();
+                }).catch(() => {
+                    this.onResourceLoaded('Fonts Error');
+                    resolve();
+                });
+            } else {
+                this.onResourceLoaded('Fonts N/A');
+                resolve();
+            }
+        });
+    }
+
+    waitMinimumTime(ms) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                this.onResourceLoaded('Minimum Time');
+                resolve();
+            }, ms);
+        });
+    }
+
+    onResourceLoaded(resourceName) {
+        this.loadedResources++;
+        const actualProgress = (this.loadedResources / this.totalResources) * 100;
+        
+        console.log(`✅ Cargado [${this.loadedResources}/${this.totalResources}]: ${resourceName} - ${actualProgress.toFixed(1)}%`);
+        
+        // Actualizar progreso target
+this.targetPercentage = Math.min(actualProgress, 100); // Permitir llegar al 100%
+    }
+
+    updateSmoothProgress() {
+        if (this.isLoadingComplete) return;
+
+        // Suavizar la progresión del porcentaje
+        const target = this.targetPercentage || 0;
+        const diff = target - this.currentPercentage;
+        
+        if (Math.abs(diff) > 0.1) {
+this.currentPercentage += diff * 0.5; // Aún más rápido
+        } else {
+            this.currentPercentage = target;
+        }
+
+        // Actualizar UI
+        const displayPercentage = Math.floor(this.currentPercentage);
+        if (this.percentageText) {
+            this.percentageText.textContent = displayPercentage + '%';
+        }
+        if (this.loadingScreen) {
+            this.loadingScreen.setAttribute('aria-valuenow', displayPercentage);
+        }
+        
+        // Actualizar barra de progreso
+        if (this.progressFill) {
+            this.progressFill.style.width = this.currentPercentage + '%';
+        }
+    }
+
+    async completeLoading() {
+        if (this.isLoadingComplete) return;
+        
+        this.isLoadingComplete = true;
+        
+        // Limpiar intervalos
+        clearInterval(this.messageInterval);
+        
         // Completar al 100%
-        currentPercentage = 100;
-        updateProgress(100);
-
-        // Esperar un momento antes de ocultar
-        setTimeout(() => {
-            hideLoadingScreen();
-        }, 800);
+        this.targetPercentage = 100;
+        const loadingTitle = document.getElementById('loading-title');
+        if (loadingTitle) {
+            loadingTitle.textContent = 'Endavant diables!';
+        }
+        
+        // Esperar a que llegue al 100%
+        return new Promise((resolve) => {
+            const waitForComplete = setInterval(() => {
+                this.updateSmoothProgress();
+                
+                if (this.currentPercentage >= 94) {
+                    clearInterval(waitForComplete);
+                    clearInterval(this.smoothProgressInterval);
+                    
+                    // Final update
+                    if (this.percentageText) {
+                        this.percentageText.textContent = '100%';
+                    }
+                    if (this.progressFill) {
+                        this.progressFill.style.width = '100%';
+                    }
+                    
+                    // Ocultar pantalla de carga
+                    setTimeout(() => {
+                        this.hideLoadingScreen();
+                        resolve();
+                    }, 100);
+                }
+            }, 50);
+        });
     }
 
-    // Ocultar el loading screen
-    function hideLoadingScreen() {
-        loadingScreen.classList.add('fade-out');
-        body.classList.remove('loading');
-        body.classList.add('content-loaded');
+    hideLoadingScreen() {
+        console.log('🎉 Carga completada - Ocultando pantalla');
+        
+        if (this.loadingScreen) {
+            this.loadingScreen.classList.add('fade-out');
+        }
+        this.body.classList.remove('loading');
+        this.body.classList.add('content-loaded');
+
+        // Cache de imágenes aplicado a elementos DOM
+        this.applyCachedImages();
 
         // Remover del DOM después de la animación
         setTimeout(() => {
-            if (loadingScreen && loadingScreen.parentNode) {
-                loadingScreen.parentNode.removeChild(loadingScreen);
+            if (this.loadingScreen && this.loadingScreen.parentNode) {
+                this.loadingScreen.parentNode.removeChild(this.loadingScreen);
             }
+            
+            // Dispatch evento personalizado
+            window.dispatchEvent(new CustomEvent('loadingComplete', {
+                detail: { 
+                    loadedResources: this.loadedResources,
+                    totalResources: this.totalResources,
+                    preloadedAssets: this.preloadedAssets
+                }
+            }));
         }, 600);
     }
 
-    // Detectar cuando todos los recursos críticos están cargados
-    function checkResourcesLoaded() {
-        const promises = [];
-
-        // Verificar imágenes críticas
-        const criticalImages = [
-            'images/Logo.png',
-            'images/LogoBlanc.png',
-            'images/Carretillada.jpg'
-        ];
-
-        criticalImages.forEach(src => {
-            promises.push(new Promise((resolve) => {
-                const img = new Image();
-                img.onload = resolve;
-                img.onerror = resolve; // Resolver aunque falle para no bloquear
-                img.src = src;
-            }));
+    applyCachedImages() {
+        // Aplicar imágenes precargadas a los elementos DOM
+        document.querySelectorAll('img[src]').forEach(img => {
+            const cachedImage = this.preloadedAssets.get(img.src);
+            if (cachedImage) {
+                // La imagen ya está en caché del navegador
+                img.classList.add('preloaded');
+            }
         });
 
-        // Verificar fonts
-        if ('fonts' in document) {
-            promises.push(document.fonts.ready.catch(() => { }));
-        }
+        // Aplicar backgrounds precargados
+        const elementsWithBg = [
+            { selector: '.hero-background', imageSrc: 'images/Carretillada.jpg' },
+            { selector: '.panera-background', imageSrc: 'images/Panera.jpg' }
+        ];
 
-        return Promise.all(promises);
+        elementsWithBg.forEach(({ selector, imageSrc }) => {
+            const element = document.querySelector(selector);
+            if (element && this.preloadedAssets.has(imageSrc)) {
+                element.classList.add('preloaded');
+            }
+        });
     }
 
-    // Iniciar el loading
-    simulateProgress();
-
-    // Verificar recursos y completar cuando esté todo listo
-    Promise.all([
-        checkResourcesLoaded(),
-        new Promise(resolve => {
-            if (document.readyState === 'complete') {
-                resolve();
-            } else {
-                window.addEventListener('load', resolve);
-            }
-        }),
-        // Asegurar un mínimo de tiempo para mostrar el loading
-        new Promise(resolve => setTimeout(resolve, 1500))
-    ]).then(() => {
-        completeLoading();
-    }).catch(() => {
-        // Si algo falla, completar de todos modos
-        completeLoading();
-    });
-
-    // Máximo tiempo de loading (failsafe)
-    setTimeout(() => {
-        if (!isLoadingComplete) {
-            console.warn('Loading timeout reached, forcing completion');
-            completeLoading();
-        }
-    }, 5000);
+    static async init() {
+        const loader = new RealLoadingManager();
+        await loader.init();
+        return loader;
+    }
 }
-/* ================================
-   JAVASCRIPT FIXES PARA CHROME EN WINDOWS - COMPLETO
-   Añadir al inicio de main.js, antes del DOMContentLoaded
-   ================================ */
 
-// Detectar Chrome en Windows específicamente
+// ================================
+// DETECCIÓN CHROME WINDOWS
+// ================================
+
 function isChromeWindows() {
     const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     const isWindows = navigator.platform.indexOf('Win') > -1;
@@ -140,19 +482,16 @@ function isChromeWindows() {
 
     return isChrome && isWindows && isNotEdge;
 }
-// Fix para Smooth Scroll en Chrome Windows - Ultra agressiu
+
+// Fix para Smooth Scroll en Chrome Windows
 function initSmoothScrollChrome() {
     if (!isChromeWindows()) return;
 
-
-    // Desactivar completament scroll behavior
     document.documentElement.style.scrollBehavior = 'auto !important';
     document.body.style.scrollBehavior = 'auto !important';
 
-    // Override de la funció scroll nativa per Chrome Windows
     let isCustomScrolling = false;
 
-    // Interceptar TOTS els enllaços, inclosos els del menú mòbil
     function handleClick(e) {
         const link = e.target.closest('a[href^="#"]');
         if (!link || isCustomScrolling) return;
@@ -170,8 +509,7 @@ function initSmoothScrollChrome() {
             const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
             const targetPosition = target.offsetTop - navbarHeight - 20;
 
-
-            // Tancar menú mòbil si està obert
+            // Tancar menú móvil si está obert
             const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
             const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
             if (mobileNavOverlay && mobileNavOverlay.classList.contains('active')) {
@@ -182,7 +520,6 @@ function initSmoothScrollChrome() {
                 document.body.style.position = '';
             }
 
-            // Scroll personalitzat amb delay per tancar menú
             setTimeout(() => {
                 smoothScrollToChrome(targetPosition, 1200).then(() => {
                     isCustomScrolling = false;
@@ -191,24 +528,22 @@ function initSmoothScrollChrome() {
         }
     }
 
-    // Aplicar event listener amb alta prioritat
-    document.addEventListener('click', handleClick, true); // true = capture phase
+    document.addEventListener('click', handleClick, true);
 
-    // També aplicar als links després de que es carreguin
     setTimeout(() => {
         const allLinks = document.querySelectorAll('a[href^="#"]');
         allLinks.forEach(link => {
             link.addEventListener('click', handleClick, true);
         });
     }, 1000);
-}// Smooth scroll millorat amb Promise
+}
+
 function smoothScrollToChrome(targetPosition, duration = 1200) {
     return new Promise((resolve) => {
         const startPosition = window.pageYOffset;
         const distance = targetPosition - startPosition;
         const startTime = performance.now();
 
-        // Easing més pronunciat
         function easeInOutCubic(t) {
             return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
         }
@@ -220,7 +555,6 @@ function smoothScrollToChrome(targetPosition, duration = 1200) {
             const easeProgress = easeInOutCubic(progress);
             const currentPosition = startPosition + (distance * easeProgress);
 
-            // Scroll forçat
             window.scrollTo({
                 top: Math.round(currentPosition),
                 behavior: 'auto'
@@ -229,7 +563,6 @@ function smoothScrollToChrome(targetPosition, duration = 1200) {
             if (progress < 1) {
                 requestAnimationFrame(scrollStep);
             } else {
-                // Posició exacta final
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'auto'
@@ -242,837 +575,336 @@ function smoothScrollToChrome(targetPosition, duration = 1200) {
     });
 }
 
-
-// Fix para Gallery hover en Chrome Windows - Animación por JavaScript
-function initGalleryChrome() {
-    if (!isChromeWindows()) return;
-
-
-    const galleryCards = document.querySelectorAll('.gallery-card');
-
-    galleryCards.forEach(card => {
-        let isAnimating = false;
-
-        // Hover personalizado con animación por JavaScript
-        card.addEventListener('mouseenter', function () {
-            if (isAnimating) return;
-            isAnimating = true;
-
-            animateElement(this, { translateY: -8 }, 300);
-
-            // Imagen scale
-            const img = this.querySelector('.gallery-image img');
-            if (img) {
-                animateElement(img, { scale: 1.1 }, 400);
-            }
-
-            // Overlay
-            const overlay = this.querySelector('.gallery-overlay');
-            if (overlay) {
-                animateElement(overlay, { translateY: 0 }, 300);
-            }
-
-            setTimeout(() => { isAnimating = false; }, 400);
-        });
-
-        card.addEventListener('mouseleave', function () {
-            if (isAnimating) return;
-            isAnimating = true;
-
-            animateElement(this, { translateY: 0 }, 300);
-
-            // Imagen reset
-            const img = this.querySelector('.gallery-image img');
-            if (img) {
-                animateElement(img, { scale: 1 }, 400);
-            }
-
-            // Overlay reset
-            const overlay = this.querySelector('.gallery-overlay');
-            if (overlay) {
-                animateElement(overlay, { translateY: 100, unit: '%' }, 300);
-            }
-
-            setTimeout(() => { isAnimating = false; }, 400);
-        });
-    });
-}
-
-// Función de animación personalizada para Chrome Windows
-function animateElement(element, properties, duration) {
-    const startTime = performance.now();
-    const startValues = {};
-
-    // Obtener valores iniciales
-    Object.keys(properties).forEach(prop => {
-        if (prop === 'translateY') {
-            const currentTransform = element.style.transform || '';
-            const match = currentTransform.match(/translateY\(([^)]+)\)/);
-            startValues[prop] = match ? parseFloat(match[1]) : 0;
-        } else if (prop === 'scale') {
-            const currentTransform = element.style.transform || '';
-            const match = currentTransform.match(/scale\(([^)]+)\)/);
-            startValues[prop] = match ? parseFloat(match[1]) : 1;
-        }
-    });
-
-    function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-
-        // Easing function
-        const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-        // Aplicar transformaciones
-        let transform = '';
-        Object.keys(properties).forEach(prop => {
-            const startValue = startValues[prop];
-            const endValue = properties[prop];
-            const unit = properties.unit || (prop === 'translateY' ? 'px' : '');
-
-            if (prop === 'translateY') {
-                const currentValue = startValue + (endValue - startValue) * easeProgress;
-                transform += `translateY(${currentValue}${unit}) `;
-            } else if (prop === 'scale') {
-                const currentValue = startValue + (endValue - startValue) * easeProgress;
-                transform += `scale(${currentValue}) `;
-            }
-        });
-
-        element.style.transform = transform.trim();
-
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        }
-    }
-
-    requestAnimationFrame(animate);
-}// SUBSTITUIR la funció initLoadingChrome per aquesta versió ultra agressiva:
-
-function initLoadingChrome() {
-    if (!isChromeWindows()) return;
-
-    // Evitar execucions múltiples
-    if (window.loadingChromeApplied) return;
-    window.loadingChromeApplied = true;
-
-
-    // Força cancel·lar TOTES les animacions CSS del loading screen
-    const style = document.createElement('style');
-    style.innerHTML = `
-        .loading-logo-image {
-            animation: none !important;
-            -webkit-animation: none !important;
-            transition: none !important;
-            -webkit-transition: none !important;
-        }
-        .spinner-ring {
-            animation: none !important;
-            -webkit-animation: none !important;
-            transition: none !important;
-            -webkit-transition: none !important;
-        }
-        .progress-fill {
-            animation: none !important;
-            -webkit-animation: none !important;
-            transition: none !important;
-            -webkit-transition: none !important;
-        }
-    `;
-    document.head.appendChild(style);
-
-    // Buscar elements
-    setTimeout(() => {
-        const loadingLogo = document.querySelector('.loading-logo-image');
-        const spinnerRings = document.querySelectorAll('.spinner-ring');
-        const progressFill = document.querySelector('.progress-fill');
-
-
-        // LOGO - Force reset i animació
-        if (loadingLogo) {
-
-            // Reset total
-            loadingLogo.style.animation = 'none';
-            loadingLogo.style.webkitAnimation = 'none';
-            loadingLogo.style.opacity = '0';
-            loadingLogo.style.transform = 'scale(0.8) translateY(-20px)';
-            loadingLogo.style.webkitTransform = 'scale(0.8) translateY(-20px)';
-
-            // Força repaint
-            loadingLogo.offsetHeight;
-
-            // Animació amb delay
-            setTimeout(() => {
-                const startTime = performance.now();
-                function animateLogo(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / 1500, 1);
-                    const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-                    const opacity = easeProgress;
-                    const scale = 0.8 + (0.2 * easeProgress);
-                    const translateY = -20 + (20 * easeProgress);
-
-                    loadingLogo.style.opacity = opacity;
-                    loadingLogo.style.transform = `scale(${scale}) translateY(${translateY}px)`;
-                    loadingLogo.style.webkitTransform = `scale(${scale}) translateY(${translateY}px)`;
-
-                    if (progress < 1) {
-                        requestAnimationFrame(animateLogo);
-                    } else {
-                    }
-                }
-                requestAnimationFrame(animateLogo);
-            }, 400);
-        }
-
-        // SPINNERS - Rotació forçada
-        spinnerRings.forEach((ring, index) => {
-
-            // Reset total
-            ring.style.animation = 'none';
-            ring.style.webkitAnimation = 'none';
-            ring.style.transform = 'rotate(0deg)';
-            ring.style.webkitTransform = 'rotate(0deg)';
-
-            // Força repaint
-            ring.offsetHeight;
-
-            // Rotació immediata i contínua
-            let rotation = 0;
-            const speed = index === 0 ? 2 : -1.5;
-
-            function spin() {
-                rotation += speed;
-                const rotateTransform = `rotate(${rotation}deg)`;
-                ring.style.transform = rotateTransform;
-                ring.style.webkitTransform = rotateTransform;
-                requestAnimationFrame(spin);
-            }
-
-            // Començar immediat
-            requestAnimationFrame(spin);
-        });
-
-        // PROGRESS BAR - Animació forçada
-        if (progressFill) {
-
-            // Reset total
-            progressFill.style.animation = 'none';
-            progressFill.style.webkitAnimation = 'none';
-            progressFill.style.width = '0%';
-
-            // Força repaint
-            progressFill.offsetHeight;
-
-            // Animació immediata
-            const startTime = performance.now();
-            function animateProgress(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / 3000, 1); // 3 segons
-                const width = progress * 100;
-
-                progressFill.style.width = `${width}%`;
-
-                if (progress < 1) {
-                    requestAnimationFrame(animateProgress);
-                } else {
-                }
-            }
-            requestAnimationFrame(animateProgress);
-            // TEXTO "Carregant..." - Fade-in + Pulse
-            const loadingText = document.querySelector('.loading-text');
-            if (loadingText) {
-
-                // Reset completo
-                loadingText.style.animation = 'none';
-                loadingText.style.webkitAnimation = 'none';
-                loadingText.style.opacity = '0';
-
-                // Fade-in después de un delay
-                setTimeout(() => {
-                    const fadeStartTime = performance.now();
-
-                    function fadeInText(currentTime) {
-                        const elapsed = currentTime - fadeStartTime;
-                        const progress = Math.min(elapsed / 800, 1);
-                        const opacity = progress * 0.6;
-
-                        loadingText.style.opacity = opacity;
-
-                        if (progress < 1) {
-                            requestAnimationFrame(fadeInText);
-                        } else {
-                            startPulse();
-                        }
-                    }
-
-                    function startPulse() {
-                        let textOpacity = 0.6;
-                        let increasing = true;
-
-                        function pulseText() {
-                            if (increasing) {
-                                textOpacity += 0.015;
-                                if (textOpacity >= 1) {
-                                    increasing = false;
-                                }
-                            } else {
-                                textOpacity -= 0.015;
-                                if (textOpacity <= 0.6) {
-                                    increasing = true;
-                                }
-                            }
-
-                            loadingText.style.opacity = textOpacity;
-                            requestAnimationFrame(pulseText);
-                        }
-
-                        requestAnimationFrame(pulseText);
-                    }
-
-                    requestAnimationFrame(fadeInText);
-                }, 600);
-            }
-        }
-
-    }, 100);
-}
-// Logo animation millorada
-function animateLoadingLogo(logo) {
-    const startTime = performance.now();
-    const duration = 1200;
-
-    function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-        const opacity = easeProgress;
-        const scale = 0.8 + (0.2 * easeProgress);
-        const translateY = -20 + (20 * easeProgress);
-
-        logo.style.opacity = opacity;
-        logo.style.transform = `scale(${scale}) translateY(${translateY}px)`;
-        logo.style.webkitTransform = `scale(${scale}) translateY(${translateY}px)`;
-
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        } else {
-        }
-    }
-
-    requestAnimationFrame(animate);
-}
-
-// Progress bar animation millorada
-function animateProgressBarImproved(progressBar) {
-    const startTime = performance.now();
-    const duration = 2500;
-
-    function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-
-        // Easing function
-        const easeProgress = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-        const width = easeProgress * 100;
-
-        progressBar.style.width = `${width}%`;
-
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        } else {
-        }
-    }
-
-    requestAnimationFrame(animate);
-}
-
-// TAMBÉ cal modificar l'inicialització per cridar-ho més aviat:
-// En lloc de posar-ho dins del setTimeout de 1000ms, posa-ho directament al DOMContentLoaded:
-
-// Animació del logo per Chrome Windows
-function animateLoadingLogo(logo) {
-    const startTime = performance.now();
-    const duration = 1200;
-
-    function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-        const opacity = easeProgress;
-        const scale = 0.8 + (0.2 * easeProgress);
-        const translateY = -20 + (20 * easeProgress);
-
-        logo.style.opacity = opacity;
-        logo.style.transform = `scale(${scale}) translateY(${translateY}px)`;
-
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        }
-    }
-
-    requestAnimationFrame(animate);
-}
-
-// Animació del spinner per Chrome Windows
-function animateSpinner(ring, duration) {
-    let rotation = 0;
-
-    function spin() {
-        rotation = (rotation + 3) % 360;
-        ring.style.transform = `rotate(${rotation}deg)`;
-        requestAnimationFrame(spin);
-    }
-
-    requestAnimationFrame(spin);
-}
-
-// Animació de la progress bar per Chrome Windows
-function animateProgressBar(progressBar) {
-    const keyFrames = [
-        { time: 0, width: 0 },
-        { time: 20, width: 15 },
-        { time: 40, width: 35 },
-        { time: 60, width: 60 },
-        { time: 80, width: 85 },
-        { time: 100, width: 100 }
-    ];
-
-    const startTime = performance.now();
-    const duration = 2500;
-
-    function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min((elapsed / duration) * 100, 100);
-
-        // Trobar el keyframe actual
-        let currentWidth = 0;
-        for (let i = 0; i < keyFrames.length - 1; i++) {
-            const current = keyFrames[i];
-            const next = keyFrames[i + 1];
-
-            if (progress >= current.time && progress <= next.time) {
-                const segmentProgress = (progress - current.time) / (next.time - current.time);
-                currentWidth = current.width + (next.width - current.width) * segmentProgress;
-                break;
-            }
-        }
-
-        progressBar.style.width = `${currentWidth}%`;
-
-        if (progress < 100) {
-            requestAnimationFrame(animate);
-        }
-    }
-
-    requestAnimationFrame(animate);
-}
-
-// Modificar el bloc de Chrome Windows per afegir aquest fix
-// Afegir aquesta línia al setTimeout dins del DOMContentLoaded:
-// initLoadingChrome();
-// Solo aplicar fix si es Chrome Windows
-if (isChromeWindows()) {
-
-    document.addEventListener('DOMContentLoaded', function () {
-        // Loading screen fixes - ABANS que desaparegui
-        initLoadingChrome();
-        // Asegurar que el loading screen tenga hardware acceleration
+// ================================
+// INICIALIZACIÓN PRINCIPAL
+// ================================
+
+function initRealLoadingScreen() {
+    if (!document.getElementById('loadingScreen')) return;
+    
+    RealLoadingManager.init().then((loader) => {
+        window.lastLoadingManager = loader;
+        console.log('🔥 Sistema de carga real completado exitosamente!');
+    }).catch((error) => {
+        console.error('❌ Error en el sistema de carga:', error);
         const loadingScreen = document.getElementById('loadingScreen');
         if (loadingScreen) {
-            loadingScreen.style.webkitBackfaceVisibility = 'hidden';
-            loadingScreen.style.backfaceVisibility = 'hidden';
+            loadingScreen.classList.add('fade-out');
+            document.body.classList.remove('loading');
+            document.body.classList.add('content-loaded');
+            setTimeout(initializeAllFeatures, 500);
         }
-
-        // Aplicar fixes específicos
-        initSmoothScrollChrome();
-
-        // Timeline items (después de que se inicialice)
-        setTimeout(() => {
-            const timelineItems = document.querySelectorAll('.timeline-item');
-            timelineItems.forEach(item => {
-                item.style.webkitBackfaceVisibility = 'hidden';
-                item.style.backfaceVisibility = 'hidden';
-            });
-
-            // Gallery fixes
-            initGalleryChrome();
-
-            // Timeline hover fixes
-            initTimelineChrome();
-
-            // Loading screen fixes
-            initLoadingChrome();
-        }, 1000);
     });
 }
-document.addEventListener('DOMContentLoaded', function () {
 
-    // Inicializar loading screen PRIMERO
-    initLoadingScreen();
+function initializeAllFeatures() {
+    try {
+        console.log('🚀 Inicializando todas las funcionalidades...');
 
-    // ================================
-    // Mobile Menu Management
-    // ================================
+        initMobileMenu();
+        initSmoothScrolling();
+        initCountdownTimer();
+        initInteractiveTimeline();
+        initContactForm();
+        initNavbarEffects();
+        initEnhancedGallery();
+        initPerformanceMonitoring();
+        initErrorHandling();
 
-    function initMobileMenu() {
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
-        const body = document.body;
-
-        let isMenuOpen = false;
-
-        function toggleMenu() {
-            isMenuOpen = !isMenuOpen;
-
-            // Toggle button animation
-            mobileMenuBtn.classList.toggle('active', isMenuOpen);
-            mobileMenuBtn.setAttribute('aria-expanded', isMenuOpen);
-
-            // Toggle overlay
-            mobileNavOverlay.classList.toggle('active', isMenuOpen);
-            mobileNavOverlay.setAttribute('aria-hidden', !isMenuOpen);
-
-            // Prevent body scroll when menu is open
-            if (isMenuOpen) {
-                body.style.overflow = 'hidden';
-                body.style.position = 'fixed';
-                body.style.width = '100%';
-                body.style.top = `-${window.scrollY}px`;
-            } else {
-                const scrollY = body.style.top;
-                body.style.overflow = '';
-                body.style.position = '';
-                body.style.width = '';
-                body.style.top = '';
-                if (scrollY) {
-                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
-                }
-            }
-        }
-
-        function closeMenu() {
-            if (isMenuOpen) {
-                toggleMenu();
-            }
-        }
-
-        // Menu button click handler
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', toggleMenu);
-        }
-
-        // Close menu when clicking on overlay
-        if (mobileNavOverlay) {
-            mobileNavOverlay.addEventListener('click', function (e) {
-                if (e.target === mobileNavOverlay) {
-                    closeMenu();
-                }
-            });
-        }
-
-        // Close menu when clicking on navigation links
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', closeMenu);
-        });
-
-        // Close menu on Escape key
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && isMenuOpen) {
-                closeMenu();
-            }
-        });
-
-        // Handle window resize
-        function handleResize() {
-            if (window.innerWidth > 768 && isMenuOpen) {
-                closeMenu();
-            }
-        }
-
-        window.addEventListener('resize', debounce(handleResize, 250));
-
-        // Focus trap for mobile menu accessibility
-        function trapFocus(e) {
-            if (!isMenuOpen) return;
-
-            const focusableElements = mobileNavOverlay.querySelectorAll(
-                'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
-            );
-            const firstFocusableElement = focusableElements[0];
-            const lastFocusableElement = focusableElements[focusableElements.length - 1];
-
-            if (e.key === 'Tab') {
-                if (e.shiftKey) {
-                    if (document.activeElement === firstFocusableElement) {
-                        lastFocusableElement.focus();
-                        e.preventDefault();
-                    }
-                } else {
-                    if (document.activeElement === lastFocusableElement) {
-                        firstFocusableElement.focus();
-                        e.preventDefault();
-                    }
-                }
-            }
-        }
-
-        document.addEventListener('keydown', trapFocus);
-    }
-
-    // ================================
-    // Smooth Scrolling Navigation
-    // ================================
-
-    function initSmoothScrolling() {
-        // NO executar si és Chrome Windows (ja té el seu propi fix)
         if (isChromeWindows()) {
-            return;
+            setTimeout(() => {
+                initGalleryChrome();
+                initTimelineChrome();
+            }, 500);
         }
 
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
-                    const targetPosition = target.offsetTop - navbarHeight - 20;
+        console.log('✅ Ball de Diables del Prat - Website initialized successfully! 🔥');
+        window.dispatchEvent(new CustomEvent('websiteReady'));
 
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+    } catch (error) {
+        console.error('❌ Error initializing website:', error);
+        document.body.classList.add('js-disabled');
     }
+}
 
-    // ================================
-    // Enhanced Countdown Timer
-    // ================================
+// ================================
+// MOBILE MENU
+// ================================
 
-    function initCountdownTimer() {
-        function updateCountdown() {
-            // Festa Major 2025 - 26 de setembre a les 18:30h
-            const festaMajor = new Date('2025-09-26T18:30:00').getTime();
-            const now = new Date().getTime();
-            const distance = festaMajor - now;
+function initMobileMenu() {
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
+    const body = document.body;
 
-            if (distance > 0) {
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    let isMenuOpen = false;
 
-                // Update DOM elements with animation
-                animateCounterChange('days', days);
-                animateCounterChange('hours', hours);
-                animateCounterChange('minutes', minutes);
-                animateCounterChange('seconds', seconds);
-            } else {
-                // Event has passed
-                const countdownElements = document.querySelectorAll('.countdown-number');
-                countdownElements.forEach(el => el.textContent = '0');
+    function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
 
-                // Update title
-                const titleElement = document.querySelector('.counter-title');
-                if (titleElement) {
-                    titleElement.textContent = "Festa Major 2025 Finalitzada!";
-                }
-            }
-        }
+        mobileMenuBtn.classList.toggle('active', isMenuOpen);
+        mobileMenuBtn.setAttribute('aria-expanded', isMenuOpen);
 
-        function animateCounterChange(id, newValue) {
-            const element = document.getElementById(id);
-            if (element && element.textContent != newValue) {
-                element.textContent = newValue;
-            }
-        }
+        mobileNavOverlay.classList.toggle('active', isMenuOpen);
+        mobileNavOverlay.setAttribute('aria-hidden', !isMenuOpen);
 
-        // Update countdown every second
-        updateCountdown(); // Initial call
-        setInterval(updateCountdown, 1000);
-    }
-
-    // ================================
-    // TIMELINE WINDOWS-COMPATIBLE
-    // ================================
-
-    function initInteractiveTimeline() {
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        const timelineSection = document.querySelector('.timeline-section');
-
-        // Intersection Observer for timeline items with fade in/out
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                const index = Array.from(timelineItems).indexOf(entry.target);
-
-                if (entry.isIntersecting) {
-                    // Element enters viewport - fade in
-                    setTimeout(() => {
-                        entry.target.classList.add('animate-in');
-                    }, index * 150);
-                } else {
-                    // Element leaves viewport - fade out
-                    entry.target.classList.remove('animate-in');
-                }
-            });
-        }, observerOptions);
-
-        timelineItems.forEach((item, index) => {
-            observer.observe(item);
-
-            // Enhanced click interactions
-            item.addEventListener('click', function () {
-                timelineItems.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-
-                // Pulse animation for dot
-                const dot = this.querySelector('.timeline-dot');
-                if (dot) {
-                    dot.style.transform = 'translateX(-50%) scale(1.5)';
-                    dot.style.boxShadow = '0 0 0 8px var(--primary-red), 0 0 30px rgba(163, 0, 15, 0.6)';
-                    setTimeout(() => {
-                        dot.style.transform = 'translateX(-50%) scale(1.2)';
-                        dot.style.boxShadow = '0 0 0 4px var(--primary-red), 0 0 20px rgba(163, 0, 15, 0.4)';
-                    }, 300);
-                }
-
-                // Analytics tracking
-                const eventName = this.getAttribute('data-event');
-                if (eventName && typeof gtag !== 'undefined') {
-                    gtag('event', 'timeline_click', {
-                        'event_category': 'engagement',
-                        'event_label': eventName
-                    });
-                }
-            });
-
-            // Keyboard accessibility
-            item.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.click();
-                }
-            });
-
-            // Enhanced hover effects
-            item.addEventListener('mouseenter', function () {
-                if (!this.classList.contains('animate-in')) return;
-
-                const icon = this.querySelector('.timeline-icon');
-                if (icon) {
-                    icon.style.transform = 'rotate(15deg) scale(1.1)';
-                }
-            });
-
-            item.addEventListener('mouseleave', function () {
-                const icon = this.querySelector('.timeline-icon');
-                if (icon) {
-                    icon.style.transform = 'rotate(0deg) scale(1)';
-                }
-            });
-
-            item.setAttribute('tabindex', '0');
-        });
-
-        // ===== WINDOWS COMPATIBLE TIMELINE PROGRESS =====
-        function updateTimelineProgress() {
-            if (!timelineSection) return;
-
-            const rect = timelineSection.getBoundingClientRect();
-            const sectionTop = rect.top;
-            const sectionBottom = rect.bottom;
-            const windowHeight = window.innerHeight;
-            const sectionHeight = rect.height;
-
-            let scrollProgress = 0;
-
-            if (sectionTop <= windowHeight && sectionBottom >= 0) {
-                const totalScrollDistance = windowHeight + sectionHeight;
-                const currentScrolled = windowHeight - sectionTop;
-                scrollProgress = Math.max(0, Math.min(1, currentScrolled / totalScrollDistance));
-            }
-
-            // WINDOWS FIX: Usar tanto CSS custom property como style directo
-            const progressPercentage = (scrollProgress * 100) + '%';
-
-            // Método 1: CSS Custom Property
-            document.documentElement.style.setProperty('--timeline-progress', progressPercentage);
-
-            // Método 2: Direct style para Windows (más compatible)
-            const timelineLineAfter = document.querySelector('.timeline-line');
-            if (timelineLineAfter) {
-                // Forzar el update usando ::after con CSS
-                timelineLineAfter.style.setProperty('--progress', progressPercentage);
-
-                // También crear un elemento hijo si no existe para mayor compatibilidad
-                let progressBar = timelineLineAfter.querySelector('.timeline-progress-bar');
-                if (!progressBar) {
-                    progressBar = document.createElement('div');
-                    progressBar.className = 'timeline-progress-bar';
-                    progressBar.style.cssText = `
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: ${progressPercentage};
-                        background: linear-gradient(to bottom, var(--primary-red), var(--light-red));
-                        border-radius: 2px;
-                        transition: height 0.1s ease-out;
-                        z-index: 1;
-                    `;
-                    timelineLineAfter.appendChild(progressBar);
-                } else {
-                    progressBar.style.height = progressPercentage;
-                }
-            }
-        }
-
-        // DETECCIÓN WINDOWS Y OPTIMIZACIÓN
-        const isWindows = navigator.platform.indexOf('Win') > -1;
-
-        if (isWindows) {
-            // Windows: usar throttle optimizado
-            const optimizedUpdateTimeline = throttleWindows(updateTimelineProgress, 16);
-            window.addEventListener('scroll', optimizedUpdateTimeline, {
-                passive: true,
-                capture: false
-            });
-
-            // Force repaint en Windows
-            requestAnimationFrame(() => {
-                document.body.style.transform = 'translateZ(0)';
-                setTimeout(() => {
-                    document.body.style.transform = '';
-                }, 100);
-            });
+        if (isMenuOpen) {
+            body.style.overflow = 'hidden';
+            body.style.position = 'fixed';
+            body.style.width = '100%';
+            body.style.top = `-${window.scrollY}px`;
         } else {
-            // Mac/Linux: método original optimizado
-            let ticking = false;
-            const requestTick = () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        updateTimelineProgress();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            };
-            window.addEventListener('scroll', requestTick, { passive: true });
+            const scrollY = body.style.top;
+            body.style.overflow = '';
+            body.style.position = '';
+            body.style.width = '';
+            body.style.top = '';
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
         }
     }
 
-// En main.js, REEMPLAZA toda la función initContactForm() por esta versión:
+    function closeMenu() {
+        if (isMenuOpen) {
+            toggleMenu();
+        }
+    }
+
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+    }
+
+    if (mobileNavOverlay) {
+        mobileNavOverlay.addEventListener('click', function (e) {
+            if (e.target === mobileNavOverlay) {
+                closeMenu();
+            }
+        });
+    }
+
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && isMenuOpen) {
+            closeMenu();
+        }
+    });
+
+    function handleResize() {
+        if (window.innerWidth > 768 && isMenuOpen) {
+            closeMenu();
+        }
+    }
+
+    window.addEventListener('resize', debounce(handleResize, 250));
+}
+
+// ================================
+// SMOOTH SCROLLING
+// ================================
+
+function initSmoothScrolling() {
+    if (isChromeWindows()) {
+        return;
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                const targetPosition = target.offsetTop - navbarHeight - 20;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// ================================
+// COUNTDOWN TIMER
+// ================================
+
+function initCountdownTimer() {
+    function updateCountdown() {
+        const festaMajor = new Date('2025-09-26T18:30:00').getTime();
+        const now = new Date().getTime();
+        const distance = festaMajor - now;
+
+        if (distance > 0) {
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            animateCounterChange('days', days);
+            animateCounterChange('hours', hours);
+            animateCounterChange('minutes', minutes);
+            animateCounterChange('seconds', seconds);
+        } else {
+            const countdownElements = document.querySelectorAll('.countdown-number');
+            countdownElements.forEach(el => el.textContent = '0');
+
+            const titleElement = document.querySelector('.counter-title');
+            if (titleElement) {
+                titleElement.textContent = "Festa Major 2025 Finalitzada!";
+            }
+        }
+    }
+
+    function animateCounterChange(id, newValue) {
+        const element = document.getElementById(id);
+        if (element && element.textContent != newValue) {
+            element.textContent = newValue;
+        }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
+// ================================
+// TIMELINE INTERACTIVO
+// ================================
+
+function initInteractiveTimeline() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const timelineSection = document.querySelector('.timeline-section');
+
+    const observerOptions = {
+        threshold: 0.15,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            const index = Array.from(timelineItems).indexOf(entry.target);
+
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('animate-in');
+                }, index * 150);
+            } else {
+                entry.target.classList.remove('animate-in');
+            }
+        });
+    }, observerOptions);
+
+    timelineItems.forEach((item, index) => {
+        observer.observe(item);
+
+        item.addEventListener('click', function () {
+            timelineItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+
+            const dot = this.querySelector('.timeline-dot');
+            if (dot) {
+                dot.style.transform = 'translateX(-50%) scale(1.5)';
+                dot.style.boxShadow = '0 0 0 8px var(--primary-red), 0 0 30px rgba(163, 0, 15, 0.6)';
+                setTimeout(() => {
+                    dot.style.transform = 'translateX(-50%) scale(1.2)';
+                    dot.style.boxShadow = '0 0 0 4px var(--primary-red), 0 0 20px rgba(163, 0, 15, 0.4)';
+                }, 300);
+            }
+
+            const eventName = this.getAttribute('data-event');
+            if (eventName && typeof gtag !== 'undefined') {
+                gtag('event', 'timeline_click', {
+                    'event_category': 'engagement',
+                    'event_label': eventName
+                });
+            }
+        });
+
+        item.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
+        });
+
+        item.setAttribute('tabindex', '0');
+    });
+
+    function updateTimelineProgress() {
+        if (!timelineSection) return;
+
+        const rect = timelineSection.getBoundingClientRect();
+        const sectionTop = rect.top;
+        const sectionBottom = rect.bottom;
+        const windowHeight = window.innerHeight;
+        const sectionHeight = rect.height;
+
+        let scrollProgress = 0;
+
+        if (sectionTop <= windowHeight && sectionBottom >= 0) {
+            const totalScrollDistance = windowHeight + sectionHeight;
+            const currentScrolled = windowHeight - sectionTop;
+            scrollProgress = Math.max(0, Math.min(1, currentScrolled / totalScrollDistance));
+        }
+
+        const progressPercentage = (scrollProgress * 100) + '%';
+        document.documentElement.style.setProperty('--timeline-progress', progressPercentage);
+
+        const timelineLineAfter = document.querySelector('.timeline-line');
+        if (timelineLineAfter) {
+            timelineLineAfter.style.setProperty('--progress', progressPercentage);
+
+            let progressBar = timelineLineAfter.querySelector('.timeline-progress-bar');
+            if (!progressBar) {
+                progressBar = document.createElement('div');
+                progressBar.className = 'timeline-progress-bar';
+                progressBar.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: ${progressPercentage};
+                    background: linear-gradient(to bottom, var(--primary-red), var(--light-red));
+                    border-radius: 2px;
+                    transition: height 0.1s ease-out;
+                    z-index: 1;
+                `;
+                timelineLineAfter.appendChild(progressBar);
+            } else {
+                progressBar.style.height = progressPercentage;
+            }
+        }
+    }
+
+    const isWindows = navigator.platform.indexOf('Win') > -1;
+    
+    if (isWindows) {
+        const optimizedUpdateTimeline = throttleWindows(updateTimelineProgress, 16);
+        window.addEventListener('scroll', optimizedUpdateTimeline, {
+            passive: true,
+            capture: false
+        });
+    } else {
+        let ticking = false;
+        const requestTick = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateTimelineProgress();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+        window.addEventListener('scroll', requestTick, { passive: true });
+    }
+}
+
+// ================================
+// FORMULARIO DE CONTACTO
+// ================================
 
 function initContactForm() {
     const form = document.querySelector('.contact-form');
@@ -1080,7 +912,6 @@ function initContactForm() {
 
     if (!form) return;
 
-    // Real-time validation
     const formFields = form.querySelectorAll('input, textarea');
     formFields.forEach(field => {
         field.addEventListener('blur', function () {
@@ -1145,11 +976,9 @@ function initContactForm() {
                 break;
         }
 
-        // Update field appearance
         field.classList.toggle('error', !isValid);
         field.style.borderColor = isValid ? 'var(--border-color)' : 'var(--primary-red)';
 
-        // Update error message
         if (errorElement) {
             errorElement.textContent = errorMessage;
             errorElement.style.opacity = errorMessage ? '1' : '0';
@@ -1158,9 +987,7 @@ function initContactForm() {
         return isValid;
     }
 
-    // Form submission - CORREGIDO PARA FORMSPREE
     form.addEventListener('submit', function (e) {
-        // Validar todos los campos
         let isFormValid = true;
         formFields.forEach(field => {
             if (!validateField(field)) {
@@ -1170,7 +997,6 @@ function initContactForm() {
 
         if (!isFormValid) {
             e.preventDefault();
-            // Focus first error field
             const firstErrorField = form.querySelector('.error');
             if (firstErrorField) {
                 firstErrorField.focus();
@@ -1179,22 +1005,16 @@ function initContactForm() {
             return;
         }
 
-        // Si la validación pasa, mostrar estado de carga
         const originalText = submitBtn.textContent;
         submitBtn.textContent = 'Enviant...';
         submitBtn.disabled = true;
         submitBtn.style.background = 'var(--text-light)';
 
-        // NO hacer e.preventDefault() - dejar que Formspree maneje el envío
-
-        // Mostrar mensaje de éxito después del envío
-        // (Esto se ejecutará si Formspree no redirige)
         setTimeout(() => {
             if (document.contains(form)) {
                 showFormSuccess();
                 form.reset();
-                
-                // Limpiar errores
+
                 formFields.forEach(field => {
                     field.style.borderColor = 'var(--border-color)';
                     field.classList.remove('error');
@@ -1205,7 +1025,6 @@ function initContactForm() {
                     msg.style.opacity = '0';
                 });
 
-                // Reset button
                 submitBtn.textContent = originalText;
                 submitBtn.style.background = 'var(--primary-red)';
                 submitBtn.disabled = false;
@@ -1214,13 +1033,11 @@ function initContactForm() {
     });
 }
 
-// También mantén esta función de validación de email
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
-// Y esta función para mostrar el éxito
 function showFormSuccess() {
     const submitBtn = document.querySelector('.submit-btn');
     if (submitBtn) {
@@ -1228,7 +1045,6 @@ function showFormSuccess() {
         submitBtn.style.background = '#28a745';
     }
 
-    // Create success notification
     const notification = document.createElement('div');
     notification.className = 'success-notification';
     notification.style.cssText = `
@@ -1248,12 +1064,10 @@ function showFormSuccess() {
 
     document.body.appendChild(notification);
 
-    // Animate in
     setTimeout(() => {
         notification.style.transform = 'translateX(0)';
     }, 100);
 
-    // Remove after delay
     setTimeout(() => {
         notification.style.transform = 'translateX(400px)';
         setTimeout(() => {
@@ -1264,211 +1078,317 @@ function showFormSuccess() {
     }, 4000);
 }
 
-    // ================================
-    // Enhanced Navbar Effects
-    // ================================
+// ================================
+// NAVBAR EFFECTS
+// ================================
 
-    function initNavbarEffects() {
-        const navbar = document.querySelector('.navbar');
-        let lastScrollY = window.scrollY;
+function initNavbarEffects() {
+    const navbar = document.querySelector('.navbar');
+    let lastScrollY = window.scrollY;
 
-        if (navbar) {
-            function handleNavbarScroll() {
-                const currentScrollY = window.scrollY;
+    if (navbar) {
+        function handleNavbarScroll() {
+            const currentScrollY = window.scrollY;
 
-                // Background opacity based on scroll
-                if (currentScrollY > 50) {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                    navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
-                } else {
-                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                    navbar.style.boxShadow = 'none';
-                }
-
-                // Hide/show navbar on scroll (mobile only)
-                if (window.innerWidth <= 768) {
-                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                        // Scrolling down
-                        navbar.style.transform = 'translateY(-100%)';
-                    } else {
-                        // Scrolling up
-                        navbar.style.transform = 'translateY(0)';
-                    }
-                }
-
-                lastScrollY = currentScrollY;
+            if (currentScrollY > 50) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.boxShadow = 'none';
             }
 
-            let ticking = false;
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        handleNavbarScroll();
-                        ticking = false;
-                    });
-                    ticking = true;
+            if (window.innerWidth <= 768) {
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    navbar.style.transform = 'translateY(-100%)';
+                } else {
+                    navbar.style.transform = 'translateY(0)';
                 }
-            }, { passive: true });
+            }
+
+            lastScrollY = currentScrollY;
         }
+
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    handleNavbarScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
     }
+}
 
-    // ================================
-    // Enhanced Gallery
-    // ================================
+// ================================
+// GALERÍA MEJORADA
+// ================================
 
-    function initGallery() {
-        const galleryCards = document.querySelectorAll('.gallery-card');
+function initEnhancedGallery() {
+    const galleryCards = document.querySelectorAll('.gallery-card');
 
-        // Lazy loading with Intersection Observer
-        const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target.querySelector('img');
-                    if (img && img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.classList.remove('lazy');
-                        imageObserver.unobserve(entry.target);
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target.querySelector('img');
+                if (img) {
+                    const loadingManager = window.lastLoadingManager;
+                    if (loadingManager && loadingManager.preloadedAssets.has(img.src)) {
+                        console.log(`📸 Imagen ya en cache: ${img.src}`);
+                        img.classList.add('cached');
                     }
+                    
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    
+                    imageObserver.unobserve(entry.target);
                 }
-            });
-        }, {
-            rootMargin: '50px'
+            }
         });
+    }, {
+        rootMargin: '50px',
+        threshold: 0.1
+    });
 
-        galleryCards.forEach((card, index) => {
-            // Staggered animation
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, index * 100);
-
-            // Enhanced hover effects
+    galleryCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        
+        if (!isChromeWindows()) {
             card.addEventListener('mouseenter', function () {
                 this.style.transform = 'translateY(-12px) scale(1.02)';
+                this.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
             });
 
             card.addEventListener('mouseleave', function () {
                 this.style.transform = 'translateY(0) scale(1)';
-            });
-
-            // Observe for lazy loading
-            imageObserver.observe(card);
-        });
-    }
-
-    // ================================
-    // Performance Monitoring
-    // ================================
-
-    function initPerformanceMonitoring() {
-        // Web Vitals monitoring (if needed)
-        if ('PerformanceObserver' in window) {
-            const observer = new PerformanceObserver((list) => {
-                list.getEntries().forEach((entry) => {
-                    if (entry.entryType === 'paint') {
-                    }
-                });
-            });
-
-            try {
-                observer.observe({ type: 'paint', buffered: true });
-            } catch (e) {
-                // Fallback for older browsers
-            }
-        }
-
-        // Page load metrics
-        window.addEventListener('load', function () {
-            setTimeout(() => {
-                const navigationTiming = performance.getEntriesByType('navigation')[0];
-                if (navigationTiming) {
-                    const loadTime = navigationTiming.loadEventEnd - navigationTiming.fetchStart;
-                }
-            }, 0);
-        });
-    }
-
-    // ================================
-    // Error Handling & Recovery
-    // ================================
-
-    function initErrorHandling() {
-        // Global error handler
-        window.addEventListener('error', function (e) {
-            console.error('JavaScript error:', e.error);
-            // Could send to analytics service
-        });
-
-        // Promise rejection handler
-        window.addEventListener('unhandledrejection', function (e) {
-            console.error('Unhandled promise rejection:', e.reason);
-            // Could send to analytics service
-        });
-
-        // Service availability checks
-        function checkServices() {
-            // Check if external services are available
-            const services = [
-                { name: 'FontAwesome', check: () => document.querySelector('[class*="fa-"]') },
-                { name: 'Google Fonts', check: () => getComputedStyle(document.body).fontFamily.includes('Montserrat') }
-            ];
-
-            services.forEach(service => {
-                if (!service.check()) {
-                    console.warn(`${service.name} may not be loaded properly`);
-                }
+                this.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
             });
         }
 
-        setTimeout(checkServices, 2000);
-    }
-
-    // ================================
-    // Initialize All Functions
-    // ================================
-
-    try {
-        // Solo inicializar las funciones después de que el loading se complete
-        const initializeAfterLoading = () => {
-            initMobileMenu();
-            initSmoothScrolling();
-            initCountdownTimer();
-            initInteractiveTimeline();
-            initContactForm();
-            initNavbarEffects();
-            initGallery();
-            initPerformanceMonitoring();
-            initErrorHandling();
-
-            console.log('Ball de Diables del Prat - Website initialized successfully! 🔥');
-        };
-
-        // Si el loading ya se completó, inicializar inmediatamente
-        if (document.body.classList.contains('content-loaded')) {
-            initializeAfterLoading();
-        } else {
-            // Esperar a que se complete el loading
-            const checkLoadingComplete = setInterval(() => {
-                if (document.body.classList.contains('content-loaded')) {
-                    clearInterval(checkLoadingComplete);
-                    setTimeout(initializeAfterLoading, 300);
-                }
-            }, 100);
-        }
-
-        // Remove loading class if present
-        document.body.classList.remove('loading');
-
-    } catch (error) {
-        console.error('Error initializing website:', error);
-        // Graceful degradation
-        document.body.classList.add('js-disabled');
-    }
-
-});
+        imageObserver.observe(card);
+    });
+}
 
 // ================================
-// Utility Functions
+// CHROME WINDOWS GALLERY FIX
+// ================================
+
+function initGalleryChrome() {
+    if (!isChromeWindows()) return;
+
+    const galleryCards = document.querySelectorAll('.gallery-card');
+
+    galleryCards.forEach(card => {
+        let isAnimating = false;
+
+        card.addEventListener('mouseenter', function () {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            animateElement(this, { translateY: -8 }, 300);
+
+            const img = this.querySelector('.gallery-image img');
+            if (img) {
+                animateElement(img, { scale: 1.1 }, 400);
+            }
+
+            const overlay = this.querySelector('.gallery-overlay');
+            if (overlay) {
+                animateElement(overlay, { translateY: 0 }, 300);
+            }
+
+            setTimeout(() => { isAnimating = false; }, 400);
+        });
+
+        card.addEventListener('mouseleave', function () {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            animateElement(this, { translateY: 0 }, 300);
+
+            const img = this.querySelector('.gallery-image img');
+            if (img) {
+                animateElement(img, { scale: 1 }, 400);
+            }
+
+            const overlay = this.querySelector('.gallery-overlay');
+            if (overlay) {
+                animateElement(overlay, { translateY: 100, unit: '%' }, 300);
+            }
+
+            setTimeout(() => { isAnimating = false; }, 400);
+        });
+    });
+}
+
+function initTimelineChrome() {
+    if (!isChromeWindows()) return;
+
+    const timelineWrappers = document.querySelectorAll('.timeline-content-wrapper');
+
+    timelineWrappers.forEach(wrapper => {
+        let isAnimating = false;
+
+        wrapper.addEventListener('mouseenter', function () {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            animateElement(this, { translateY: -5 }, 300);
+
+            const icon = this.querySelector('.timeline-icon');
+            if (icon) {
+                animateElement(icon, { rotate: 360, scale: 1.1 }, 300);
+            }
+
+            const img = this.querySelector('.timeline-image img');
+            if (img) {
+                animateElement(img, { scale: 1.05 }, 400);
+            }
+
+            setTimeout(() => { isAnimating = false; }, 400);
+        });
+
+        wrapper.addEventListener('mouseleave', function () {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            animateElement(this, { translateY: 0 }, 300);
+
+            const icon = this.querySelector('.timeline-icon');
+            if (icon) {
+                animateElement(icon, { rotate: 0, scale: 1 }, 300);
+            }
+
+            const img = this.querySelector('.timeline-image img');
+            if (img) {
+                animateElement(img, { scale: 1 }, 400);
+            }
+
+            setTimeout(() => { isAnimating = false; }, 400);
+        });
+    });
+}
+
+function animateElement(element, properties, duration) {
+    const startTime = performance.now();
+    const startValues = {};
+
+    Object.keys(properties).forEach(prop => {
+        if (prop === 'translateY') {
+            const currentTransform = element.style.transform || '';
+            const match = currentTransform.match(/translateY\(([^)]+)\)/);
+            startValues[prop] = match ? parseFloat(match[1]) : 0;
+        } else if (prop === 'scale') {
+            const currentTransform = element.style.transform || '';
+            const match = currentTransform.match(/scale\(([^)]+)\)/);
+            startValues[prop] = match ? parseFloat(match[1]) : 1;
+        } else if (prop === 'rotate') {
+            const currentTransform = element.style.transform || '';
+            const match = currentTransform.match(/rotate\(([^)]+)deg\)/);
+            startValues[prop] = match ? parseFloat(match[1]) : 0;
+        }
+    });
+
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+        let transform = '';
+        Object.keys(properties).forEach(prop => {
+            const startValue = startValues[prop];
+            const endValue = properties[prop];
+            const unit = properties.unit || (prop === 'translateY' ? 'px' : '');
+
+            if (prop === 'translateY') {
+                const currentValue = startValue + (endValue - startValue) * easeProgress;
+                transform += `translateY(${currentValue}${unit}) `;
+            } else if (prop === 'scale') {
+                const currentValue = startValue + (endValue - startValue) * easeProgress;
+                transform += `scale(${currentValue}) `;
+            } else if (prop === 'rotate') {
+                const currentValue = startValue + (endValue - startValue) * easeProgress;
+                transform += `rotate(${currentValue}deg) `;
+            }
+        });
+
+        element.style.transform = transform.trim();
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    requestAnimationFrame(animate);
+}
+
+// ================================
+// PERFORMANCE MONITORING
+// ================================
+
+function initPerformanceMonitoring() {
+    if ('PerformanceObserver' in window) {
+        const observer = new PerformanceObserver((list) => {
+            list.getEntries().forEach((entry) => {
+                if (entry.entryType === 'paint') {
+                    // Monitor paint events
+                }
+            });
+        });
+
+        try {
+            observer.observe({ type: 'paint', buffered: true });
+        } catch (e) {
+            // Fallback for older browsers
+        }
+    }
+
+    window.addEventListener('load', function () {
+        setTimeout(() => {
+            const navigationTiming = performance.getEntriesByType('navigation')[0];
+            if (navigationTiming) {
+                const loadTime = navigationTiming.loadEventEnd - navigationTiming.fetchStart;
+                console.log(`⏱️ Tiempo de carga: ${loadTime}ms`);
+            }
+        }, 0);
+    });
+}
+
+// ================================
+// ERROR HANDLING
+// ================================
+
+function initErrorHandling() {
+    window.addEventListener('error', function (e) {
+        console.error('JavaScript error:', e.error);
+    });
+
+    window.addEventListener('unhandledrejection', function (e) {
+        console.error('Unhandled promise rejection:', e.reason);
+    });
+
+    function checkServices() {
+        const services = [
+            { name: 'FontAwesome', check: () => document.querySelector('[class*="fa-"]') },
+            { name: 'Google Fonts', check: () => getComputedStyle(document.body).fontFamily.includes('Montserrat') }
+        ];
+
+        services.forEach(service => {
+            if (!service.check()) {
+                console.warn(`${service.name} may not be loaded properly`);
+            }
+        });
+    }
+
+    setTimeout(checkServices, 2000);
+}
+
+// ================================
+// UTILITY FUNCTIONS
 // ================================
 
 function debounce(func, wait, immediate) {
@@ -1500,7 +1420,6 @@ function throttle(func, limit) {
     };
 }
 
-// THROTTLE ESPECÍFICO PARA WINDOWS
 function throttleWindows(func, limit) {
     let inThrottle;
     let lastFunc;
@@ -1526,44 +1445,51 @@ function throttleWindows(func, limit) {
     }
 }
 
-function isInViewport(element, offset = 0) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= -offset &&
-        rect.left >= -offset &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + offset &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth) + offset
-    );
-}
-
 // ================================
-// Service Worker Registration (Optional)
+// INICIALIZACIÓN GLOBAL
 // ================================
 
-if ('serviceWorker' in navigator && 'production' === 'production') {
-    window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/sw.js')
-            .then(function (registration) {
-            })
-            .catch(function (err) {
-            });
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('🔥 Iniciando Ball de Diables del Prat Website...');
+
+    // 1. INICIALIZAR EL SISTEMA DE CARGA REAL PRIMERO
+    initRealLoadingScreen();
+
+    // 2. APLICAR FIXES DE CHROME WINDOWS SI ES NECESARIO
+    if (isChromeWindows()) {
+        console.log('🖥️ Chrome Windows detectado - Aplicando optimizaciones...');
+        initSmoothScrollChrome();
+    }
+
+    // 3. ESPERAR A QUE LA CARGA REAL SE COMPLETE
+    window.addEventListener('loadingComplete', function(e) {
+        console.log('✅ Carga real completada, inicializando funcionalidades...', e.detail);
+        initializeAllFeatures();
     });
-}
 
-// Solución bug redimensionament navbar
+    // 4. FALLBACK SI NO HAY LOADING SCREEN
+    if (!document.getElementById('loadingScreen')) {
+        console.log('⚠️ No hay loading screen, inicializando directamente...');
+        setTimeout(initializeAllFeatures, 100);
+    }
+
+    document.body.classList.remove('loading');
+});
+
+// ================================
+// RESIZE HANDLER
+// ================================
+
 window.addEventListener('resize', function () {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
 
-    // Resetear el menú quan canviï la mida de pantalla
     if (window.innerWidth > 1100) {
-        // Desktop: assegurar que el menú mòbil està tancat
         if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
         if (mobileNavOverlay) mobileNavOverlay.classList.remove('active');
         if (mobileNavOverlay) mobileNavOverlay.setAttribute('aria-hidden', 'true');
         if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'false');
     } else {
-        // Mobile/Tablet: assegurar visibilitat correcta
         if (mobileNavOverlay && !mobileNavOverlay.classList.contains('active')) {
             mobileNavOverlay.setAttribute('aria-hidden', 'true');
         }
@@ -1571,44 +1497,47 @@ window.addEventListener('resize', function () {
 });
 
 // ================================
-// Utilidad para precargar recursos críticos
+// PRELOAD NEXT RESOURCES
 // ================================
 
-function preloadCriticalResources() {
-    const criticalResources = [
-        'css/styles.css',
-        'images/Logo.png',
-        'images/LogoBlanc.png',
-        'images/Carretillada.jpg'
+function preloadNextResources() {
+    const nextPageResources = [
+        'panera.html'
     ];
 
-    criticalResources.forEach(url => {
+    nextPageResources.forEach(resource => {
         const link = document.createElement('link');
-        link.rel = 'preload';
-        link.href = url;
-
-        if (url.endsWith('.css')) {
-            link.as = 'style';
-        } else if (url.match(/\.(jpg|png|webp)$/)) {
-            link.as = 'image';
-        }
-
+        link.rel = 'prefetch';
+        link.href = resource;
         document.head.appendChild(link);
     });
 }
 
-// Precargar recursos en cuanto se pueda
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', preloadCriticalResources);
-} else {
-    preloadCriticalResources();
+window.addEventListener('loadingComplete', function(e) {
+    console.log('🎊 Carga completada, iniciando preload de recursos adicionales...');
+    setTimeout(preloadNextResources, 1000);
+});
+
+// ================================
+// SERVICE WORKER
+// ================================
+
+if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function (registration) {
+                console.log('ServiceWorker registrado');
+            })
+            .catch(function (err) {
+                console.log('ServiceWorker falló');
+            });
+    });
 }
 
 // Detectar Windows y aplicar optimizaciones
 if (navigator.platform.indexOf('Win') > -1) {
     document.body.classList.add('windows-os');
 
-    // CSS específico para Windows
     const style = document.createElement('style');
     style.textContent = `
         .windows-os .timeline-item {
@@ -1619,103 +1548,4 @@ if (navigator.platform.indexOf('Win') > -1) {
         }
     `;
     document.head.appendChild(style);
-}
-// Fix para Timeline hover en Chrome Windows - Animación por JavaScript
-function initTimelineChrome() {
-    if (!isChromeWindows()) return;
-
-
-    const timelineWrappers = document.querySelectorAll('.timeline-content-wrapper');
-
-    timelineWrappers.forEach(wrapper => {
-        let isAnimating = false;
-
-        wrapper.addEventListener('mouseenter', function () {
-            if (isAnimating) return;
-            isAnimating = true;
-
-            animateTimelineElement(this, { translateY: -5 }, 300);
-
-            const icon = this.querySelector('.timeline-icon');
-            if (icon) {
-                animateTimelineElement(icon, { rotate: 360, scale: 1.1 }, 300);
-            }
-
-            const img = this.querySelector('.timeline-image img');
-            if (img) {
-                animateTimelineElement(img, { scale: 1.05 }, 400);
-            }
-
-            setTimeout(() => { isAnimating = false; }, 400);
-        });
-
-        wrapper.addEventListener('mouseleave', function () {
-            if (isAnimating) return;
-            isAnimating = true;
-
-            animateTimelineElement(this, { translateY: 0 }, 300);
-
-            const icon = this.querySelector('.timeline-icon');
-            if (icon) {
-                animateTimelineElement(icon, { rotate: 0, scale: 1 }, 300);
-            }
-
-            const img = this.querySelector('.timeline-image img');
-            if (img) {
-                animateTimelineElement(img, { scale: 1 }, 400);
-            }
-
-            setTimeout(() => { isAnimating = false; }, 400);
-        });
-    });
-}
-
-function animateTimelineElement(element, properties, duration) {
-    const startTime = performance.now();
-    const startValues = {};
-
-    const currentTransform = element.style.transform || '';
-
-    Object.keys(properties).forEach(prop => {
-        if (prop === 'translateY') {
-            const match = currentTransform.match(/translateY\(([^)]+)\)/);
-            startValues[prop] = match ? parseFloat(match[1]) : 0;
-        } else if (prop === 'scale') {
-            const match = currentTransform.match(/scale\(([^)]+)\)/);
-            startValues[prop] = match ? parseFloat(match[1]) : 1;
-        } else if (prop === 'rotate') {
-            const match = currentTransform.match(/rotate\(([^)]+)deg\)/);
-            startValues[prop] = match ? parseFloat(match[1]) : 0;
-        }
-    });
-
-    function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-        let transform = '';
-
-        Object.keys(properties).forEach(prop => {
-            const startValue = startValues[prop];
-            const endValue = properties[prop];
-            const currentValue = startValue + (endValue - startValue) * easeProgress;
-
-            if (prop === 'translateY') {
-                transform += `translateY(${currentValue}px) `;
-            } else if (prop === 'scale') {
-                transform += `scale(${currentValue}) `;
-            } else if (prop === 'rotate') {
-                transform += `rotate(${currentValue}deg) `;
-            }
-        });
-
-        element.style.transform = transform.trim();
-
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        }
-    }
-
-    requestAnimationFrame(animate);
 }
