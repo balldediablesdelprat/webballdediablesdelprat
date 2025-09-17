@@ -128,7 +128,7 @@ function initLoadingScreen() {
     }, 5000);
 }
 /* ================================
-   JAVASCRIPT FIXES PARA CHROME EN WINDOWS - SIMPLIFICADO
+   JAVASCRIPT FIXES PARA CHROME EN WINDOWS - COMPLETO
    Añadir al inicio de main.js, antes del DOMContentLoaded
    ================================ */
 
@@ -141,11 +141,121 @@ function isChromeWindows() {
     return isChrome && isWindows && isNotEdge;
 }
 
-// Solo aplicar fix mínimo si es Chrome Windows
+// Fix para Smooth Scroll en Chrome Windows
+function initSmoothScrollChrome() {
+    if (!isChromeWindows()) return;
+    
+    console.log('Applying Chrome Windows smooth scroll fix');
+    
+    // Interceptar todos los enlaces de navegación
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a[href^="#"]');
+        if (!link) return;
+        
+        e.preventDefault();
+        
+        const targetId = link.getAttribute('href');
+        const target = document.querySelector(targetId);
+        
+        if (target) {
+            const navbarHeight = document.querySelector('.navbar').offsetHeight || 0;
+            const targetPosition = target.offsetTop - navbarHeight - 20;
+            
+            // Smooth scroll personalizado para Chrome Windows
+            smoothScrollTo(targetPosition, 800);
+        }
+    });
+}
+
+// Función de smooth scroll personalizada para Chrome Windows
+function smoothScrollTo(targetPosition, duration) {
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    const startTime = performance.now();
+    
+    function ease(t) {
+        return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    }
+    
+    function scrollAnimation(currentTime) {
+        const timeElapsed = currentTime - startTime;
+        const run = ease(timeElapsed / duration) * distance;
+        
+        window.scrollTo(0, startPosition + run);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(scrollAnimation);
+        }
+    }
+    
+    requestAnimationFrame(scrollAnimation);
+}
+
+// Fix para Gallery hover en Chrome Windows
+function initGalleryChrome() {
+    if (!isChromeWindows()) return;
+    
+    console.log('Applying Chrome Windows gallery fixes');
+    
+    const galleryCards = document.querySelectorAll('.gallery-card');
+    
+    galleryCards.forEach(card => {
+        // Force hardware acceleration
+        card.style.webkitBackfaceVisibility = 'hidden';
+        card.style.backfaceVisibility = 'hidden';
+        card.style.willChange = 'transform';
+        
+        // Hover personalizado para Chrome Windows
+        card.addEventListener('mouseenter', function() {
+            this.style.webkitTransition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            this.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            this.style.webkitTransform = 'translateY(-8px)';
+            this.style.transform = 'translateY(-8px)';
+            
+            // Imagen scale
+            const img = this.querySelector('.gallery-image img');
+            if (img) {
+                img.style.webkitTransition = 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                img.style.transition = 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                img.style.webkitTransform = 'scale(1.1)';
+                img.style.transform = 'scale(1.1)';
+            }
+            
+            // Overlay
+            const overlay = this.querySelector('.gallery-overlay');
+            if (overlay) {
+                overlay.style.webkitTransition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                overlay.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                overlay.style.webkitTransform = 'translateY(0)';
+                overlay.style.transform = 'translateY(0)';
+            }
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.webkitTransform = 'translateY(0)';
+            this.style.transform = 'translateY(0)';
+            
+            // Imagen reset
+            const img = this.querySelector('.gallery-image img');
+            if (img) {
+                img.style.webkitTransform = 'scale(1)';
+                img.style.transform = 'scale(1)';
+            }
+            
+            // Overlay reset
+            const overlay = this.querySelector('.gallery-overlay');
+            if (overlay) {
+                overlay.style.webkitTransform = 'translateY(100%)';
+                overlay.style.transform = 'translateY(100%)';
+            }
+        });
+    });
+}
+
+// Solo aplicar fix si es Chrome Windows
 if (isChromeWindows()) {
     console.log('Chrome Windows detected - applying minimal fixes');
     
-    // Fix mínimo para hardware acceleration
     document.addEventListener('DOMContentLoaded', function() {
         // Asegurar que el loading screen tenga hardware acceleration
         const loadingScreen = document.getElementById('loadingScreen');
@@ -154,13 +264,19 @@ if (isChromeWindows()) {
             loadingScreen.style.backfaceVisibility = 'hidden';
         }
         
-        // Timeline items
+        // Aplicar fixes específicos
+        initSmoothScrollChrome();
+        
+        // Timeline items (después de que se inicialice)
         setTimeout(() => {
             const timelineItems = document.querySelectorAll('.timeline-item');
             timelineItems.forEach(item => {
                 item.style.webkitBackfaceVisibility = 'hidden';
                 item.style.backfaceVisibility = 'hidden';
             });
+            
+            // Gallery fixes
+            initGalleryChrome();
         }, 1000);
     });
 }

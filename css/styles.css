@@ -2648,6 +2648,55 @@ img {
         -webkit-font-smoothing: antialiased;
     }
     
+    /* SMOOTH SCROLLING FIXES PARA CHROME WINDOWS */
+    html {
+        scroll-behavior: smooth !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* GALLERY HOVER FIXES PARA CHROME WINDOWS */
+    .gallery-card {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        will-change: transform;
+    }
+    
+    .gallery-card:hover {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+    }
+    
+    .gallery-image img {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        will-change: transform;
+    }
+    
+    .gallery-card:hover .gallery-image img {
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+    
+    /* GALLERY OVERLAY FIXES */
+    .gallery-overlay {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        will-change: transform;
+    }
+    
+    /* GENERAL TRANSITION FIXES PARA CHROME WINDOWS */
+    a, button, .cta-button, .submit-btn, .nav-links a {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        will-change: transform;
+    }
+    
     /* Loading logo para Chrome Windows - sin forzar tamaño */
     .loading-logo-image {
         -webkit-animation: chromeLogoFade 1.8s ease-out 0.5s both;
