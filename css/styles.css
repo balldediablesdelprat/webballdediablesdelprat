@@ -2633,3 +2633,97 @@ img {
     z-index: 1;
     will-change: height;
 }
+/* ================================
+   FIXES ESPECÍFICOS PARA CHROME EN WINDOWS
+   Añadir al final de styles.css
+   ================================ */
+
+/* 1. Detectar Chrome en Windows específicamente (no Edge) */
+@supports ((-webkit-appearance: none) and (not (-ms-ime-align: auto)) and (not (-moz-appearance: none))) {
+    
+    /* LOADING SCREEN FIXES PARA CHROME WINDOWS - MÁS SUAVE */
+    .loading-screen {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Loading logo para Chrome Windows - sin forzar tamaño */
+    .loading-logo-image {
+        -webkit-animation: chromeLogoFade 1.8s ease-out 0.5s both;
+        animation: chromeLogoFade 1.8s ease-out 0.5s both;
+        will-change: transform, opacity;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    
+    /* Spinner para Chrome Windows */
+    .spinner-ring {
+        -webkit-animation: chromeSpinFix 1.5s linear infinite;
+        animation: chromeSpinFix 1.5s linear infinite;
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    
+    /* Timeline items para Chrome Windows */
+    .timeline-item {
+        -webkit-transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        will-change: transform, opacity;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    
+    /* Mobile menu para Chrome Windows */
+    .mobile-nav-overlay {
+        -webkit-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        will-change: transform, opacity;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+}
+
+/* Keyframes específicos para Chrome Windows - más suaves */
+@keyframes chromeLogoFade {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@-webkit-keyframes chromeLogoFade {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(0.8) translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes chromeSpinFix {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes chromeSpinFix {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+/* Opcional: Force repaint más suave para Chrome Windows */

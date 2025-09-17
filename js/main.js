@@ -127,7 +127,43 @@ function initLoadingScreen() {
         }
     }, 5000);
 }
+/* ================================
+   JAVASCRIPT FIXES PARA CHROME EN WINDOWS - SIMPLIFICADO
+   Añadir al inicio de main.js, antes del DOMContentLoaded
+   ================================ */
 
+// Detectar Chrome en Windows específicamente
+function isChromeWindows() {
+    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    const isWindows = navigator.platform.indexOf('Win') > -1;
+    const isNotEdge = !/Edge/.test(navigator.userAgent) && !/Edg/.test(navigator.userAgent);
+    
+    return isChrome && isWindows && isNotEdge;
+}
+
+// Solo aplicar fix mínimo si es Chrome Windows
+if (isChromeWindows()) {
+    console.log('Chrome Windows detected - applying minimal fixes');
+    
+    // Fix mínimo para hardware acceleration
+    document.addEventListener('DOMContentLoaded', function() {
+        // Asegurar que el loading screen tenga hardware acceleration
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.style.webkitBackfaceVisibility = 'hidden';
+            loadingScreen.style.backfaceVisibility = 'hidden';
+        }
+        
+        // Timeline items
+        setTimeout(() => {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach(item => {
+                item.style.webkitBackfaceVisibility = 'hidden';
+                item.style.backfaceVisibility = 'hidden';
+            });
+        }, 1000);
+    });
+}
 document.addEventListener('DOMContentLoaded', function () {
 
     // Inicializar loading screen PRIMERO
