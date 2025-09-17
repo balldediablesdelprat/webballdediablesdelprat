@@ -351,77 +351,154 @@ function animateElement(element, properties, duration) {
     }
     
     requestAnimationFrame(animate);
-}
-// Afegir aquesta funció al bloc dels Chrome Windows fixes, després de animateElement()
-// SUBSTITUIR la funció initLoadingChrome() per aquesta versió amb debug:
+}// SUBSTITUIR la funció initLoadingChrome per aquesta versió ultra agressiva:
 
 function initLoadingChrome() {
     if (!isChromeWindows()) return;
     
-    console.log('🔧 Chrome Windows: Starting loading screen fixes');
+    // Evitar execucions múltiples
+    if (window.loadingChromeApplied) return;
+    window.loadingChromeApplied = true;
     
-    // Buscar elements immediatament
-    const loadingLogo = document.querySelector('.loading-logo-image');
-    const spinnerRings = document.querySelectorAll('.spinner-ring');
-    const progressFill = document.querySelector('.progress-fill');
+    console.log('🔧 Chrome Windows: Starting loading screen fixes (ultra aggressive)');
     
-    console.log('🔍 Elements found:', {
-        logo: !!loadingLogo,
-        spinners: spinnerRings.length,
-        progressBar: !!progressFill
-    });
-    
-    // Si no trobem elements, intentar més tard
-    if (!loadingLogo || spinnerRings.length === 0 || !progressFill) {
-        console.log('⏰ Elements not found, retrying in 500ms...');
-        setTimeout(() => initLoadingChrome(), 500);
-        return;
-    }
-    
-    // LOGO ANIMATION
-    if (loadingLogo) {
-        console.log('🎭 Animating logo');
-        loadingLogo.style.animation = 'none !important';
-        loadingLogo.style.webkitAnimation = 'none !important';
-        loadingLogo.style.opacity = '0';
-        loadingLogo.style.transform = 'scale(0.8) translateY(-20px)';
-        
-        setTimeout(() => {
-            animateLoadingLogo(loadingLogo);
-        }, 300);
-    }
-    
-    // SPINNER ANIMATION
-    spinnerRings.forEach((ring, index) => {
-        console.log(`🌀 Animating spinner ${index + 1}`);
-        ring.style.animation = 'none !important';
-        ring.style.webkitAnimation = 'none !important';
-        
-        // Començar rotació immediata
-        let rotation = 0;
-        const speed = index === 0 ? 2 : -1.5; // Primera normal, segona inversa i més lenta
-        
-        function spin() {
-            rotation += speed;
-            ring.style.transform = `rotate(${rotation}deg)`;
-            ring.style.webkitTransform = `rotate(${rotation}deg)`;
-            requestAnimationFrame(spin);
+    // Força cancel·lar TOTES les animacions CSS del loading screen
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .loading-logo-image {
+            animation: none !important;
+            -webkit-animation: none !important;
+            transition: none !important;
+            -webkit-transition: none !important;
         }
-        requestAnimationFrame(spin);
-    });
+        .spinner-ring {
+            animation: none !important;
+            -webkit-animation: none !important;
+            transition: none !important;
+            -webkit-transition: none !important;
+        }
+        .progress-fill {
+            animation: none !important;
+            -webkit-animation: none !important;
+            transition: none !important;
+            -webkit-transition: none !important;
+        }
+    `;
+    document.head.appendChild(style);
     
-    // PROGRESS BAR ANIMATION
-    if (progressFill) {
-        console.log('📊 Animating progress bar');
-        progressFill.style.animation = 'none !important';
-        progressFill.style.webkitAnimation = 'none !important';
-        progressFill.style.width = '0%';
+    // Buscar elements
+    setTimeout(() => {
+        const loadingLogo = document.querySelector('.loading-logo-image');
+        const spinnerRings = document.querySelectorAll('.spinner-ring');
+        const progressFill = document.querySelector('.progress-fill');
         
-        // Començar animació de la barra
-        animateProgressBarImproved(progressFill);
-    }
+        console.log('🔍 Elements status:', {
+            logo: !!loadingLogo,
+            spinners: spinnerRings.length,
+            progressBar: !!progressFill
+        });
+        
+        // LOGO - Force reset i animació
+        if (loadingLogo) {
+            console.log('🎭 Force animating logo');
+            
+            // Reset total
+            loadingLogo.style.animation = 'none';
+            loadingLogo.style.webkitAnimation = 'none';
+            loadingLogo.style.opacity = '0';
+            loadingLogo.style.transform = 'scale(0.8) translateY(-20px)';
+            loadingLogo.style.webkitTransform = 'scale(0.8) translateY(-20px)';
+            
+            // Força repaint
+            loadingLogo.offsetHeight;
+            
+            // Animació amb delay
+            setTimeout(() => {
+                const startTime = performance.now();
+                function animateLogo(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / 1500, 1);
+                    const easeProgress = 1 - Math.pow(1 - progress, 3);
+                    
+                    const opacity = easeProgress;
+                    const scale = 0.8 + (0.2 * easeProgress);
+                    const translateY = -20 + (20 * easeProgress);
+                    
+                    loadingLogo.style.opacity = opacity;
+                    loadingLogo.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+                    loadingLogo.style.webkitTransform = `scale(${scale}) translateY(${translateY}px)`;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animateLogo);
+                    } else {
+                        console.log('✅ Logo animation force completed');
+                    }
+                }
+                requestAnimationFrame(animateLogo);
+            }, 400);
+        }
+        
+        // SPINNERS - Rotació forçada
+        spinnerRings.forEach((ring, index) => {
+            console.log(`🌀 Force animating spinner ${index + 1}`);
+            
+            // Reset total
+            ring.style.animation = 'none';
+            ring.style.webkitAnimation = 'none';
+            ring.style.transform = 'rotate(0deg)';
+            ring.style.webkitTransform = 'rotate(0deg)';
+            
+            // Força repaint
+            ring.offsetHeight;
+            
+            // Rotació immediata i contínua
+            let rotation = 0;
+            const speed = index === 0 ? 2 : -1.5;
+            
+            function spin() {
+                rotation += speed;
+                const rotateTransform = `rotate(${rotation}deg)`;
+                ring.style.transform = rotateTransform;
+                ring.style.webkitTransform = rotateTransform;
+                requestAnimationFrame(spin);
+            }
+            
+            // Començar immediat
+            requestAnimationFrame(spin);
+        });
+        
+        // PROGRESS BAR - Animació forçada
+        if (progressFill) {
+            console.log('📊 Force animating progress bar');
+            
+            // Reset total
+            progressFill.style.animation = 'none';
+            progressFill.style.webkitAnimation = 'none';
+            progressFill.style.width = '0%';
+            
+            // Força repaint
+            progressFill.offsetHeight;
+            
+            // Animació immediata
+            const startTime = performance.now();
+            function animateProgress(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / 3000, 1); // 3 segons
+                const width = progress * 100;
+                
+                progressFill.style.width = `${width}%`;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animateProgress);
+                } else {
+                    console.log('✅ Progress bar force completed');
+                }
+            }
+            requestAnimationFrame(animateProgress);
+        }
+        
+    }, 100);
 }
-
 // Logo animation millorada
 function animateLoadingLogo(logo) {
     console.log('🎭 Starting logo animation');
