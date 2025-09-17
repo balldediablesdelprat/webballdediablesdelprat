@@ -1072,192 +1072,197 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // ================================
-    // Enhanced Contact Form
-    // ================================
+// En main.js, REEMPLAZA toda la función initContactForm() por esta versión:
 
-    function initContactForm() {
-        const form = document.querySelector('.contact-form');
-        const submitBtn = document.querySelector('.submit-btn');
+function initContactForm() {
+    const form = document.querySelector('.contact-form');
+    const submitBtn = document.querySelector('.submit-btn');
 
-        if (!form) return;
+    if (!form) return;
 
-        // Real-time validation
-        const formFields = form.querySelectorAll('input, textarea');
-        formFields.forEach(field => {
-            field.addEventListener('blur', function () {
-                validateField(this);
-            });
-
-            field.addEventListener('input', function () {
-                if (this.classList.contains('error')) {
-                    validateField(this);
-                }
-            });
+    // Real-time validation
+    const formFields = form.querySelectorAll('input, textarea');
+    formFields.forEach(field => {
+        field.addEventListener('blur', function () {
+            validateField(this);
         });
 
-        function validateField(field) {
-            const value = field.value.trim();
-            const fieldName = field.name;
-            const errorElement = document.getElementById(fieldName + '-error');
-
-            let isValid = true;
-            let errorMessage = '';
-
-            switch (fieldName) {
-                case 'name':
-                    if (!value) {
-                        isValid = false;
-                        errorMessage = 'El nom és obligatori.';
-                    } else if (value.length < 2) {
-                        isValid = false;
-                        errorMessage = 'El nom ha de tenir almenys 2 caràcters.';
-                    }
-                    break;
-
-                case 'email':
-                    if (!value) {
-                        isValid = false;
-                        errorMessage = 'El correu electrònic és obligatori.';
-                    } else if (!isValidEmail(value)) {
-                        isValid = false;
-                        errorMessage = 'Introdueix una adreça de correu electrònic vàlida.';
-                    }
-                    break;
-
-                case 'subject':
-                    if (!value) {
-                        isValid = false;
-                        errorMessage = "L'assumpte és obligatori.";
-                    } else if (value.length < 5) {
-                        isValid = false;
-                        errorMessage = "L'assumpte ha de tenir almenys 5 caràcters.";
-                    }
-                    break;
-
-                case 'message':
-                    if (!value) {
-                        isValid = false;
-                        errorMessage = 'El missatge és obligatori.';
-                    } else if (value.length < 10) {
-                        isValid = false;
-                        errorMessage = 'El missatge ha de tenir almenys 10 caràcters.';
-                    }
-                    break;
+        field.addEventListener('input', function () {
+            if (this.classList.contains('error')) {
+                validateField(this);
             }
+        });
+    });
 
-            // Update field appearance
-            field.classList.toggle('error', !isValid);
-            field.style.borderColor = isValid ? 'var(--border-color)' : 'var(--primary-red)';
+    function validateField(field) {
+        const value = field.value.trim();
+        const fieldName = field.name;
+        const errorElement = document.getElementById(fieldName + '-error');
 
-            // Update error message
-            if (errorElement) {
-                errorElement.textContent = errorMessage;
-                errorElement.style.opacity = errorMessage ? '1' : '0';
-            }
+        let isValid = true;
+        let errorMessage = '';
 
-            return isValid;
+        switch (fieldName) {
+            case 'name':
+                if (!value) {
+                    isValid = false;
+                    errorMessage = 'El nom és obligatori.';
+                } else if (value.length < 2) {
+                    isValid = false;
+                    errorMessage = 'El nom ha de tenir almenys 2 caràcters.';
+                }
+                break;
+
+            case 'email':
+            case '_replyto':
+                if (!value) {
+                    isValid = false;
+                    errorMessage = 'El correu electrònic és obligatori.';
+                } else if (!isValidEmail(value)) {
+                    isValid = false;
+                    errorMessage = 'Introdueix una adreça de correu electrònic vàlida.';
+                }
+                break;
+
+            case 'subject':
+                if (!value) {
+                    isValid = false;
+                    errorMessage = "L'assumpte és obligatori.";
+                } else if (value.length < 5) {
+                    isValid = false;
+                    errorMessage = "L'assumpte ha de tenir almenys 5 caràcters.";
+                }
+                break;
+
+            case 'message':
+                if (!value) {
+                    isValid = false;
+                    errorMessage = 'El missatge és obligatori.';
+                } else if (value.length < 10) {
+                    isValid = false;
+                    errorMessage = 'El missatge ha de tenir almenys 10 caràcters.';
+                }
+                break;
         }
 
-        // Form submission
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
+        // Update field appearance
+        field.classList.toggle('error', !isValid);
+        field.style.borderColor = isValid ? 'var(--border-color)' : 'var(--primary-red)';
 
-            // Validate all fields
-            let isFormValid = true;
-            formFields.forEach(field => {
-                if (!validateField(field)) {
-                    isFormValid = false;
-                }
-            });
+        // Update error message
+        if (errorElement) {
+            errorElement.textContent = errorMessage;
+            errorElement.style.opacity = errorMessage ? '1' : '0';
+        }
 
-            if (!isFormValid) {
-                // Focus first error field
-                const firstErrorField = form.querySelector('.error');
-                if (firstErrorField) {
-                    firstErrorField.focus();
-                }
-                return;
+        return isValid;
+    }
+
+    // Form submission - CORREGIDO PARA FORMSPREE
+    form.addEventListener('submit', function (e) {
+        // Validar todos los campos
+        let isFormValid = true;
+        formFields.forEach(field => {
+            if (!validateField(field)) {
+                isFormValid = false;
             }
+        });
 
-            // Show loading state
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Enviant...';
-            submitBtn.disabled = true;
-            submitBtn.style.background = 'var(--text-light)';
+        if (!isFormValid) {
+            e.preventDefault();
+            // Focus first error field
+            const firstErrorField = form.querySelector('.error');
+            if (firstErrorField) {
+                firstErrorField.focus();
+                firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
 
-            // Simulate form submission (replace with actual form submission)
-            setTimeout(() => {
+        // Si la validación pasa, mostrar estado de carga
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Enviant...';
+        submitBtn.disabled = true;
+        submitBtn.style.background = 'var(--text-light)';
+
+        // NO hacer e.preventDefault() - dejar que Formspree maneje el envío
+
+        // Mostrar mensaje de éxito después del envío
+        // (Esto se ejecutará si Formspree no redirige)
+        setTimeout(() => {
+            if (document.contains(form)) {
                 showFormSuccess();
                 form.reset();
+                
+                // Limpiar errores
                 formFields.forEach(field => {
                     field.style.borderColor = 'var(--border-color)';
                     field.classList.remove('error');
                 });
 
-                // Clear error messages
                 document.querySelectorAll('.error-message').forEach(msg => {
                     msg.textContent = '';
                     msg.style.opacity = '0';
                 });
 
                 // Reset button
-                setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.style.background = 'var(--primary-red)';
-                    submitBtn.disabled = false;
-                }, 3000);
-            }, 2000);
-        });
+                submitBtn.textContent = originalText;
+                submitBtn.style.background = 'var(--primary-red)';
+                submitBtn.disabled = false;
+            }
+        }, 2000);
+    });
+}
+
+// También mantén esta función de validación de email
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Y esta función para mostrar el éxito
+function showFormSuccess() {
+    const submitBtn = document.querySelector('.submit-btn');
+    if (submitBtn) {
+        submitBtn.textContent = 'Enviat ✓';
+        submitBtn.style.background = '#28a745';
     }
 
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
+    // Create success notification
+    const notification = document.createElement('div');
+    notification.className = 'success-notification';
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        z-index: 9999;
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+    `;
+    notification.textContent = "Gràcies pel teu missatge! Ens posarem en contacte aviat.";
 
-    function showFormSuccess() {
-        const submitBtn = document.querySelector('.submit-btn');
-        if (submitBtn) {
-            submitBtn.textContent = 'Enviat ✓';
-            submitBtn.style.background = '#28a745';
-        }
+    document.body.appendChild(notification);
 
-        // Create success notification
-        const notification = document.createElement('div');
-        notification.className = 'success-notification';
-        notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            z-index: 9999;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-        `;
-        notification.textContent = "Gràcies pel teu missatge! Ens posarem en contacte aviat.";
+    // Animate in
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
 
-        document.body.appendChild(notification);
-
-        // Animate in
+    // Remove after delay
+    setTimeout(() => {
+        notification.style.transform = 'translateX(400px)';
         setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
-        }, 100);
-
-        // Remove after delay
-        setTimeout(() => {
-            notification.style.transform = 'translateX(400px)';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
-        }, 4000);
-    }
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 4000);
+}
 
     // ================================
     // Enhanced Navbar Effects
