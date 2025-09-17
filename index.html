@@ -129,9 +129,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css">
 
-  <!-- Favicon -->
-  <link rel="icon" href="images/Rodona.png" type="image/png">
-  <link rel="apple-touch-icon" href="images/Rodona.png">
+<!-- Favicon optimitzat - REEMPLAZA las líneas anteriores -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  
+  <!-- Para PWA y mejor SEO -->
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#a3000f">
+  <meta name="theme-color" content="#a3000f">
 
   <!-- Performance hints -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -144,8 +152,7 @@
   <link rel="preload" href="images/Carretillada.jpg" as="image">
 </head>
 
-<body class="loading">
-
+<body class="loading debug-loading">
   <!-- Loading Screen -->
   <div id="loadingScreen" class="loading-screen" role="progressbar" aria-labelledby="loading-title" aria-valuenow="0"
     aria-valuemin="0" aria-valuemax="100">
@@ -159,7 +166,7 @@
       <div class="spinner-ring"></div>
     </div>
 
-    <div id="loading-title" class="loading-text">Carregant...</div>
+<div id="loading-title" class="loading-text">Afinant els tabals...</div>
 
     <div class="loading-progress">
       <div class="progress-fill"></div>
