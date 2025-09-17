@@ -495,6 +495,40 @@ function initLoadingChrome() {
                 }
             }
             requestAnimationFrame(animateProgress);
+            // TEXTO "Carregant..." - Animació forçada
+        const loadingText = document.querySelector('.loading-text');
+        if (loadingText) {
+            console.log('🔤 Force animating loading text');
+            
+            // Cancel·lar animació CSS
+            loadingText.style.animation = 'none';
+            loadingText.style.webkitAnimation = 'none';
+            loadingText.style.opacity = '0.6';
+            
+            // Animació JavaScript
+            let textOpacity = 0.6;
+            let increasing = true;
+            
+            function animateText() {
+                if (increasing) {
+                    textOpacity += 0.015;
+                    if (textOpacity >= 1) {
+                        increasing = false;
+                    }
+                } else {
+                    textOpacity -= 0.015;
+                    if (textOpacity <= 0.6) {
+                        increasing = true;
+                    }
+                }
+                
+                loadingText.style.opacity = textOpacity;
+                requestAnimationFrame(animateText);
+            }
+            
+            requestAnimationFrame(animateText);
+            console.log('✅ Loading text animation started');
+        }
         }
         
     }, 100);
