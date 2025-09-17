@@ -353,47 +353,132 @@ function animateElement(element, properties, duration) {
     requestAnimationFrame(animate);
 }
 // Afegir aquesta funció al bloc dels Chrome Windows fixes, després de animateElement()
+// SUBSTITUIR la funció initLoadingChrome() per aquesta versió amb debug:
 
-// Fix específic per Loading Screen en Chrome Windows
 function initLoadingChrome() {
     if (!isChromeWindows()) return;
     
-    console.log('Applying Chrome Windows loading screen fixes');
+    console.log('🔧 Chrome Windows: Starting loading screen fixes');
     
-    // Esperar a que existeixin els elements
-    setTimeout(() => {
-        const loadingLogo = document.querySelector('.loading-logo-image');
-        const spinnerRings = document.querySelectorAll('.spinner-ring');
-        const progressFill = document.querySelector('.progress-fill');
+    // Buscar elements immediatament
+    const loadingLogo = document.querySelector('.loading-logo-image');
+    const spinnerRings = document.querySelectorAll('.spinner-ring');
+    const progressFill = document.querySelector('.progress-fill');
+    
+    console.log('🔍 Elements found:', {
+        logo: !!loadingLogo,
+        spinners: spinnerRings.length,
+        progressBar: !!progressFill
+    });
+    
+    // Si no trobem elements, intentar més tard
+    if (!loadingLogo || spinnerRings.length === 0 || !progressFill) {
+        console.log('⏰ Elements not found, retrying in 500ms...');
+        setTimeout(() => initLoadingChrome(), 500);
+        return;
+    }
+    
+    // LOGO ANIMATION
+    if (loadingLogo) {
+        console.log('🎭 Animating logo');
+        loadingLogo.style.animation = 'none !important';
+        loadingLogo.style.webkitAnimation = 'none !important';
+        loadingLogo.style.opacity = '0';
+        loadingLogo.style.transform = 'scale(0.8) translateY(-20px)';
         
-        // Animar logo amb JavaScript
-        if (loadingLogo) {
-            // Cancel·lar animació CSS
-            loadingLogo.style.animation = 'none';
-            loadingLogo.style.opacity = '0';
-            loadingLogo.style.transform = 'scale(0.8)';
-            
-            // Animació JavaScript després de 500ms
-            setTimeout(() => {
-                animateLoadingLogo(loadingLogo);
-            }, 500);
+        setTimeout(() => {
+            animateLoadingLogo(loadingLogo);
+        }, 300);
+    }
+    
+    // SPINNER ANIMATION
+    spinnerRings.forEach((ring, index) => {
+        console.log(`🌀 Animating spinner ${index + 1}`);
+        ring.style.animation = 'none !important';
+        ring.style.webkitAnimation = 'none !important';
+        
+        // Començar rotació immediata
+        let rotation = 0;
+        const speed = index === 0 ? 2 : -1.5; // Primera normal, segona inversa i més lenta
+        
+        function spin() {
+            rotation += speed;
+            ring.style.transform = `rotate(${rotation}deg)`;
+            ring.style.webkitTransform = `rotate(${rotation}deg)`;
+            requestAnimationFrame(spin);
         }
+        requestAnimationFrame(spin);
+    });
+    
+    // PROGRESS BAR ANIMATION
+    if (progressFill) {
+        console.log('📊 Animating progress bar');
+        progressFill.style.animation = 'none !important';
+        progressFill.style.webkitAnimation = 'none !important';
+        progressFill.style.width = '0%';
         
-        // Animar spinners amb JavaScript
-        spinnerRings.forEach((ring, index) => {
-            ring.style.animation = 'none';
-            animateSpinner(ring, index === 0 ? 1200 : 1800);
-        });
-        
-        // Animar progress bar amb JavaScript
-        if (progressFill) {
-            progressFill.style.animation = 'none';
-            progressFill.style.width = '0%';
-            animateProgressBar(progressFill);
-        }
-        
-    }, 100);
+        // Començar animació de la barra
+        animateProgressBarImproved(progressFill);
+    }
 }
+
+// Logo animation millorada
+function animateLoadingLogo(logo) {
+    console.log('🎭 Starting logo animation');
+    const startTime = performance.now();
+    const duration = 1200;
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        const opacity = easeProgress;
+        const scale = 0.8 + (0.2 * easeProgress);
+        const translateY = -20 + (20 * easeProgress);
+        
+        logo.style.opacity = opacity;
+        logo.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+        logo.style.webkitTransform = `scale(${scale}) translateY(${translateY}px)`;
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            console.log('✅ Logo animation completed');
+        }
+    }
+    
+    requestAnimationFrame(animate);
+}
+
+// Progress bar animation millorada
+function animateProgressBarImproved(progressBar) {
+    console.log('📊 Starting progress bar animation');
+    const startTime = performance.now();
+    const duration = 2500;
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function
+        const easeProgress = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        const width = easeProgress * 100;
+        
+        progressBar.style.width = `${width}%`;
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            console.log('✅ Progress bar animation completed');
+        }
+    }
+    
+    requestAnimationFrame(animate);
+}
+
+// TAMBÉ cal modificar l'inicialització per cridar-ho més aviat:
+// En lloc de posar-ho dins del setTimeout de 1000ms, posa-ho directament al DOMContentLoaded:
 
 // Animació del logo per Chrome Windows
 function animateLoadingLogo(logo) {
@@ -482,6 +567,8 @@ if (isChromeWindows()) {
     console.log('Chrome Windows detected - applying minimal fixes');
     
     document.addEventListener('DOMContentLoaded', function() {
+           // Loading screen fixes - ABANS que desaparegui
+    initLoadingChrome();
         // Asegurar que el loading screen tenga hardware acceleration
         const loadingScreen = document.getElementById('loadingScreen');
         if (loadingScreen) {
