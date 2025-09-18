@@ -129,13 +129,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css">
 
-<!-- Favicon optimitzat - REEMPLAZA las líneas anteriores -->
+  <!-- Favicon optimitzat - REEMPLAZA las líneas anteriores -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
   <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-  
+
   <!-- Para PWA y mejor SEO -->
   <link rel="manifest" href="/site.webmanifest">
   <meta name="msapplication-TileColor" content="#a3000f">
@@ -166,7 +166,7 @@
       <div class="spinner-ring"></div>
     </div>
 
-<div id="loading-title" class="loading-text">Afinant els tabals...</div>
+    <div id="loading-title" class="loading-text">Afinant els tabals...</div>
 
     <div class="loading-progress">
       <div class="progress-fill"></div>
@@ -251,7 +251,8 @@
         <h2 id="about-title" class="section-title">Qui Som</h2>
         <div class="about-content">
           <div class="about-text">
-            <p>Som un Ball de Diables creat l'estiu del 2017 que segueix el model tradicional del món dels diables. Busquem
+            <p>Som un Ball de Diables creat l'estiu del 2017 que segueix el model tradicional del món dels diables.
+              Busquem
               fomentar la participació activa del públic i la cultura catalana arreu del territori.</p>
 
             <p>Els nostres fonaments es basen en el model tradicional: percussió amb tambors de membrana de pell,
@@ -616,41 +617,191 @@
         </div>
       </div>
     </section>
+    <!-- Versots Section -->
+    <section id="versots" class="section versots-section" aria-labelledby="versots-title">
+      <div class="versots-background" role="img" aria-label="Fons decoratiu dels versots"></div>
+      <div class="versots-overlay"></div>
+      <div class="container">
+        <div class="versots-content">
+          <h2 id="versots-title" class="section-title">Històric de Versots</h2>
 
+          <div class="versots-grid">
+            <!-- 2018 -->
+            <article class="versot-card" onclick="openPDF('2018')">
+              <div class="versot-cover">
+                <img src="images/versots/portada-2018.jpg" alt="Portada Versots 2018"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="font-size: 3rem; color: var(--primary-red); opacity: 0.3; display: none;">📖</div>
+              </div>
+              <div class="versot-overlay">
+                <div class="overlay-year">2018</div>
+                <a href="#" class="read-btn" onclick="event.preventDefault();">
+                  <span>📖</span>
+                  Llegir
+                </a>
+              </div>
+            </article>
+
+            <!-- 2019 -->
+            <article class="versot-card" onclick="openPDF('2019')">
+              <div class="versot-cover">
+                <img src="images/versots/portada-2019.jpg" alt="Portada Versots 2019"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="font-size: 3rem; color: var(--primary-red); opacity: 0.3; display: none;">📖</div>
+              </div>
+              <div class="versot-overlay">
+                <div class="overlay-year">2019</div>
+                <a href="#" class="read-btn" onclick="event.preventDefault();">
+                  <span>📖</span>
+                  Llegir
+                </a>
+              </div>
+            </article>
+
+            <!-- 2020 -->
+            <article class="versot-card" onclick="openPDF('2020')">
+              <div class="versot-cover">
+                <img src="images/versots/portada-2020.jpg" alt="Portada Versots 2020"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="font-size: 3rem; color: var(--primary-red); opacity: 0.3; display: none;">📖</div>
+              </div>
+              <div class="versot-overlay">
+                <div class="overlay-year">2020</div>
+                <a href="#" class="read-btn" onclick="event.preventDefault();">
+                  <span>📖</span>
+                  Llegir
+                </a>
+              </div>
+            </article>
+
+            <!-- 2021 -->
+            <article class="versot-card" onclick="openPDF('2021')">
+              <div class="versot-cover">
+                <img src="images/versots/portada-2021.jpg" alt="Portada Versots 2021"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="font-size: 3rem; color: var(--primary-red); opacity: 0.3; display: none;">📖</div>
+              </div>
+              <div class="versot-overlay">
+                <div class="overlay-year">2021</div>
+                <a href="#" class="read-btn" onclick="event.preventDefault();">
+                  <span>📖</span>
+                  Llegir
+                </a>
+              </div>
+            </article>
+
+            <!-- 2023 -->
+            <article class="versot-card" onclick="openPDF('2023')">
+              <div class="versot-cover">
+                <img src="images/versots/portada-2023.jpg" alt="Portada Versots 2023"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="font-size: 3rem; color: var(--primary-red); opacity: 0.3; display: none;">📖</div>
+              </div>
+              <div class="versot-overlay">
+                <div class="overlay-year">2023</div>
+                <a href="#" class="read-btn" onclick="event.preventDefault();">
+                  <span>📖</span>
+                  Llegir
+                </a>
+              </div>
+            </article>
+
+            <!-- 2024 -->
+            <article class="versot-card" onclick="openPDF('2024')">
+              <div class="versot-cover">
+                <img src="images/versots/portada-2024.jpg" alt="Portada Versots 2024"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="font-size: 3rem; color: var(--primary-red); opacity: 0.3; display: none;">📖</div>
+              </div>
+              <div class="versot-overlay">
+                <div class="overlay-year">2024</div>
+                <a href="#" class="read-btn" onclick="event.preventDefault();">
+                  <span>📖</span>
+                  Llegir
+                </a>
+              </div>
+            </article>
+
+            <!-- 2025 - Pròximament -->
+            <article class="versot-card coming-soon">
+              <div class="versot-cover"></div>
+              <div class="coming-soon-content">
+                <div class="coming-soon-year">2025</div>
+                <div class="countdown-mini" id="countdownMini">
+                  <div class="countdown-mini-item">
+                    <span class="countdown-mini-number" id="miniDays">245</span>
+                    <span class="countdown-mini-label">dies</span>
+                  </div>
+                  <div class="countdown-mini-item">
+                    <span class="countdown-mini-number" id="miniHours">12</span>
+                    <span class="countdown-mini-label">h</span>
+                  </div>
+                  <div class="countdown-mini-item">
+                    <span class="countdown-mini-number" id="miniMinutes">30</span>
+                    <span class="countdown-mini-label">m</span>
+                  </div>
+                  <div class="countdown-mini-item">
+                    <span class="countdown-mini-number" id="miniSeconds">45</span>
+                    <span class="countdown-mini-label">s</span>
+                  </div>
+                </div>
+              </div>
+          </div>
+          </article>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- PDF Modal -->
+    <div class="pdf-modal" id="pdfModal">
+      <div class="pdf-viewer">
+        <div class="pdf-header">
+          <h3 id="pdfTitle">Versots 2018</h3>
+          <button class="close-pdf" onclick="closePDF()">
+            <span style="font-size: 1.2rem;">✕</span>
+          </button>
+        </div>
+        <div class="pdf-content" id="pdfContent">
+          <p>Carregant PDF...</p>
+        </div>
+      </div>
+    </div>
     <!-- Contact -->
     <section id="contact" class="section contact" aria-labelledby="contact-title">
       <div class="container">
         <h2 id="contact-title" class="section-title">Contacte</h2>
         <div class="contact-content">
           <!-- Solo REEMPLAZA desde <form> hasta </form> por esto: -->
-<form class="contact-form" action="https://formspree.io/f/xyydrnjd" method="POST" accept-charset="UTF-8">
-    <!-- Campos anti-spam ocultos -->
-    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
-    <input type="hidden" name="_subject" value="Nou missatge des de balldediablesdelprat.cat">
-    
-    <div class="form-group">
-        <label for="name">Nom *</label>
-        <input type="text" id="name" name="name" required aria-describedby="name-error" autocomplete="name">
-        <span id="name-error" class="error-message" aria-live="polite"></span>
-    </div>
-    <div class="form-group">
-        <label for="email">Correu electrònic *</label>
-        <!-- Cambio: name="email" por name="_replyto" para que Formspree pueda responder -->
-        <input type="email" id="email" name="_replyto" required aria-describedby="email-error" autocomplete="email">
-        <span id="email-error" class="error-message" aria-live="polite"></span>
-    </div>
-    <div class="form-group">
-        <label for="subject">Assumpte *</label>
-        <input type="text" id="subject" name="subject" required aria-describedby="subject-error">
-        <span id="subject-error" class="error-message" aria-live="polite"></span>
-    </div>
-    <div class="form-group">
-        <label for="message">Missatge *</label>
-        <textarea id="message" name="message" rows="5" required aria-describedby="message-error"></textarea>
-        <span id="message-error" class="error-message" aria-live="polite"></span>
-    </div>
-    <button type="submit" class="submit-btn">Enviar</button>
-</form>
+          <form class="contact-form" action="https://formspree.io/f/xyydrnjd" method="POST" accept-charset="UTF-8">
+            <!-- Campos anti-spam ocultos -->
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="_subject" value="Nou missatge des de balldediablesdelprat.cat">
+
+            <div class="form-group">
+              <label for="name">Nom *</label>
+              <input type="text" id="name" name="name" required aria-describedby="name-error" autocomplete="name">
+              <span id="name-error" class="error-message" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Correu electrònic *</label>
+              <!-- Cambio: name="email" por name="_replyto" para que Formspree pueda responder -->
+              <input type="email" id="email" name="_replyto" required aria-describedby="email-error"
+                autocomplete="email">
+              <span id="email-error" class="error-message" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="subject">Assumpte *</label>
+              <input type="text" id="subject" name="subject" required aria-describedby="subject-error">
+              <span id="subject-error" class="error-message" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="message">Missatge *</label>
+              <textarea id="message" name="message" rows="5" required aria-describedby="message-error"></textarea>
+              <span id="message-error" class="error-message" aria-live="polite"></span>
+            </div>
+            <button type="submit" class="submit-btn">Enviar</button>
+          </form>
 
           <div class="contact-info">
             <h3>Contacta amb nosaltres</h3>

@@ -153,10 +153,12 @@ body {
         opacity: 0;
         transform: scale(0.8) translateY(-20px);
     }
+
     60% {
         opacity: 0.8;
         transform: scale(1.05) translateY(-5px);
     }
+
     100% {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -164,22 +166,51 @@ body {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes textPulse {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
+
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 @keyframes progressFill {
-    0% { width: 0%; }
-    20% { width: 15%; }
-    40% { width: 35%; }
-    60% { width: 60%; }
-    80% { width: 85%; }
-    100% { width: 100%; }
+    0% {
+        width: 0%;
+    }
+
+    20% {
+        width: 15%;
+    }
+
+    40% {
+        width: 35%;
+    }
+
+    60% {
+        width: 60%;
+    }
+
+    80% {
+        width: 85%;
+    }
+
+    100% {
+        width: 100%;
+    }
 }
 
 /* ================================
@@ -221,7 +252,11 @@ body {
     min-height: 1.25rem;
 }
 
-a:focus, button:focus, input:focus, textarea:focus, select:focus {
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
     outline: 2px solid var(--primary-red);
     outline-offset: 2px;
 }
@@ -328,9 +363,17 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
     transform-origin: center;
 }
 
-.hamburger-line:nth-child(1) { top: 8px; }
-.hamburger-line:nth-child(2) { top: 14px; }
-.hamburger-line:nth-child(3) { top: 20px; }
+.hamburger-line:nth-child(1) {
+    top: 8px;
+}
+
+.hamburger-line:nth-child(2) {
+    top: 14px;
+}
+
+.hamburger-line:nth-child(3) {
+    top: 20px;
+}
 
 .mobile-menu-btn.active .hamburger-line:nth-child(1) {
     top: 14px;
@@ -448,6 +491,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 
 /* Navigation Media Queries */
 @media (min-width: 1101px) {
+
     .mobile-nav-overlay,
     .mobile-nav-content,
     .mobile-nav-links {
@@ -923,13 +967,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
     padding: 5rem 2rem;
 }
 
-.section-subtitle {
-    text-align: center;
-    color: var(--text-light);
-    font-size: clamp(0.9rem, 2vw, 1rem);
-    margin-bottom: 3rem;
-    font-style: italic;
-}
+
 
 .historic-table-container {
     background: var(--white);
@@ -1426,6 +1464,429 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 }
 
 /* ================================
+   VERSOTS SECTION
+   ================================ */
+
+.versots-section {
+    background: white;
+    padding: 6rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.versots-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/Versots1.JPG');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efecte parallax subtil */
+    z-index: 1;
+}
+
+.versots-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg, 
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.88) 50%,
+        rgba(163, 0, 15, 0.05) 100%
+    );
+    z-index: 2;
+}
+.versots-content {
+    position: relative;
+    z-index: 3; /* Per sobre de tot */
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.versots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.versot-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    position: relative;
+    aspect-ratio: 3/4;
+}
+
+.versot-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(163, 0, 15, 0.2);
+}
+
+.versot-cover {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background: var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.versot-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.versot-card:hover .versot-cover img {
+    transform: scale(1.1);
+}
+
+.versot-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(163, 0, 15, 0.95));
+    color: white;
+    padding: 1.5rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.versot-card:hover .versot-overlay {
+    transform: translateY(0);
+}
+
+.overlay-year {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.read-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.read-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* PDF Modal */
+.pdf-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.pdf-modal.active {
+    display: flex;
+}
+
+.pdf-viewer {
+    width: 100%;
+    height: 85vh;
+    max-width: 800px;
+    background: white;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.pdf-header {
+    background: var(--primary-red);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pdf-content {
+    height: calc(100% - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Targeta 2025 */
+.versot-card.coming-soon {
+    cursor: default;
+    opacity: 0.8;
+    position: relative;
+}
+
+.versot-card.coming-soon:hover {
+    transform: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.coming-soon-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+}
+
+.coming-soon-year {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--primary-red);
+    margin-bottom: 1rem;
+}
+
+.countdown-mini {
+    display: flex;
+    gap: 0.6rem;
+    /* Reduït una mica per fer espai */
+}
+
+.countdown-mini-item {
+    text-align: center;
+    min-width: 25px;
+    /* Una mica més petit */
+}
+
+.countdown-mini-number {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    /* Reduït lleugerament */
+    color: var(--primary-red);
+}
+
+.countdown-mini-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    color: var(--text-lighter);
+    margin-top: 0.2rem;
+}
+
+/* Chrome Windows Fixes */
+.windows-chrome .versot-card {
+    transition: all 0.6s ease !important;
+}
+
+.close-pdf {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-family: inherit;
+    position: relative;
+}
+
+.close-pdf:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: rotate(90deg) scale(1.1);
+}
+
+.close-pdf::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 2px;
+    background: white;
+    border-radius: 1px;
+    transform: rotate(45deg);
+}
+
+.close-pdf::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 2px;
+    background: white;
+    border-radius: 1px;
+    transform: rotate(-45deg);
+}
+.pdf-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    justify-content: center;
+}
+
+.pdf-action-btn.primary {
+    background: var(--primary-red);
+    color: white;
+}
+
+.pdf-action-btn.primary:hover {
+    background: var(--dark-red);
+    transform: translateY(-2px);
+}
+
+.pdf-action-btn.secondary {
+    background: white;
+    color: var(--primary-red);
+    border: 2px solid var(--primary-red);
+}
+
+.pdf-action-btn.secondary:hover {
+    background: var(--primary-red);
+    color: white;
+}
+
+.pdf-action-btn.tertiary {
+    background: var(--light-gray);
+    color: var(--text-dark);
+}
+
+.pdf-action-btn.tertiary:hover {
+    background: var(--border-color);
+}
+
+.pdf-action-btn span {
+    font-size: 1.1rem;
+}
+.pdf-viewer-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pdf-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--light-gray);
+    border-bottom: 1px solid var(--border-color);
+    gap: 1rem;
+}
+
+.pdf-controls button {
+    background: var(--primary-red);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.pdf-controls button:hover:not(:disabled) {
+    background: var(--dark-red);
+}
+
+.pdf-controls button:disabled {
+    background: var(--text-lighter);
+    cursor: not-allowed;
+}
+
+#pageInfo {
+    font-weight: 500;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+
+.pdf-page-container {
+    flex: 1;
+    padding: 20px;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #f5f5f5;
+}
+
+#pdfCanvas {
+    max-width: 100%;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    background: white;
+}
+
+/* Animació loading */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .pdf-controls {
+        padding: 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .pdf-controls button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .pdf-page-container {
+        padding: 10px;
+    }
+}
+/* ================================
    RESPONSIVE MEDIA QUERIES
    ================================ */
 
@@ -1480,7 +1941,9 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
         min-height: 600px;
         padding-top: 80px;
     }
-
+    .versots-background {
+        background-attachment: scroll; /* Millor rendiment en mòbil */
+    }
     .mobile-nav-overlay.active::after {
         opacity: 1 !important;
         visibility: visible !important;
@@ -1719,23 +2182,41 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
     .loading-logo-image {
         width: clamp(100px, 20vw, 140px);
     }
-    
+
     .loading-spinner {
         width: 30px;
         height: 30px;
     }
-    
+
     .loading-progress {
         width: clamp(100px, 50vw, 180px);
         height: 2px;
     }
-    
+
     .loading-percentage {
         font-size: clamp(0.55rem, 1.5vw, 0.7rem);
     }
-    
+
     .loading-text {
         font-size: clamp(0.65rem, 2vw, 0.8rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .countdown-mini {
+        gap: 0.4rem;
+    }
+
+    .countdown-mini-item {
+        min-width: 22px;
+    }
+
+    .countdown-mini-number {
+        font-size: 0.8rem;
+    }
+
+    .countdown-mini-label {
+        font-size: 0.55rem;
     }
 }
 
@@ -1911,21 +2392,21 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
     .loading-logo-image {
         width: clamp(90px, 25vw, 120px);
     }
-    
+
     .loading-spinner {
         width: 25px;
         height: 25px;
     }
-    
+
     .loading-progress {
         width: clamp(80px, 60vw, 160px);
         height: 1.5px;
     }
-    
+
     .loading-percentage {
         font-size: 0.6rem;
     }
-    
+
     .loading-text {
         font-size: 0.7rem;
         letter-spacing: 1px;
@@ -2023,6 +2504,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 
 /* Print */
 @media print {
+
     .navbar,
     .mobile-menu-btn,
     .mobile-nav-overlay,
@@ -2066,6 +2548,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
 
 /* Performance & Accessibility */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -2085,7 +2568,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
     color: white;
     padding: 1rem 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     z-index: 9999;
     transform: translateX(400px);
     transition: transform 0.3s ease;

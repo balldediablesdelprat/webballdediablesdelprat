@@ -16,12 +16,12 @@ class RealLoadingManager {
         this.percentageText = document.getElementById('percentageText');
         this.progressFill = document.querySelector('.progress-fill');
         this.body = document.body;
-        
+
         this.totalResources = 0;
         this.loadedResources = 0;
         this.currentPercentage = 0;
         this.isLoadingComplete = false;
-        
+
         // Recursos críticos que DEBEN cargarse
         this.criticalResources = {
             images: [
@@ -51,37 +51,37 @@ class RealLoadingManager {
                 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
             ]
         };
-        
+
         this.preloadedAssets = new Map();
-this.loadingMessages = [
-    'Endavant diables!'
-];
+        this.loadingMessages = [
+            'Endavant diables!'
+        ];
     }
 
     async init() {
         console.log('🔥 Iniciando carga real de recursos...');
-        
+
         // Calcular total de recursos
         this.calculateTotalResources();
-        
+
         // Iniciar animaciones de la pantalla de carga
         this.startLoadingAnimations();
-        
+
         // Cargar todos los recursos en paralelo
         await this.loadAllResources();
-        
+
         // Completar la carga
         await this.completeLoading();
     }
 
     calculateTotalResources() {
-        this.totalResources = 
+        this.totalResources =
             this.criticalResources.images.length +
             this.criticalResources.fonts.length +
             this.criticalResources.styles.length +
             this.criticalResources.scripts.length +
             3; // DOM ready, fonts ready, minimum time
-            
+
         console.log(`📊 Total recursos a cargar: ${this.totalResources}`);
     }
 
@@ -108,22 +108,22 @@ this.loadingMessages = [
         const promises = [];
 
         // 1. Cargar imágenes críticas
-        promises.push(...this.criticalResources.images.map(src => 
+        promises.push(...this.criticalResources.images.map(src =>
             this.loadImage(src)
         ));
 
         // 2. Cargar fuentes
-        promises.push(...this.criticalResources.fonts.map(href => 
+        promises.push(...this.criticalResources.fonts.map(href =>
             this.loadFont(href)
         ));
 
         // 3. Cargar estilos adicionales
-        promises.push(...this.criticalResources.styles.map(href => 
+        promises.push(...this.criticalResources.styles.map(href =>
             this.loadStylesheet(href)
         ));
 
         // 4. Cargar scripts externos
-        promises.push(...this.criticalResources.scripts.map(src => 
+        promises.push(...this.criticalResources.scripts.map(src =>
             this.loadExternalScript(src)
         ));
 
@@ -138,13 +138,13 @@ this.loadingMessages = [
 
         // Ejecutar todas las cargas
         const results = await Promise.allSettled(promises);
-        
+
         // Analizar resultados
         const failed = results.filter(r => r.status === 'rejected');
         if (failed.length > 0) {
             console.warn(`⚠️ ${failed.length} recursos fallaron al cargar:`, failed);
         }
-        
+
         console.log('✅ Todos los recursos críticos cargados');
     }
 
@@ -158,7 +158,7 @@ this.loadingMessages = [
             }
 
             const img = new Image();
-            
+
             const cleanup = () => {
                 img.onload = null;
                 img.onerror = null;
@@ -334,11 +334,11 @@ this.loadingMessages = [
     onResourceLoaded(resourceName) {
         this.loadedResources++;
         const actualProgress = (this.loadedResources / this.totalResources) * 100;
-        
+
         console.log(`✅ Cargado [${this.loadedResources}/${this.totalResources}]: ${resourceName} - ${actualProgress.toFixed(1)}%`);
-        
+
         // Actualizar progreso target
-this.targetPercentage = Math.min(actualProgress, 100); // Permitir llegar al 100%
+        this.targetPercentage = Math.min(actualProgress, 100); // Permitir llegar al 100%
     }
 
     updateSmoothProgress() {
@@ -347,9 +347,9 @@ this.targetPercentage = Math.min(actualProgress, 100); // Permitir llegar al 100
         // Suavizar la progresión del porcentaje
         const target = this.targetPercentage || 0;
         const diff = target - this.currentPercentage;
-        
+
         if (Math.abs(diff) > 0.1) {
-this.currentPercentage += diff * 0.5; // Aún más rápido
+            this.currentPercentage += diff * 0.5; // Aún más rápido
         } else {
             this.currentPercentage = target;
         }
@@ -362,7 +362,7 @@ this.currentPercentage += diff * 0.5; // Aún más rápido
         if (this.loadingScreen) {
             this.loadingScreen.setAttribute('aria-valuenow', displayPercentage);
         }
-        
+
         // Actualizar barra de progreso
         if (this.progressFill) {
             this.progressFill.style.width = this.currentPercentage + '%';
@@ -371,28 +371,28 @@ this.currentPercentage += diff * 0.5; // Aún más rápido
 
     async completeLoading() {
         if (this.isLoadingComplete) return;
-        
+
         this.isLoadingComplete = true;
-        
+
         // Limpiar intervalos
         clearInterval(this.messageInterval);
-        
+
         // Completar al 100%
         this.targetPercentage = 100;
         const loadingTitle = document.getElementById('loading-title');
         if (loadingTitle) {
             loadingTitle.textContent = 'Endavant diables!';
         }
-        
+
         // Esperar a que llegue al 100%
         return new Promise((resolve) => {
             const waitForComplete = setInterval(() => {
                 this.updateSmoothProgress();
-                
+
                 if (this.currentPercentage >= 94) {
                     clearInterval(waitForComplete);
                     clearInterval(this.smoothProgressInterval);
-                    
+
                     // Final update
                     if (this.percentageText) {
                         this.percentageText.textContent = '100%';
@@ -400,7 +400,7 @@ this.currentPercentage += diff * 0.5; // Aún más rápido
                     if (this.progressFill) {
                         this.progressFill.style.width = '100%';
                     }
-                    
+
                     // Ocultar pantalla de carga
                     setTimeout(() => {
                         this.hideLoadingScreen();
@@ -413,7 +413,7 @@ this.currentPercentage += diff * 0.5; // Aún más rápido
 
     hideLoadingScreen() {
         console.log('🎉 Carga completada - Ocultando pantalla');
-        
+
         if (this.loadingScreen) {
             this.loadingScreen.classList.add('fade-out');
         }
@@ -428,10 +428,10 @@ this.currentPercentage += diff * 0.5; // Aún más rápido
             if (this.loadingScreen && this.loadingScreen.parentNode) {
                 this.loadingScreen.parentNode.removeChild(this.loadingScreen);
             }
-            
+
             // Dispatch evento personalizado
             window.dispatchEvent(new CustomEvent('loadingComplete', {
-                detail: { 
+                detail: {
                     loadedResources: this.loadedResources,
                     totalResources: this.totalResources,
                     preloadedAssets: this.preloadedAssets
@@ -581,7 +581,7 @@ function smoothScrollToChrome(targetPosition, duration = 1200) {
 
 function initRealLoadingScreen() {
     if (!document.getElementById('loadingScreen')) return;
-    
+
     RealLoadingManager.init().then((loader) => {
         window.lastLoadingManager = loader;
         console.log('🔥 Sistema de carga real completado exitosamente!');
@@ -880,7 +880,7 @@ function initInteractiveTimeline() {
     }
 
     const isWindows = navigator.platform.indexOf('Win') > -1;
-    
+
     if (isWindows) {
         const optimizedUpdateTimeline = throttleWindows(updateTimelineProgress, 16);
         window.addEventListener('scroll', optimizedUpdateTimeline, {
@@ -1139,10 +1139,10 @@ function initEnhancedGallery() {
                         console.log(`📸 Imagen ya en cache: ${img.src}`);
                         img.classList.add('cached');
                     }
-                    
+
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
-                    
+
                     imageObserver.unobserve(entry.target);
                 }
             }
@@ -1156,7 +1156,7 @@ function initEnhancedGallery() {
         card.style.opacity = '0';
         card.style.transform = 'translateY(30px)';
         card.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        
+
         if (!isChromeWindows()) {
             card.addEventListener('mouseenter', function () {
                 this.style.transform = 'translateY(-12px) scale(1.02)';
@@ -1462,7 +1462,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 3. ESPERAR A QUE LA CARGA REAL SE COMPLETE
-    window.addEventListener('loadingComplete', function(e) {
+    window.addEventListener('loadingComplete', function (e) {
         console.log('✅ Carga real completada, inicializando funcionalidades...', e.detail);
         initializeAllFeatures();
     });
@@ -1513,7 +1513,7 @@ function preloadNextResources() {
     });
 }
 
-window.addEventListener('loadingComplete', function(e) {
+window.addEventListener('loadingComplete', function (e) {
     console.log('🎊 Carga completada, iniciando preload de recursos adicionales...');
     setTimeout(preloadNextResources, 1000);
 });
@@ -1549,3 +1549,99 @@ if (navigator.platform.indexOf('Win') > -1) {
     `;
     document.head.appendChild(style);
 }
+// ================================
+// VERSOTS FUNCTIONALITY
+// ================================
+
+function initVersotsPDFViewer() {
+    // Crear element canvas per PDF.js si no existeix
+    if (!document.getElementById('pdfCanvas')) {
+        const canvas = document.createElement('canvas');
+        canvas.id = 'pdfCanvas';
+        canvas.style.maxWidth = '100%';
+        canvas.style.height = 'auto';
+    }
+
+    function updateMiniCountdown() {
+        const targetDate = new Date('2025-09-27T13:30:00').getTime();
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance > 0) {
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000); // ✨ NOU!
+
+            const miniDays = document.getElementById('miniDays');
+            const miniHours = document.getElementById('miniHours');
+            const miniMinutes = document.getElementById('miniMinutes');
+            const miniSeconds = document.getElementById('miniSeconds'); // ✨ NOU!
+
+            if (miniDays) miniDays.textContent = days;
+            if (miniHours) miniHours.textContent = hours;
+            if (miniMinutes) miniMinutes.textContent = minutes;
+            if (miniSeconds) miniSeconds.textContent = seconds; // ✨ NOU!
+        } else {
+            const miniCountdown = document.getElementById('countdownMini');
+            if (miniCountdown) {
+                miniCountdown.innerHTML = '<div style="font-size: 0.7rem; color: var(--primary-red); font-weight: 500;">Disponible aviat!</div>';
+            }
+        }
+    }
+
+    // Inicialitzar compte enrere (actualitzar cada segon ara!)
+    updateMiniCountdown();
+    setInterval(updateMiniCountdown, 1000); // ⚡ Canviat de 60000 a 1000ms
+}
+
+function openPDF(year) {
+    // Detectar si és mòbil
+    const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // En mòbil: obrir directament el PDF
+        window.open(`versots/${year}.pdf`, '_blank');
+        return;
+    }
+    
+    // En desktop: obrir modal com sempre
+    const modal = document.getElementById('pdfModal');
+    const title = document.getElementById('pdfTitle');
+    const content = document.getElementById('pdfContent');
+    
+    title.textContent = `Versots ${year}`;
+    content.innerHTML = `
+        <iframe 
+            src="versots/${year}.pdf#toolbar=0&navpanes=0&scrollbar=0" 
+            width="100%" 
+            height="100%" 
+            style="border: none;">
+            <p>El teu navegador no pot mostrar PDFs. <a href="versots/${year}.pdf" target="_blank">Obre el PDF aquí</a></p>
+        </iframe>
+    `;
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePDF() {
+    const modal = document.getElementById('pdfModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Event listeners
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        closePDF();
+    }
+});
+
+// Inicialitzar versots
+window.addEventListener('loadingComplete', function () {
+    initVersotsPDFViewer();
+});
+
+// Fallback si no hi ha loading screen
+setTimeout(initVersotsPDFViewer, 1000);
