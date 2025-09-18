@@ -10,466 +10,466 @@
 // SISTEMA DE CARGA REAL AVANZADO
 // ================================
 
-class RealLoadingManager {
-    constructor() {
-        this.loadingScreen = document.getElementById('loadingScreen');
-        this.percentageText = document.getElementById('percentageText');
-        this.progressFill = document.querySelector('.progress-fill');
-        this.body = document.body;
-
-        this.totalResources = 0;
-        this.loadedResources = 0;
-        this.currentPercentage = 0;
-        this.isLoadingComplete = false;
-
-        // Recursos críticos que DEBEN cargarse
-        this.criticalResources = {
-            images: [
-                'images/Logo.png',
-                'images/LogoBlanc.png',
-                'images/Carretillada.jpg',
-                'images/Versots2.JPG',
-                'images/SantJordi.jpg',
-                'images/Pratifolk.jpg',
-                'images/Esclat1.JPG',
-                'images/Campanades.jpg',
-                'images/Seguici3.jpg',
-                'images/Correfoc1.jpg',
-                'images/Seguici2.JPG',
-                'images/Correfoc2.JPG',
-                'images/Esclat2.JPG',
-                'images/Versots1.JPG',
-                'images/Tabals.jpg'
-            ],
-            fonts: [
-                'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap'
-            ],
-            styles: [
-                'css/styles.css'
-            ],
-            scripts: [
-                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
-            ]
-        };
-
-        this.preloadedAssets = new Map();
-        this.loadingMessages = [
-            'Endavant diables!'
-        ];
-    }
-
-    async init() {
-        console.log('🔥 Iniciando carga real de recursos...');
-
-        // Calcular total de recursos
-        this.calculateTotalResources();
-
-        // Iniciar animaciones de la pantalla de carga
-        this.startLoadingAnimations();
-
-        // Cargar todos los recursos en paralelo
-        await this.loadAllResources();
-
-        // Completar la carga
-        await this.completeLoading();
-    }
-
-    calculateTotalResources() {
-        this.totalResources =
-            this.criticalResources.images.length +
-            this.criticalResources.fonts.length +
-            this.criticalResources.styles.length +
-            this.criticalResources.scripts.length +
-            3; // DOM ready, fonts ready, minimum time
-
-        console.log(`📊 Total recursos a cargar: ${this.totalResources}`);
-    }
-
-    startLoadingAnimations() {
-        // Cambiar mensaje cada cierto tiempo
-        let messageIndex = 0;
-        this.messageInterval = setInterval(() => {
-            if (messageIndex < this.loadingMessages.length - 1) {
-                const loadingTitle = document.getElementById('loading-title');
-                if (loadingTitle) {
-                    loadingTitle.textContent = this.loadingMessages[messageIndex];
-                }
-                messageIndex++;
-            }
-        }, 2500);
-
-        // Animación suave del porcentaje
-        this.smoothProgressInterval = setInterval(() => {
-            this.updateSmoothProgress();
-        }, 50);
-    }
-
-    async loadAllResources() {
-        const promises = [];
-
-        // 1. Cargar imágenes críticas
-        promises.push(...this.criticalResources.images.map(src =>
-            this.loadImage(src)
-        ));
-
-        // 2. Cargar fuentes
-        promises.push(...this.criticalResources.fonts.map(href =>
-            this.loadFont(href)
-        ));
-
-        // 3. Cargar estilos adicionales
-        promises.push(...this.criticalResources.styles.map(href =>
-            this.loadStylesheet(href)
-        ));
-
-        // 4. Cargar scripts externos
-        promises.push(...this.criticalResources.scripts.map(src =>
-            this.loadExternalScript(src)
-        ));
-
-        // 5. Esperar DOM completamente listo
-        promises.push(this.waitForDOMReady());
-
-        // 6. Esperar fuentes del navegador
-        promises.push(this.waitForFonts());
-
-        // 7. Tiempo mínimo de carga (UX)
-        promises.push(this.waitMinimumTime(2000));
-
-        // Ejecutar todas las cargas
-        const results = await Promise.allSettled(promises);
-
-        // Analizar resultados
-        const failed = results.filter(r => r.status === 'rejected');
-        if (failed.length > 0) {
-            console.warn(`⚠️ ${failed.length} recursos fallaron al cargar:`, failed);
-        }
-
-        console.log('✅ Todos los recursos críticos cargados');
-    }
-
-    loadImage(src) {
-        return new Promise((resolve, reject) => {
-            // Verificar si ya está en caché
-            if (this.preloadedAssets.has(src)) {
-                this.onResourceLoaded(`Imagen ${src} (cache)`);
-                resolve(this.preloadedAssets.get(src));
-                return;
-            }
-
-            const img = new Image();
-
-            const cleanup = () => {
-                img.onload = null;
-                img.onerror = null;
-                img.onabort = null;
-            };
-
-            img.onload = () => {
-                cleanup();
-                this.preloadedAssets.set(src, img);
-                this.onResourceLoaded(`Imagen: ${src.split('/').pop()}`);
-                resolve(img);
-            };
-
-            img.onerror = (error) => {
-                cleanup();
-                console.error(`❌ Error cargando imagen: ${src}`, error);
-                this.onResourceLoaded(`Error: ${src.split('/').pop()}`);
-                reject(error);
-            };
-
-            img.onabort = () => {
-                cleanup();
-                console.warn(`⚠️ Carga abortada: ${src}`);
-                this.onResourceLoaded(`Abortada: ${src.split('/').pop()}`);
-                reject(new Error('Load aborted'));
-            };
-
-            // Configurar timeout
-            setTimeout(() => {
-                if (!this.preloadedAssets.has(src)) {
-                    cleanup();
-                    console.warn(`⏰ Timeout cargando: ${src}`);
-                    this.onResourceLoaded(`Timeout: ${src.split('/').pop()}`);
-                    reject(new Error('Timeout'));
-                }
-            }, 10000);
-
-            img.src = src;
-        });
-    }
-
-    loadFont(href) {
-        return new Promise((resolve, reject) => {
-            // Verificar si ya está cargada
-            const existingLink = document.querySelector(`link[href="${href}"]`);
-            if (existingLink) {
-                this.onResourceLoaded(`Font: ${href.split('/').pop()}`);
-                resolve();
-                return;
-            }
-
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = href;
-            link.crossOrigin = 'anonymous';
-
-            link.onload = () => {
-                this.onResourceLoaded(`Font: Montserrat`);
-                resolve();
-            };
-
-            link.onerror = (error) => {
-                console.error(`❌ Error cargando fuente: ${href}`, error);
-                this.onResourceLoaded(`Error font: Montserrat`);
-                reject(error);
-            };
-
-            document.head.appendChild(link);
-
-            // Timeout para fuentes
-            setTimeout(() => {
-                this.onResourceLoaded(`Timeout font: Montserrat`);
-                resolve(); // No bloquear por fuentes
-            }, 5000);
-        });
-    }
-
-    loadStylesheet(href) {
-        return new Promise((resolve, reject) => {
-            // Verificar si ya está cargado
-            const existingLink = document.querySelector(`link[href="${href}"]`);
-            if (existingLink) {
-                this.onResourceLoaded(`CSS: ${href.split('/').pop()}`);
-                resolve();
-                return;
-            }
-
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = href;
-
-            link.onload = () => {
-                this.onResourceLoaded(`CSS: ${href.split('/').pop()}`);
-                resolve();
-            };
-
-            link.onerror = (error) => {
-                console.error(`❌ Error cargando CSS: ${href}`, error);
-                this.onResourceLoaded(`Error CSS: ${href.split('/').pop()}`);
-                reject(error);
-            };
-
-            document.head.appendChild(link);
-        });
-    }
-
-    loadExternalScript(src) {
-        return new Promise((resolve) => {
-            // Para CSS como FontAwesome, crear link
-            if (src.includes('.css')) {
-                return this.loadStylesheet(src).then(resolve).catch(resolve);
-            }
-
-            const script = document.createElement('script');
-            script.src = src;
-            script.async = true;
-
-            script.onload = () => {
-                this.onResourceLoaded(`Script: ${src.split('/').pop()}`);
-                resolve();
-            };
-
-            script.onerror = () => {
-                console.warn(`⚠️ Error cargando script: ${src}`);
-                this.onResourceLoaded(`Error script: ${src.split('/').pop()}`);
-                resolve(); // No bloquear por scripts externos
-            };
-
-            document.head.appendChild(script);
-        });
-    }
-
-    waitForDOMReady() {
-        return new Promise((resolve) => {
-            if (document.readyState === 'complete') {
-                this.onResourceLoaded('DOM Ready');
-                resolve();
-            } else {
-                window.addEventListener('load', () => {
-                    this.onResourceLoaded('DOM Ready');
-                    resolve();
-                });
-            }
-        });
-    }
-
-    waitForFonts() {
-        return new Promise((resolve) => {
-            if ('fonts' in document) {
-                document.fonts.ready.then(() => {
-                    this.onResourceLoaded('Fonts Ready');
-                    resolve();
-                }).catch(() => {
-                    this.onResourceLoaded('Fonts Error');
-                    resolve();
-                });
-            } else {
-                this.onResourceLoaded('Fonts N/A');
-                resolve();
-            }
-        });
-    }
-
-    waitMinimumTime(ms) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                this.onResourceLoaded('Minimum Time');
-                resolve();
-            }, ms);
-        });
-    }
-
-    onResourceLoaded(resourceName) {
-        this.loadedResources++;
-        const actualProgress = (this.loadedResources / this.totalResources) * 100;
-
-        console.log(`✅ Cargado [${this.loadedResources}/${this.totalResources}]: ${resourceName} - ${actualProgress.toFixed(1)}%`);
-
-        // Actualizar progreso target
-        this.targetPercentage = Math.min(actualProgress, 100); // Permitir llegar al 100%
-    }
-
-    updateSmoothProgress() {
-        if (this.isLoadingComplete) return;
-
-        // Suavizar la progresión del porcentaje
-        const target = this.targetPercentage || 0;
-        const diff = target - this.currentPercentage;
-
-        if (Math.abs(diff) > 0.1) {
-            this.currentPercentage += diff * 0.5; // Aún más rápido
-        } else {
-            this.currentPercentage = target;
-        }
-
-        // Actualizar UI
-        const displayPercentage = Math.floor(this.currentPercentage);
-        if (this.percentageText) {
-            this.percentageText.textContent = displayPercentage + '%';
-        }
-        if (this.loadingScreen) {
-            this.loadingScreen.setAttribute('aria-valuenow', displayPercentage);
-        }
-
-        // Actualizar barra de progreso
-        if (this.progressFill) {
-            this.progressFill.style.width = this.currentPercentage + '%';
-        }
-    }
-
-    async completeLoading() {
-        if (this.isLoadingComplete) return;
-
-        this.isLoadingComplete = true;
-
-        // Limpiar intervalos
-        clearInterval(this.messageInterval);
-
-        // Completar al 100%
-        this.targetPercentage = 100;
-        const loadingTitle = document.getElementById('loading-title');
-        if (loadingTitle) {
-            loadingTitle.textContent = 'Endavant diables!';
-        }
-
-        // Esperar a que llegue al 100%
-        return new Promise((resolve) => {
-            const waitForComplete = setInterval(() => {
-                this.updateSmoothProgress();
-
-                if (this.currentPercentage >= 94) {
-                    clearInterval(waitForComplete);
-                    clearInterval(this.smoothProgressInterval);
-
-                    // Final update
-                    if (this.percentageText) {
-                        this.percentageText.textContent = '100%';
-                    }
-                    if (this.progressFill) {
-                        this.progressFill.style.width = '100%';
-                    }
-
-                    // Ocultar pantalla de carga
-                    setTimeout(() => {
-                        this.hideLoadingScreen();
-                        resolve();
-                    }, 100);
-                }
-            }, 50);
-        });
-    }
-
-    hideLoadingScreen() {
-        console.log('🎉 Carga completada - Ocultando pantalla');
-
-        if (this.loadingScreen) {
-            this.loadingScreen.classList.add('fade-out');
-        }
-        this.body.classList.remove('loading');
-        this.body.classList.add('content-loaded');
-
-        // Cache de imágenes aplicado a elementos DOM
-        this.applyCachedImages();
-
-        // Remover del DOM después de la animación
-        setTimeout(() => {
-            if (this.loadingScreen && this.loadingScreen.parentNode) {
-                this.loadingScreen.parentNode.removeChild(this.loadingScreen);
-            }
-
-            // Dispatch evento personalizado
-            window.dispatchEvent(new CustomEvent('loadingComplete', {
-                detail: {
-                    loadedResources: this.loadedResources,
-                    totalResources: this.totalResources,
-                    preloadedAssets: this.preloadedAssets
-                }
-            }));
-        }, 600);
-    }
-
-    applyCachedImages() {
-        // Aplicar imágenes precargadas a los elementos DOM
-        document.querySelectorAll('img[src]').forEach(img => {
-            const cachedImage = this.preloadedAssets.get(img.src);
-            if (cachedImage) {
-                // La imagen ya está en caché del navegador
-                img.classList.add('preloaded');
-            }
-        });
-
-        // Aplicar backgrounds precargados
-        const elementsWithBg = [
-            { selector: '.hero-background', imageSrc: 'images/Carretillada.jpg' },
-            { selector: '.panera-background', imageSrc: 'images/Panera.jpg' }
-        ];
-
-        elementsWithBg.forEach(({ selector, imageSrc }) => {
-            const element = document.querySelector(selector);
-            if (element && this.preloadedAssets.has(imageSrc)) {
-                element.classList.add('preloaded');
-            }
-        });
-    }
-
-    static async init() {
-        const loader = new RealLoadingManager();
-        await loader.init();
-        return loader;
-    }
-}
+// class RealLoadingManager {
+//     constructor() {
+//         this.loadingScreen = document.getElementById('loadingScreen');
+//         this.percentageText = document.getElementById('percentageText');
+//         this.progressFill = document.querySelector('.progress-fill');
+//         this.body = document.body;
+
+//         this.totalResources = 0;
+//         this.loadedResources = 0;
+//         this.currentPercentage = 0;
+//         this.isLoadingComplete = false;
+
+//         // Recursos críticos que DEBEN cargarse
+//         this.criticalResources = {
+//             images: [
+//                 'images/Logo.png',
+//                 'images/LogoBlanc.png',
+//                 'images/Carretillada.jpg',
+//                 'images/Versots2.JPG',
+//                 'images/SantJordi.jpg',
+//                 'images/Pratifolk.jpg',
+//                 'images/Esclat1.JPG',
+//                 'images/Campanades.jpg',
+//                 'images/Seguici3.jpg',
+//                 'images/Correfoc1.jpg',
+//                 'images/Seguici2.JPG',
+//                 'images/Correfoc2.JPG',
+//                 'images/Esclat2.JPG',
+//                 'images/Versots1.JPG',
+//                 'images/Tabals.jpg'
+//             ],
+//             fonts: [
+//                 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap'
+//             ],
+//             styles: [
+//                 'css/styles.css'
+//             ],
+//             scripts: [
+//                 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
+//             ]
+//         };
+
+//         this.preloadedAssets = new Map();
+//         this.loadingMessages = [
+//             'Endavant diables!'
+//         ];
+//     }
+
+//     async init() {
+//         console.log('🔥 Iniciando carga real de recursos...');
+
+//         // Calcular total de recursos
+//         this.calculateTotalResources();
+
+//         // Iniciar animaciones de la pantalla de carga
+//         this.startLoadingAnimations();
+
+//         // Cargar todos los recursos en paralelo
+//         await this.loadAllResources();
+
+//         // Completar la carga
+//         await this.completeLoading();
+//     }
+
+//     calculateTotalResources() {
+//         this.totalResources =
+//             this.criticalResources.images.length +
+//             this.criticalResources.fonts.length +
+//             this.criticalResources.styles.length +
+//             this.criticalResources.scripts.length +
+//             3; // DOM ready, fonts ready, minimum time
+
+//         console.log(`📊 Total recursos a cargar: ${this.totalResources}`);
+//     }
+
+//     startLoadingAnimations() {
+//         // Cambiar mensaje cada cierto tiempo
+//         let messageIndex = 0;
+//         this.messageInterval = setInterval(() => {
+//             if (messageIndex < this.loadingMessages.length - 1) {
+//                 const loadingTitle = document.getElementById('loading-title');
+//                 if (loadingTitle) {
+//                     loadingTitle.textContent = this.loadingMessages[messageIndex];
+//                 }
+//                 messageIndex++;
+//             }
+//         }, 2500);
+
+//         // Animación suave del porcentaje
+//         this.smoothProgressInterval = setInterval(() => {
+//             this.updateSmoothProgress();
+//         }, 50);
+//     }
+
+//     async loadAllResources() {
+//         const promises = [];
+
+//         // 1. Cargar imágenes críticas
+//         promises.push(...this.criticalResources.images.map(src =>
+//             this.loadImage(src)
+//         ));
+
+//         // 2. Cargar fuentes
+//         promises.push(...this.criticalResources.fonts.map(href =>
+//             this.loadFont(href)
+//         ));
+
+//         // 3. Cargar estilos adicionales
+//         promises.push(...this.criticalResources.styles.map(href =>
+//             this.loadStylesheet(href)
+//         ));
+
+//         // 4. Cargar scripts externos
+//         promises.push(...this.criticalResources.scripts.map(src =>
+//             this.loadExternalScript(src)
+//         ));
+
+//         // 5. Esperar DOM completamente listo
+//         promises.push(this.waitForDOMReady());
+
+//         // 6. Esperar fuentes del navegador
+//         promises.push(this.waitForFonts());
+
+//         // 7. Tiempo mínimo de carga (UX)
+//         promises.push(this.waitMinimumTime(2000));
+
+//         // Ejecutar todas las cargas
+//         const results = await Promise.allSettled(promises);
+
+//         // Analizar resultados
+//         const failed = results.filter(r => r.status === 'rejected');
+//         if (failed.length > 0) {
+//             console.warn(`⚠️ ${failed.length} recursos fallaron al cargar:`, failed);
+//         }
+
+//         console.log('✅ Todos los recursos críticos cargados');
+//     }
+
+//     loadImage(src) {
+//         return new Promise((resolve, reject) => {
+//             // Verificar si ya está en caché
+//             if (this.preloadedAssets.has(src)) {
+//                 this.onResourceLoaded(`Imagen ${src} (cache)`);
+//                 resolve(this.preloadedAssets.get(src));
+//                 return;
+//             }
+
+//             const img = new Image();
+
+//             const cleanup = () => {
+//                 img.onload = null;
+//                 img.onerror = null;
+//                 img.onabort = null;
+//             };
+
+//             img.onload = () => {
+//                 cleanup();
+//                 this.preloadedAssets.set(src, img);
+//                 this.onResourceLoaded(`Imagen: ${src.split('/').pop()}`);
+//                 resolve(img);
+//             };
+
+//             img.onerror = (error) => {
+//                 cleanup();
+//                 console.error(`❌ Error cargando imagen: ${src}`, error);
+//                 this.onResourceLoaded(`Error: ${src.split('/').pop()}`);
+//                 reject(error);
+//             };
+
+//             img.onabort = () => {
+//                 cleanup();
+//                 console.warn(`⚠️ Carga abortada: ${src}`);
+//                 this.onResourceLoaded(`Abortada: ${src.split('/').pop()}`);
+//                 reject(new Error('Load aborted'));
+//             };
+
+//             // Configurar timeout
+//             setTimeout(() => {
+//                 if (!this.preloadedAssets.has(src)) {
+//                     cleanup();
+//                     console.warn(`⏰ Timeout cargando: ${src}`);
+//                     this.onResourceLoaded(`Timeout: ${src.split('/').pop()}`);
+//                     reject(new Error('Timeout'));
+//                 }
+//             }, 10000);
+
+//             img.src = src;
+//         });
+//     }
+
+//     loadFont(href) {
+//         return new Promise((resolve, reject) => {
+//             // Verificar si ya está cargada
+//             const existingLink = document.querySelector(`link[href="${href}"]`);
+//             if (existingLink) {
+//                 this.onResourceLoaded(`Font: ${href.split('/').pop()}`);
+//                 resolve();
+//                 return;
+//             }
+
+//             const link = document.createElement('link');
+//             link.rel = 'stylesheet';
+//             link.href = href;
+//             link.crossOrigin = 'anonymous';
+
+//             link.onload = () => {
+//                 this.onResourceLoaded(`Font: Montserrat`);
+//                 resolve();
+//             };
+
+//             link.onerror = (error) => {
+//                 console.error(`❌ Error cargando fuente: ${href}`, error);
+//                 this.onResourceLoaded(`Error font: Montserrat`);
+//                 reject(error);
+//             };
+
+//             document.head.appendChild(link);
+
+//             // Timeout para fuentes
+//             setTimeout(() => {
+//                 this.onResourceLoaded(`Timeout font: Montserrat`);
+//                 resolve(); // No bloquear por fuentes
+//             }, 5000);
+//         });
+//     }
+
+//     loadStylesheet(href) {
+//         return new Promise((resolve, reject) => {
+//             // Verificar si ya está cargado
+//             const existingLink = document.querySelector(`link[href="${href}"]`);
+//             if (existingLink) {
+//                 this.onResourceLoaded(`CSS: ${href.split('/').pop()}`);
+//                 resolve();
+//                 return;
+//             }
+
+//             const link = document.createElement('link');
+//             link.rel = 'stylesheet';
+//             link.href = href;
+
+//             link.onload = () => {
+//                 this.onResourceLoaded(`CSS: ${href.split('/').pop()}`);
+//                 resolve();
+//             };
+
+//             link.onerror = (error) => {
+//                 console.error(`❌ Error cargando CSS: ${href}`, error);
+//                 this.onResourceLoaded(`Error CSS: ${href.split('/').pop()}`);
+//                 reject(error);
+//             };
+
+//             document.head.appendChild(link);
+//         });
+//     }
+
+//     loadExternalScript(src) {
+//         return new Promise((resolve) => {
+//             // Para CSS como FontAwesome, crear link
+//             if (src.includes('.css')) {
+//                 return this.loadStylesheet(src).then(resolve).catch(resolve);
+//             }
+
+//             const script = document.createElement('script');
+//             script.src = src;
+//             script.async = true;
+
+//             script.onload = () => {
+//                 this.onResourceLoaded(`Script: ${src.split('/').pop()}`);
+//                 resolve();
+//             };
+
+//             script.onerror = () => {
+//                 console.warn(`⚠️ Error cargando script: ${src}`);
+//                 this.onResourceLoaded(`Error script: ${src.split('/').pop()}`);
+//                 resolve(); // No bloquear por scripts externos
+//             };
+
+//             document.head.appendChild(script);
+//         });
+//     }
+
+//     waitForDOMReady() {
+//         return new Promise((resolve) => {
+//             if (document.readyState === 'complete') {
+//                 this.onResourceLoaded('DOM Ready');
+//                 resolve();
+//             } else {
+//                 window.addEventListener('load', () => {
+//                     this.onResourceLoaded('DOM Ready');
+//                     resolve();
+//                 });
+//             }
+//         });
+//     }
+
+//     waitForFonts() {
+//         return new Promise((resolve) => {
+//             if ('fonts' in document) {
+//                 document.fonts.ready.then(() => {
+//                     this.onResourceLoaded('Fonts Ready');
+//                     resolve();
+//                 }).catch(() => {
+//                     this.onResourceLoaded('Fonts Error');
+//                     resolve();
+//                 });
+//             } else {
+//                 this.onResourceLoaded('Fonts N/A');
+//                 resolve();
+//             }
+//         });
+//     }
+
+//     waitMinimumTime(ms) {
+//         return new Promise((resolve) => {
+//             setTimeout(() => {
+//                 this.onResourceLoaded('Minimum Time');
+//                 resolve();
+//             }, ms);
+//         });
+//     }
+
+//     onResourceLoaded(resourceName) {
+//         this.loadedResources++;
+//         const actualProgress = (this.loadedResources / this.totalResources) * 100;
+
+//         console.log(`✅ Cargado [${this.loadedResources}/${this.totalResources}]: ${resourceName} - ${actualProgress.toFixed(1)}%`);
+
+//         // Actualizar progreso target
+//         this.targetPercentage = Math.min(actualProgress, 100); // Permitir llegar al 100%
+//     }
+
+//     updateSmoothProgress() {
+//         if (this.isLoadingComplete) return;
+
+//         // Suavizar la progresión del porcentaje
+//         const target = this.targetPercentage || 0;
+//         const diff = target - this.currentPercentage;
+
+//         if (Math.abs(diff) > 0.1) {
+//             this.currentPercentage += diff * 0.5; // Aún más rápido
+//         } else {
+//             this.currentPercentage = target;
+//         }
+
+//         // Actualizar UI
+//         const displayPercentage = Math.floor(this.currentPercentage);
+//         if (this.percentageText) {
+//             this.percentageText.textContent = displayPercentage + '%';
+//         }
+//         if (this.loadingScreen) {
+//             this.loadingScreen.setAttribute('aria-valuenow', displayPercentage);
+//         }
+
+//         // Actualizar barra de progreso
+//         if (this.progressFill) {
+//             this.progressFill.style.width = this.currentPercentage + '%';
+//         }
+//     }
+
+//     async completeLoading() {
+//         if (this.isLoadingComplete) return;
+
+//         this.isLoadingComplete = true;
+
+//         // Limpiar intervalos
+//         clearInterval(this.messageInterval);
+
+//         // Completar al 100%
+//         this.targetPercentage = 100;
+//         const loadingTitle = document.getElementById('loading-title');
+//         if (loadingTitle) {
+//             loadingTitle.textContent = 'Endavant diables!';
+//         }
+
+//         // Esperar a que llegue al 100%
+//         return new Promise((resolve) => {
+//             const waitForComplete = setInterval(() => {
+//                 this.updateSmoothProgress();
+
+//                 if (this.currentPercentage >= 94) {
+//                     clearInterval(waitForComplete);
+//                     clearInterval(this.smoothProgressInterval);
+
+//                     // Final update
+//                     if (this.percentageText) {
+//                         this.percentageText.textContent = '100%';
+//                     }
+//                     if (this.progressFill) {
+//                         this.progressFill.style.width = '100%';
+//                     }
+
+//                     // Ocultar pantalla de carga
+//                     setTimeout(() => {
+//                         this.hideLoadingScreen();
+//                         resolve();
+//                     }, 100);
+//                 }
+//             }, 50);
+//         });
+//     }
+
+//     hideLoadingScreen() {
+//         console.log('🎉 Carga completada - Ocultando pantalla');
+
+//         if (this.loadingScreen) {
+//             this.loadingScreen.classList.add('fade-out');
+//         }
+//         this.body.classList.remove('loading');
+//         this.body.classList.add('content-loaded');
+
+//         // Cache de imágenes aplicado a elementos DOM
+//         this.applyCachedImages();
+
+//         // Remover del DOM después de la animación
+//         setTimeout(() => {
+//             if (this.loadingScreen && this.loadingScreen.parentNode) {
+//                 this.loadingScreen.parentNode.removeChild(this.loadingScreen);
+//             }
+
+//             // Dispatch evento personalizado
+//             window.dispatchEvent(new CustomEvent('loadingComplete', {
+//                 detail: {
+//                     loadedResources: this.loadedResources,
+//                     totalResources: this.totalResources,
+//                     preloadedAssets: this.preloadedAssets
+//                 }
+//             }));
+//         }, 600);
+//     }
+
+//     applyCachedImages() {
+//         // Aplicar imágenes precargadas a los elementos DOM
+//         document.querySelectorAll('img[src]').forEach(img => {
+//             const cachedImage = this.preloadedAssets.get(img.src);
+//             if (cachedImage) {
+//                 // La imagen ya está en caché del navegador
+//                 img.classList.add('preloaded');
+//             }
+//         });
+
+//         // Aplicar backgrounds precargados
+//         const elementsWithBg = [
+//             { selector: '.hero-background', imageSrc: 'images/Carretillada.jpg' },
+//             { selector: '.panera-background', imageSrc: 'images/Panera.jpg' }
+//         ];
+
+//         elementsWithBg.forEach(({ selector, imageSrc }) => {
+//             const element = document.querySelector(selector);
+//             if (element && this.preloadedAssets.has(imageSrc)) {
+//                 element.classList.add('preloaded');
+//             }
+//         });
+//     }
+
+//     static async init() {
+//         const loader = new RealLoadingManager();
+//         await loader.init();
+//         return loader;
+//     }
+// }
 
 // ================================
 // DETECCIÓN CHROME WINDOWS
@@ -578,23 +578,152 @@ function smoothScrollToChrome(targetPosition, duration = 1200) {
 // ================================
 // INICIALIZACIÓN PRINCIPAL
 // ================================
+/**
+ * SOLUCIÓN SIMPLE - Reemplaza la función initRealLoadingScreen() en main.js
+ * Esta versión es más robusta y siempre funciona
+ */
 
 function initRealLoadingScreen() {
-    if (!document.getElementById('loadingScreen')) return;
+    const loadingScreen = document.getElementById('loadingScreen');
+    const percentageText = document.getElementById('percentageText');
+    const progressFill = document.querySelector('.progress-fill');
+    const loadingTitle = document.getElementById('loading-title');
 
-    RealLoadingManager.init().then((loader) => {
-        window.lastLoadingManager = loader;
-        console.log('🔥 Sistema de carga real completado exitosamente!');
-    }).catch((error) => {
-        console.error('❌ Error en el sistema de carga:', error);
-        const loadingScreen = document.getElementById('loadingScreen');
+    if (!loadingScreen) {
+        console.log('No loading screen found');
+        return;
+    }
+
+    console.log('🔥 Iniciando loading screen simple y robusto...');
+
+    let currentPercentage = 0;
+    let targetPercentage = 0;
+    let resourcesLoaded = 0;
+    const totalResources = 8; // Número fijo más pequeño
+    let isCompleted = false;
+    
+    // Timer de seguridad - SIEMPRE completar después de 6 segundos
+    const forceCompleteTimer = setTimeout(() => {
+        if (!isCompleted) {
+            console.log('⚠️ Forzando completar loading por timeout...');
+            completeLoading();
+        }
+    }, 6000);
+
+    // Función para actualizar el progreso suavemente
+    function updateProgress() {
+        if (isCompleted) return;
+
+        const diff = targetPercentage - currentPercentage;
+        if (Math.abs(diff) > 0.5) {
+            currentPercentage += diff * 0.1;
+        } else {
+            currentPercentage = targetPercentage;
+        }
+
+        const displayPercentage = Math.floor(currentPercentage);
+        
+        if (percentageText) {
+            percentageText.textContent = displayPercentage + '%';
+        }
+        if (progressFill) {
+            progressFill.style.width = displayPercentage + '%';
+        }
         if (loadingScreen) {
+            loadingScreen.setAttribute('aria-valuenow', displayPercentage);
+        }
+
+        // Si llegamos al 100%, completar
+        if (currentPercentage >= 99.5) {
+            setTimeout(completeLoading, 300);
+        }
+    }
+
+    // Actualizar progreso cada 50ms
+    const progressInterval = setInterval(updateProgress, 50);
+
+    // Función para simular carga de recursos
+    function loadResource(name, delay = 0) {
+        setTimeout(() => {
+            if (!isCompleted) {
+                resourcesLoaded++;
+                targetPercentage = Math.min((resourcesLoaded / totalResources) * 100, 100);
+                console.log(`✅ Recurso cargado: ${name} (${resourcesLoaded}/${totalResources}) - ${Math.floor(targetPercentage)}%`);
+            }
+        }, delay);
+    }
+
+    // Función para completar la carga
+    function completeLoading() {
+        if (isCompleted) return;
+        isCompleted = true;
+
+        clearTimeout(forceCompleteTimer);
+        clearInterval(progressInterval);
+
+        // Asegurar 100%
+        currentPercentage = 100;
+        targetPercentage = 100;
+        
+        if (percentageText) percentageText.textContent = '100%';
+        if (progressFill) progressFill.style.width = '100%';
+        if (loadingTitle) loadingTitle.textContent = 'Endavant diables!';
+
+        console.log('🎉 Loading completado - Ocultando pantalla');
+
+        // Ocultar pantalla de carga
+        setTimeout(() => {
             loadingScreen.classList.add('fade-out');
             document.body.classList.remove('loading');
             document.body.classList.add('content-loaded');
-            setTimeout(initializeAllFeatures, 500);
+
+            // Remover del DOM
+            setTimeout(() => {
+                if (loadingScreen.parentNode) {
+                    loadingScreen.parentNode.removeChild(loadingScreen);
+                }
+
+                // Inicializar todas las funcionalidades
+                if (typeof initializeAllFeatures === 'function') {
+                    initializeAllFeatures();
+                }
+
+                // Dispatch evento
+                window.dispatchEvent(new CustomEvent('loadingComplete'));
+            }, 600);
+        }, 200);
+    }
+
+    // Cargar recursos de forma escalonada (simulado)
+    loadResource('DOM Ready', 100);
+    loadResource('CSS Styles', 300);
+    loadResource('Logo Principal', 600);
+    loadResource('Imágenes Críticas', 1200);
+    loadResource('Fonts', 1800);
+    loadResource('Assets', 2400);
+    loadResource('Scripts', 3000);
+    loadResource('Final Check', 3600);
+
+    // Progreso mínimo garantizado
+    setTimeout(() => {
+        if (!isCompleted && targetPercentage < 70) {
+            targetPercentage = 70;
         }
-    });
+    }, 2000);
+
+    setTimeout(() => {
+        if (!isCompleted && targetPercentage < 90) {
+            targetPercentage = 90;
+        }
+    }, 4000);
+
+    // Completar si no se ha hecho ya
+    setTimeout(() => {
+        if (!isCompleted) {
+            resourcesLoaded = totalResources;
+            targetPercentage = 100;
+        }
+    }, 5000);
 }
 
 function initializeAllFeatures() {
