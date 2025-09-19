@@ -601,7 +601,7 @@ function initRealLoadingScreen() {
     let resourcesLoaded = 0;
     const totalResources = 8; // Número fijo más pequeño
     let isCompleted = false;
-    
+
     // Timer de seguridad - SIEMPRE completar después de 6 segundos
     const forceCompleteTimer = setTimeout(() => {
         if (!isCompleted) {
@@ -622,7 +622,7 @@ function initRealLoadingScreen() {
         }
 
         const displayPercentage = Math.floor(currentPercentage);
-        
+
         if (percentageText) {
             percentageText.textContent = displayPercentage + '%';
         }
@@ -664,7 +664,7 @@ function initRealLoadingScreen() {
         // Asegurar 100%
         currentPercentage = 100;
         targetPercentage = 100;
-        
+
         if (percentageText) percentageText.textContent = '100%';
         if (progressFill) progressFill.style.width = '100%';
         if (loadingTitle) loadingTitle.textContent = 'Endavant diables!';
@@ -1727,18 +1727,18 @@ function initVersotsPDFViewer() {
 function openPDF(year) {
     // Detectar si és mòbil
     const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
+
     if (isMobile) {
         // En mòbil: obrir directament el PDF
         window.open(`versots/${year}.pdf`, '_blank');
         return;
     }
-    
+
     // En desktop: obrir modal com sempre
     const modal = document.getElementById('pdfModal');
     const title = document.getElementById('pdfTitle');
     const content = document.getElementById('pdfContent');
-    
+
     title.textContent = `Versots ${year}`;
     content.innerHTML = `
         <iframe 
@@ -1749,7 +1749,7 @@ function openPDF(year) {
             <p>El teu navegador no pot mostrar PDFs. <a href="versots/${year}.pdf" target="_blank">Obre el PDF aquí</a></p>
         </iframe>
     `;
-    
+
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
