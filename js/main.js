@@ -863,7 +863,7 @@ function initSmoothScrolling() {
 
 function initCountdownTimer() {
     function updateCountdown() {
-        const festaMajor = new Date('2025-09-26T18:30:00').getTime();
+        const festaMajor = new Date('2026-09-25T18:30:00').getTime();
         const now = new Date().getTime();
         const distance = festaMajor - now;
 
@@ -883,7 +883,7 @@ function initCountdownTimer() {
 
             const titleElement = document.querySelector('.counter-title');
             if (titleElement) {
-                titleElement.textContent = "Festa Major 2025 Finalitzada!";
+                titleElement.textContent = "Festa Major 2026 Finalitzada!";
             }
         }
     }
@@ -1692,7 +1692,7 @@ function initVersotsPDFViewer() {
     }
 
     function updateMiniCountdown() {
-        const targetDate = new Date('2025-09-27T13:30:00').getTime();
+        const targetDate = new Date('2026-09-26T13:30:00').getTime();
         const now = new Date().getTime();
         const distance = targetDate - now;
 
