@@ -1760,10 +1760,24 @@ function closePDF() {
     document.body.style.overflow = '';
 }
 
+// Partitura functions
+function openPartitura() {
+    const modal = document.getElementById('partituraModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePartitura() {
+    const modal = document.getElementById('partituraModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
 // Event listeners
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
         closePDF();
+        closePartitura();
     }
 });
 

@@ -166,7 +166,7 @@
       <div class="spinner-ring"></div>
     </div>
 
-    <div id="loading-title" class="loading-text">Afinant els tabals...</div>
+    <div id="loading-title" class="loading-text">Tensant els tabals...</div>
 
     <div class="loading-progress">
       <div class="progress-fill"></div>
@@ -589,30 +589,59 @@
             Els tocs de tabal tradicionals, enregistrats per preservar-los i compartir-los!
           </p>
           <div class="spotify-list-vertical" role="list">
-            <a href="#" class="spotify-link-clean" data-track="coming-soon" role="listitem"
-              aria-label="Toc de Cercavila - Pròximament disponible a Spotify">
-              <i class="fab fa-spotify" aria-hidden="true"></i>
-              <span>Cercavila</span>
-              <small>(Pròximament)</small>
+            <a href="https://open.spotify.com/intl-es/track/1YOvozbZ4Wr1BfGJ2iJIj8?si=6f235de384934550"
+              class="spotify-link-modern" target="_blank" rel="noopener" role="listitem"
+              aria-label="Escoltar Toc de Cercavila a Spotify">
+              <div class="spotify-play-btn">
+                <i class="fas fa-play"></i>
+              </div>
+              <div class="spotify-info">
+                <span class="spotify-track-name">Cercavila</span>
+                <span class="spotify-label">Ball de Diables del Prat</span>
+              </div>
+              <i class="fab fa-spotify spotify-icon" aria-hidden="true"></i>
             </a>
-            <a href="#" class="spotify-link-clean" data-track="coming-soon" role="listitem"
-              aria-label="Toc de Correfoc - Pròximament disponible a Spotify">
-              <i class="fab fa-spotify" aria-hidden="true"></i>
-              <span>Correfoc</span>
-              <small>(Pròximament)</small>
+            <a href="https://open.spotify.com/intl-es/track/17nQxALOGMJxLbyKXLNcxU?si=743f75a879614f02"
+              class="spotify-link-modern" target="_blank" rel="noopener" role="listitem"
+              aria-label="Escoltar Toc de Correfoc a Spotify">
+              <div class="spotify-play-btn">
+                <i class="fas fa-play"></i>
+              </div>
+              <div class="spotify-info">
+                <span class="spotify-track-name">Correfoc</span>
+                <span class="spotify-label">Ball de Diables del Prat</span>
+              </div>
+              <i class="fab fa-spotify spotify-icon" aria-hidden="true"></i>
             </a>
-            <a href="#" class="spotify-link-clean" data-track="coming-soon" role="listitem"
-              aria-label="Toc de Versots - Pròximament disponible a Spotify">
-              <i class="fab fa-spotify" aria-hidden="true"></i>
-              <span>Versots</span>
-              <small>(Pròximament)</small>
+            <a href="https://open.spotify.com/intl-es/track/1z19l4OafdyHnCtUd4lbmc?si=38ed6222a6ee4b8e"
+              class="spotify-link-modern" target="_blank" rel="noopener" role="listitem"
+              aria-label="Escoltar Toc de Versots a Spotify">
+              <div class="spotify-play-btn">
+                <i class="fas fa-play"></i>
+              </div>
+              <div class="spotify-info">
+                <span class="spotify-track-name">Versots</span>
+                <span class="spotify-label">Ball de Diables del Prat</span>
+              </div>
+              <i class="fab fa-spotify spotify-icon" aria-hidden="true"></i>
             </a>
-            <a href="#" class="spotify-link-clean" data-track="coming-soon" role="listitem"
-              aria-label="Toc de Carretillada - Pròximament disponible a Spotify">
-              <i class="fab fa-spotify" aria-hidden="true"></i>
-              <span>Carretillada</span>
-              <small>(Pròximament)</small>
+            <a href="https://open.spotify.com/intl-es/track/6vbV48JeZAZ18WG04ZoG61?si=c29fd5d077c04cde"
+              class="spotify-link-modern" target="_blank" rel="noopener" role="listitem"
+              aria-label="Escoltar Toc de Carretillada a Spotify">
+              <div class="spotify-play-btn">
+                <i class="fas fa-play"></i>
+              </div>
+              <div class="spotify-info">
+                <span class="spotify-track-name">Carretillada</span>
+                <span class="spotify-label">Ball de Diables del Prat</span>
+              </div>
+              <i class="fab fa-spotify spotify-icon" aria-hidden="true"></i>
             </a>
+          </div>
+
+          <!-- Partitura Image -->
+          <div class="partitura-inline">
+            <img src="images/Partitura.jpeg" alt="Partitura dels Tocs de Tabal" class="partitura-img" loading="lazy">
           </div>
         </div>
       </div>
@@ -781,6 +810,20 @@
         </div>
         <div class="pdf-content" id="pdfContent">
           <p>Carregant PDF...</p>
+        </div>
+      </div>
+    </div>
+    <!-- Partitura Modal -->
+    <div class="partitura-modal" id="partituraModal">
+      <div class="partitura-viewer">
+        <div class="partitura-header">
+          <h3>Partitura - Tocs de Tabal</h3>
+          <button class="close-partitura" onclick="closePartitura()" aria-label="Tancar partitura">
+          </button>
+        </div>
+        <div class="partitura-content">
+          <img src="images/Partitura.jpeg" alt="Partitura dels Tocs de Tabal del Ball de Diables del Prat"
+            onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\'color: var(--text-light); text-align: center;\'>Error carregant la partitura</p>'">
         </div>
       </div>
     </div>
