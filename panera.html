@@ -685,7 +685,8 @@
                         locals de la ciutat pratenca que són col·laboradors de la rifa.</p>
                     <p>Aquesta consisteix a atorgar el premi a la butlleta que contingui els darrers quatre números en
                         coincidència amb el primer premi de la Grossa de Cap d'Any que se celebra el dia
-                        <strong>31-12-2025</strong> des de Loteries de Catalunya.</p>
+                        <strong>31-12-2025</strong> des de Loteries de Catalunya.
+                    </p>
                 </div>
 
                 <div class="bases-content">
@@ -790,7 +791,8 @@
                         <div class="base-content">
                             <p>La participació és de <strong>10 números per butlleta</strong>, havent-se fet el total de
                                 <strong>1.000 tiquets</strong> que contenen els números, sempre no consecutius, d'entre
-                                el 0 i el 9.999.</p>
+                                el 0 i el 9.999.
+                            </p>
                         </div>
                     </div>
 
@@ -832,7 +834,8 @@
                             <p>En cas que el premi quedés desert, és a dir, que cap persona no en reclamés la
                                 titularitat del butlletí guanyador, l'Associació Ball de Diables del Prat determinarà
                                 que el premi s'atorgui al butlletí que contingui la combinació corresponent al
-                                <strong>segon premi</strong> del mateix sorteig de la Grossa de Cap d'Any.</p>
+                                <strong>segon premi</strong> del mateix sorteig de la Grossa de Cap d'Any.
+                            </p>
                             <p>Si aquest premi també restés desert, el guanyador serà el butlletí que coincideixi amb
                                 els darrers quatre dígits del <strong>tercer premi</strong> del mateix sorteig.</p>
                         </div>
@@ -895,42 +898,41 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-        // Coordenades GPS EXACTES dels 34 comerços de la Panera 2025
         const comerciosData = [
-            { id: 1, name: "Academia d'Anglès Estela", category: "cultura", lat: 41.331193, lng: 2.096625, color: "#f39c12", description: "Academia d'idiomes", address: "Carrer de Joan Maragall, 21" },
-            { id: 2, name: "Montse Borràs", category: "moda", lat: 41.331221, lng: 2.093946, color: "#3498db", description: "Moda i complements", address: "Carrer del Centre, 2" },
-            { id: 3, name: "La Central", category: "alimentacio", lat: 41.330659, lng: 2.093302, color: "#e74c3c", description: "Productes del mercat", address: "Plaça de la Vila, 12" },
-            { id: 4, name: "Carnisseria Montserrat", category: "alimentacio", lat: 41.330659, lng: 2.093302, color: "#e74c3c", description: "Carnisseria de qualitat", address: "Plaça de la Vila, 12" },
-            { id: 5, name: "Ferreteria la Cresta", category: "llar", lat: 41.329584, lng: 2.093412, color: "#2ecc71", description: "Ferreteria i bricolatge", address: "Carrer de Ferran Puig, 23" },
-            { id: 6, name: "Passion Beauté", category: "moda", lat: 41.329515, lng: 2.093444, color: "#3498db", description: "Centre d'estètica", address: "Carrer de Ferran Puig, 27" },
-            { id: 7, name: "Herba Bona", category: "llar", lat: 41.3287529, lng: 2.0937985, color: "#2ecc71", description: "Herboristeria i dietètica", address: "Carrer de Ferran Puig, 51" },
-            { id: 8, name: "Aurora", category: "moda", lat: 41.3283213, lng: 2.0919309, color: "#3498db", description: "Botiga de moda", address: "Carrer de Ferran Puig, 65" },
-            { id: 9, name: "Fonollosa", category: "moda", lat: 41.3281323, lng: 2.0920938, color: "#3498db", description: "Moda i complements", address: "Carrer de Ferran Puig, 73" },
-            { id: 10, name: "Delcar", category: "moda", lat: 41.3276658, lng: 2.092286, color: "#3498db", description: "Moda i accessoris", address: "Carrer de Frederic Soler, 6 bis" },
-            { id: 11, name: "Picapedrer", category: "alimentacio", lat: 41.330659, lng: 2.093302, color: "#e74c3c", description: "Parada del mercat", address: "Plaça de la Vila, 12" },
-            { id: 12, name: "Tàstum", category: "alimentacio", lat: 41.3297467, lng: 2.0907014, color: "#e74c3c", description: "Especialitats gastronòmiques", address: "Carrer de Ferran Puig, 10" },
-            { id: 13, name: "La Nova San José", category: "alimentacio", lat: 41.3296482, lng: 2.0906782, color: "#e74c3c", description: "Pastisseria tradicional", address: "Carrer de Ferran Puig, 14" },
-            { id: 14, name: "Perruqueria Carmen Marín", category: "moda", lat: 41.3292544, lng: 2.0907932, color: "#3498db", description: "Perruqueria", address: "Carrer de Ferran Puig, 32" },
-            { id: 15, name: "Llibreria Drac", category: "cultura", lat: 41.329325, lng: 2.0911024, color: "#f39c12", description: "Llibreria local", address: "Carrer de Ferran Puig, 37" },
-            { id: 16, name: "MuyCoqueta", category: "moda", lat: 41.3281585, lng: 2.0917297, color: "#3498db", description: "Botiga de moda", address: "Carrer de Ferran Puig, 72" },
-            { id: 17, name: "Font Pell", category: "moda", lat: 41.3267771, lng: 2.0905546, color: "#3498db", description: "Moda i calçat", address: "Carrer de Frederic Soler, 40" },
-            { id: 18, name: "Cal Ramonet del Nara", category: "alimentacio", lat: 41.3291645, lng: 2.0907271, color: "#e74c3c", description: "Restaurant tradicional", address: "Carrer de Ferran Puig, 34" },
-            { id: 19, name: "Flors Montané", category: "llar", lat: 41.3295125, lng: 2.0907763, color: "#2ecc71", description: "Floristeria", address: "Carrer de Ferran Puig, 18" },
-            { id: 20, name: "Pa i Coca", category: "alimentacio", lat: 41.3298351, lng: 2.0906303, color: "#e74c3c", description: "Forner artesanal", address: "Carrer de Ferran Puig, 6" },
-            { id: 21, name: "Nit i dia", category: "llar", lat: 41.3270673, lng: 2.0959859, color: "#2ecc71", description: "Supermercat", address: "Av. de la Verge de Montserrat, 47" },
-            { id: 22, name: "La Masia", category: "alimentacio", lat: 41.330659, lng: 2.093302, color: "#e74c3c", description: "Productes del mercat", address: "Plaça de la Vila, 12" },
-            { id: 23, name: "Calçats Avenida", category: "moda", lat: 41.3272323, lng: 2.0966809, color: "#3498db", description: "Sabateria", address: "Av. de la Verge de Montserrat, 41" },
-            { id: 24, name: "Pet Naturalia", category: "llar", lat: 41.3228776, lng: 2.0886705, color: "#2ecc71", description: "Productes per animals", address: "Carrer Rector Farrés i Poch, 15" },
-            { id: 25, name: "Celler Terra i Sol", category: "alimentacio", lat: 41.3442813, lng: 2.0651685, color: "#e74c3c", description: "Vins i licors", address: "Carrer de Frederic Soler, 21" },
-            { id: 26, name: "Agueda Herrera Lencería", category: "moda", lat: 41.3439542, lng: 2.0662453, color: "#3498db", description: "Llenceria", address: "Carrer de Frederic Soler, 66" },
-            { id: 27, name: "La Maranya", category: "moda", lat: 41.3289092, lng: 2.0911051, color: "#3498db", description: "Moda i complements", address: "Carrer de Ferran Puig, 40" },
-            { id: 28, name: "Ferreteria Llobregat", category: "llar", lat: 41.3293701, lng: 2.0963137, color: "#2ecc71", description: "Ferreteria", address: "Carretera de la Marina, 5" },
-            { id: 29, name: "Los Naranjos", category: "restauracio", lat: 41.3296986, lng: 2.0886957, color: "#9b59b6", description: "Restaurant", address: "Carrer de Mossèn Cinto Verdaguer, 16" },
-            { id: 30, name: "Avanti", category: "moda", lat: 41.3279795, lng: 2.091883, color: "#3498db", description: "Moda i complements", address: "Carrer de Ferran Puig, 82" },
-            { id: 31, name: "Le Tigrè Cakes", category: "restauracio", lat: 41.3290425, lng: 2.0914075, color: "#9b59b6", description: "Pastisseria i cafeteria", address: "Passatge Rector Martí i Piñol, 3" },
-            { id: 32, name: "La Cova", category: "restauracio", lat: 41.329294, lng: 2.090774, color: "#9b59b6", description: "Restaurant", address: "Carrer de Ferran Puig, 30" },
-            { id: 33, name: "El Bar del Mercat", category: "restauracio", lat: 41.330659, lng: 2.093302, color: "#9b59b6", description: "Bar del mercat", address: "Plaça de la Vila, 12" },
-            { id: 34, name: "La Nova Primavera", category: "restauracio", lat: 41.3301238, lng: 2.0908004, color: "#9b59b6", description: "Restaurant", address: "Carrer de Ferran Puig, 7" }
+            { id: 1, name: "Academia d'Anglès Estela", category: "Cultura", lat: 41.3313350, lng: 2.0965152, color: "#F38181", description: "Carrer de Joan Maragall, 21, El Prat de Llobregat", address: "Carrer de Joan Maragall, 21, El Prat de Llobregat" },
+            { id: 2, name: "Montse Borràs", category: "Moda", lat: 41.3311696, lng: 2.0939320, color: "#4ECDC4", description: "Carrer del Centre, 2, El Prat de Llobregat", address: "Carrer del Centre, 2, El Prat de Llobregat" },
+            { id: 3, name: "La Central", category: "Alimentació", lat: 41.3304394, lng: 2.0935590, color: "#FF6B6B", description: "Plaça de la Vila, 12, El Prat de Llobregat", address: "Plaça de la Vila, 12, El Prat de Llobregat" },
+            { id: 4, name: "Carnisseria Montserrat", category: "Alimentació", lat: 41.3304594, lng: 2.0935790, color: "#FF6B6B", description: "Plaça de la Vila, 12, El Prat de Llobregat", address: "Plaça de la Vila, 12, El Prat de Llobregat" },
+            { id: 5, name: "Ferreteria la Cresta", category: "Llar", lat: 41.3296108, lng: 2.0934235, color: "#95E1D3", description: "Carrer de Ferran Puig, 23, El Prat de Llobregat", address: "Carrer de Ferran Puig, 23, El Prat de Llobregat" },
+            { id: 6, name: "Passion Beauté", category: "Moda", lat: 41.3295258, lng: 2.0934468, color: "#4ECDC4", description: "Carrer de Ferran Puig, 27, El Prat de Llobregat", address: "Carrer de Ferran Puig, 27, El Prat de Llobregat" },
+            { id: 7, name: "Herba Bona", category: "Llar", lat: 41.3287250, lng: 2.0940276, color: "#95E1D3", description: "Carrer de Ferran Puig, 51, El Prat de Llobregat", address: "Carrer de Ferran Puig, 51, El Prat de Llobregat" },
+            { id: 8, name: "Aurora", category: "Moda", lat: 41.3283256, lng: 2.0943767, color: "#4ECDC4", description: "Carrer de Ferran Puig, 65, El Prat de Llobregat", address: "Carrer de Ferran Puig, 65, El Prat de Llobregat" },
+            { id: 9, name: "Fonollosa", category: "Moda", lat: 41.3281037, lng: 2.0945748, color: "#4ECDC4", description: "Carrer de Ferran Puig, 73, El Prat de Llobregat", address: "Carrer de Ferran Puig, 73, El Prat de Llobregat" },
+            { id: 10, name: "Delcar", category: "Moda", lat: 41.3271899, lng: 2.0952554, color: "#4ECDC4", description: "Carrer de Frederic Soler, 6 bis, El Prat de Llobregat", address: "Carrer de Frederic Soler, 6 bis, El Prat de Llobregat" },
+            { id: 11, name: "Picapedrer", category: "Alimentació", lat: 41.3304194, lng: 2.0935390, color: "#FF6B6B", description: "Plaça de la Vila, 12, El Prat de Llobregat", address: "Plaça de la Vila, 12, El Prat de Llobregat" },
+            { id: 12, name: "Tàstum", category: "Alimentació", lat: 41.3297260, lng: 2.0933171, color: "#FF6B6B", description: "Carrer de Ferran Puig, 10, El Prat de Llobregat", address: "Carrer de Ferran Puig, 10, El Prat de Llobregat" },
+            { id: 13, name: "La Nova San José", category: "Alimentació", lat: 41.3296389, lng: 2.0933150, color: "#FF6B6B", description: "Carrer de Ferran Puig, 14, El Prat de Llobregat", address: "Carrer de Ferran Puig, 14, El Prat de Llobregat" },
+            { id: 14, name: "Perruqueria Carmen Marín", category: "Moda", lat: 41.3292628, lng: 2.0934839, color: "#4ECDC4", description: "Carrer de Ferran Puig, 32, El Prat de Llobregat", address: "Carrer de Ferran Puig, 32, El Prat de Llobregat" },
+            { id: 15, name: "Llibreria Drac", category: "Cultura", lat: 41.3292859, lng: 2.0935507, color: "#F38181", description: "Carrer de Ferran Puig, 37, El Prat de Llobregat", address: "Carrer de Ferran Puig, 37, El Prat de Llobregat" },
+            { id: 16, name: "MuyCoqueta", category: "Moda", lat: 41.3281885, lng: 2.0944042, color: "#4ECDC4", description: "Carrer de Ferran Puig, 72, El Prat de Llobregat", address: "Carrer de Ferran Puig, 72, El Prat de Llobregat" },
+            { id: 17, name: "Font Pell", category: "Moda", lat: 41.3267805, lng: 2.0955242, color: "#4ECDC4", description: "Carrer de Frederic Soler, 40, El Prat de Llobregat", address: "Carrer de Frederic Soler, 40, El Prat de Llobregat" },
+            { id: 18, name: "Cal Ramonet del Nara", category: "Alimentació", lat: 41.3292105, lng: 2.0935282, color: "#FF6B6B", description: "Carrer de Ferran Puig, 34, El Prat de Llobregat", address: "Carrer de Ferran Puig, 34, El Prat de Llobregat" },
+            { id: 19, name: "Flors Montané", category: "Llar", lat: 41.3294971, lng: 2.0933795, color: "#95E1D3", description: "Carrer de Ferran Puig, 18, El Prat de Llobregat", address: "Carrer de Ferran Puig, 18, El Prat de Llobregat" },
+            { id: 20, name: "Pa i Coca", category: "Alimentació", lat: 41.3298061, lng: 2.0932949, color: "#FF6B6B", description: "Carrer de Ferran Puig, 6, El Prat de Llobregat", address: "Carrer de Ferran Puig, 6, El Prat de Llobregat" },
+            { id: 21, name: "Nit i dia", category: "Llar", lat: 41.327019, lng: 2.0984971, color: "#95E1D3", description: "Av. de la Verge de Montserrat, 47, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, 47, El Prat de Llobregat" },
+            { id: 22, name: "La Masia", category: "Alimentació", lat: 41.3304594, lng: 2.0935990, color: "#FF6B6B", description: "Plaça de la Vila, 12, El Prat de Llobregat", address: "Plaça de la Vila, 12, El Prat de Llobregat" },
+            { id: 23, name: "Calçats Avenida", category: "Moda", lat: 41.3272283, lng: 2.0992558, color: "#4ECDC4", description: "Av. de la Verge de Montserrat, 41, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, 41, El Prat de Llobregat" },
+            { id: 24, name: "Pet Naturalia", category: "Llar", lat: 41.3228609, lng: 2.0912570, color: "#95E1D3", description: "Carrer Rector Farrés i Poch, 15, El Prat de Llobregat", address: "Carrer Rector Farrés i Poch, 15, El Prat de Llobregat" },
+            { id: 25, name: "Celler Terra i Sol", category: "Alimentació", lat: 41.3271987, lng: 2.0953097, color: "#FF6B6B", description: "Carrer de Frederic Soler, 21, El Prat de Llobregat", address: "Carrer de Frederic Soler, 21, El Prat de Llobregat" },
+            { id: 26, name: "Agueda Herrera Lencería", category: "Moda", lat: 41.325497, lng: 2.0968407, color: "#4ECDC4", description: "Carrer de Frederic Soler, 66, El Prat de Llobregat", address: "Carrer de Frederic Soler, 66, El Prat de Llobregat" },
+            { id: 27, name: "La Maranya", category: "Moda", lat: 41.3289564, lng: 2.0937433, color: "#4ECDC4", description: "Carrer de Ferran Puig, 40, El Prat de Llobregat", address: "Carrer de Ferran Puig, 40, El Prat de Llobregat" },
+            { id: 28, name: "Ferreteria Llobregat", category: "Llar", lat: 41.3292410, lng: 2.0987898, color: "#95E1D3", description: "Carretera de la Marina, 5, El Prat de Llobregat", address: "Carretera de la Marina, 5, El Prat de Llobregat" },
+            { id: 29, name: "Los Naranjos", category: "Restauració", lat: 41.3297235, lng: 2.0913336, color: "#FFA07A", description: "Carrer de Mossèn Cinto Verdaguer, 16, El Prat de Llobregat", address: "Carrer de Mossèn Cinto Verdaguer, 16, El Prat de Llobregat" },
+            { id: 30, name: "Avanti", category: "Moda", lat: 41.3280169, lng: 2.0945558, color: "#4ECDC4", description: "Carrer de Ferran Puig, 82, El Prat de Llobregat", address: "Carrer de Ferran Puig, 82, El Prat de Llobregat" },
+            { id: 31, name: "Le Tigrè Cakes", category: "Restauració", lat: 41.3290122, lng: 2.0939926, color: "#FFA07A", description: "Passatge Rector Martí i Piñol, 3, El Prat de Llobregat", address: "Passatge Rector Martí i Piñol, 3, El Prat de Llobregat" },
+            { id: 32, name: "La Cova", category: "Restauració", lat: 41.3293086, lng: 2.0934469, color: "#FFA07A", description: "Carrer de Ferran Puig, 30, El Prat de Llobregat", address: "Carrer de Ferran Puig, 30, El Prat de Llobregat" },
+            { id: 33, name: "El Bar del Mercat", category: "Restauració", lat: 41.3304194, lng: 2.0936190, color: "#FFA07A", description: "Plaça de la Vila, 12, El Prat de Llobregat", address: "Plaça de la Vila, 12, El Prat de Llobregat" },
+            { id: 34, name: "La Nova Primavera", category: "Restauració", lat: 41.3301431, lng: 2.0933401, color: "#FFA07A", description: "Carrer de Ferran Puig, 7, El Prat de Llobregat", address: "Carrer de Ferran Puig, 7, El Prat de Llobregat" }
         ];
 
         let map;
