@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geocodificador - Panera</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FF6B6B 0%, #C92A2A 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .info {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        
+        .info code {
+            background: #e9ecef;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #495057;
+            display: block;
+            margin-top: 0.5rem;
+        }
+        
+        .info strong {
+            color: #2c3e50;
+        }
+        
+        .format-examples {
+            background: #e7f3ff;
+            border-left: 3px solid #007bff;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+        
+        .format-examples h4 {
+            color: #007bff;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .format-examples code {
+            background: white;
+            padding: 0.4rem;
+            border-radius: 3px;
+            display: block;
+            margin: 0.5rem 0;
+            font-size: 0.8rem;
+            color: #495057;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #FF6B6B;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #FF6B6B 0%, #C92A2A 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.1s;
+            width: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-1px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .results {
+            margin-top: 1.5rem;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .result-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 6px;
+            border-left: 3px solid #28a745;
+        }
+        
+        .result-item h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .coords {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #495057;
+            margin-top: 0.5rem;
+        }
+        
+        .address {
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin: 0.25rem 0;
+        }
+        
+        .error {
+            background: #fff5f5;
+            border-left: 3px solid #dc3545;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            border-radius: 6px;
+            color: #721c24;
+            font-size: 0.9rem;
+        }
+        
+        .example {
+            background: #fff3cd;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+        
+        .example code {
+            background: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+        
+        .progress {
+            background: #e9ecef;
+            border-radius: 4px;
+            height: 6px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(135deg, #FF6B6B 0%, #C92A2A 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .summary {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .export-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+        }
+        
+        .export-btn {
+            background: white;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .export-btn:hover {
+            background: #f8f9fa;
+            border-color: #adb5bd;
+            transform: none;
+        }
+        
+        .export-btn.txt {
+            color: #007bff;
+            border-color: #007bff;
+        }
+        
+        .export-btn.txt:hover {
+            background: #e7f3ff;
+        }
+        
+        .export-btn.js {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        .export-btn.js:hover {
+            background: #ffe6e8;
+        }
+
+        .method-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .method-url {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .method-address {
+            background: #cce5ff;
+            color: #004085;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗺️ Geocodificador - Panera</h1>
+        
+        <div class="info">
+            <strong>Utilitza el format que prefereixis!</strong>
+        </div>
+
+        <div class="format-examples">
+            <h4>📝 Format 1: Adreça (busca automàtica)</h4>
+            <code>Nit i dia | Llar | Av. de la Verge de Montserrat, 47, El Prat de Llobregat</code>
+            
+            <h4 style="margin-top: 1rem;">🔗 Format 2: URL de Google Maps (més precís)</h4>
+            <code>Nit i dia | Llar | https://www.google.es/maps/place/Nit+i+Dia...</code>
+            <small style="color: #6c757d; display: block; margin-top: 0.5rem;">💡 Recomanat: Amb URL de Google Maps obtindràs les coordenades exactes!</small>
+        </div>
+        
+        <div class="input-group">
+            <label for="addresses">Llista de comerços:</label>
+            <textarea id="addresses" rows="12" placeholder="Pots barrejar els dos formats:&#10;&#10;Nit i dia | Llar | Av. de la Verge de Montserrat, 47, El Prat de Llobregat&#10;Aurora | Moda | https://www.google.es/maps/place/..."></textarea>
+        </div>
+        
+        <button id="geocodeBtn" onclick="geocodeAddresses()">🚀 Processar</button>
+        
+        <div class="progress" id="progress" style="display: none;">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="example">
+            <strong>Categories:</strong> Alimentació, Moda, Llar, Cultura, Restauració
+        </div>
+        
+        <div id="results" class="results"></div>
+    </div>
+
+    <script>
+        let results = [];
+        
+        function extractCoordsFromGoogleMapsUrl(url) {
+            // Buscar patró @lat,lng
+            const match1 = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+            if (match1) {
+                return {
+                    lat: parseFloat(match1[1]).toFixed(7),
+                    lng: parseFloat(match1[2]).toFixed(7)
+                };
+            }
+            
+            // Buscar patró !3d (lat) i !4d (lng)
+            const lat3d = url.match(/!3d(-?\d+\.\d+)/);
+            const lng4d = url.match(/!4d(-?\d+\.\d+)/);
+            if (lat3d && lng4d) {
+                return {
+                    lat: parseFloat(lat3d[1]).toFixed(7),
+                    lng: parseFloat(lng4d[1]).toFixed(7)
+                };
+            }
+            
+            return null;
+        }
+        
+        function isGoogleMapsUrl(text) {
+            return text.includes('google.') && text.includes('maps');
+        }
+        
+        async function geocodeAddresses() {
+            const input = document.getElementById('addresses').value.trim();
+            const resultsDiv = document.getElementById('results');
+            const btn = document.getElementById('geocodeBtn');
+            const progress = document.getElementById('progress');
+            const progressBar = document.getElementById('progressBar');
+            
+            if (!input) {
+                resultsDiv.innerHTML = '<div class="error">❌ Enganxa almenys una línia</div>';
+                resultsDiv.classList.add('show');
+                return;
+            }
+            
+            const lines = input.split('\n').filter(line => line.trim() && line.includes('|'));
+            
+            if (lines.length === 0) {
+                resultsDiv.innerHTML = '<div class="error">❌ Format incorrecte. Utilitza: Nom | Categoria | Adreça o URL</div>';
+                resultsDiv.classList.add('show');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ Processant...';
+            progress.style.display = 'block';
+            resultsDiv.innerHTML = '<div class="summary">🔍 Processant ' + lines.length + ' comerços...</div>';
+            resultsDiv.classList.add('show');
+            
+            results = [];
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                const parts = line.split('|').map(s => s.trim());
+                const name = parts[0];
+                const category = parts.length >= 3 ? parts[1] : 'General';
+                const thirdPart = parts.length >= 3 ? parts[2] : parts[1];
+                
+                progressBar.style.width = ((i / lines.length) * 100) + '%';
+                
+                try {
+                    let coords;
+                    let method;
+                    
+                    // Detectar si és URL de Google Maps
+                    if (isGoogleMapsUrl(thirdPart)) {
+                        coords = extractCoordsFromGoogleMapsUrl(thirdPart);
+                        method = 'url';
+                        if (!coords) {
+                            throw new Error('No s\'han pogut extreure coordenades de la URL');
+                        }
+                    } else {
+                        // És una adreça, buscar amb Nominatim
+                        coords = await geocodeAddress(thirdPart);
+                        method = 'address';
+                        await sleep(1100); // Esperar només per Nominatim
+                    }
+                    
+                    results.push({
+                        name,
+                        category,
+                        address: thirdPart,
+                        lat: coords.lat,
+                        lng: coords.lng,
+                        method: method,
+                        success: true
+                    });
+                } catch (error) {
+                    results.push({
+                        name,
+                        category,
+                        address: thirdPart,
+                        error: error.message,
+                        success: false
+                    });
+                }
+            }
+            
+            progressBar.style.width = '100%';
+            displayResults();
+            
+            btn.disabled = false;
+            btn.textContent = '🚀 Processar';
+            progress.style.display = 'none';
+        }
+        
+        async function geocodeAddress(address) {
+            let searchAddress = address;
+            if (!address.toLowerCase().includes('el prat')) {
+                searchAddress = address + ', El Prat de Llobregat, Barcelona, Spain';
+            }
+            
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchAddress)}&limit=1&countrycodes=es`;
+            
+            const response = await fetch(url, {
+                headers: {
+                    'User-Agent': 'PaneraInfernal/1.0'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Error en la petició');
+            }
+            
+            const data = await response.json();
+            
+            if (data.length === 0) {
+                throw new Error('Adreça no trobada');
+            }
+            
+            return {
+                lat: parseFloat(data[0].lat).toFixed(7),
+                lng: parseFloat(data[0].lon).toFixed(7)
+            };
+        }
+        
+        function displayResults() {
+            const resultsDiv = document.getElementById('results');
+            
+            let html = '';
+            
+            const successful = results.filter(r => r.success);
+            const failed = results.filter(r => !r.success);
+            
+            if (successful.length > 0) {
+                const urlMethod = successful.filter(r => r.method === 'url').length;
+                const addressMethod = successful.filter(r => r.method === 'address').length;
+                
+                html += `<div class="summary">✅ ${successful.length} de ${results.length} trobades`;
+                if (urlMethod > 0) html += ` (${urlMethod} des d'URL`;
+                if (addressMethod > 0) html += `${urlMethod > 0 ? ', ' : ' ('}${addressMethod} des d'adreça`;
+                html += `)</div>`;
+                
+                successful.forEach(result => {
+                    const methodBadge = result.method === 'url' 
+                        ? '<span class="method-badge method-url">URL Maps</span>'
+                        : '<span class="method-badge method-address">Adreça</span>';
+                    
+                    html += `
+                        <div class="result-item">
+                            <h4>${result.name}${methodBadge}</h4>
+                            <div class="address">📍 ${result.address.length > 80 ? result.address.substring(0, 80) + '...' : result.address}</div>
+                            <div class="address">🏷️ ${result.category}</div>
+                            <div class="coords">${result.lat}, ${result.lng}</div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                    <div class="export-buttons">
+                        <button class="export-btn txt" onclick="exportAll()">
+                            📄 Exportar TXT
+                        </button>
+                        <button class="export-btn js" onclick="exportJS()">
+                            💻 Exportar JS
+                        </button>
+                    </div>
+                `;
+            }
+            
+            if (failed.length > 0) {
+                html += '<div style="margin-top: 1rem;"></div>';
+                failed.forEach(result => {
+                    html += `
+                        <div class="error">
+                            <strong>${result.name}:</strong> ${result.error}<br>
+                            <small>${result.address}</small>
+                        </div>
+                    `;
+                });
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function exportAll() {
+            const successful = results.filter(r => r.success);
+            let output = '=== COORDENADES PANERA ===\n\n';
+            
+            const grouped = {};
+            successful.forEach(result => {
+                if (!grouped[result.category]) {
+                    grouped[result.category] = [];
+                }
+                grouped[result.category].push(result);
+            });
+            
+            let index = 1;
+            Object.keys(grouped).sort().forEach(category => {
+                output += `--- ${category.toUpperCase()} ---\n\n`;
+                grouped[category].forEach(result => {
+                    const addr = result.address.includes('http') ? '(URL Google Maps)' : result.address;
+                    output += `${index}. ${result.name}\n`;
+                    output += `   Adreça: ${addr}\n`;
+                    output += `   Coordenades: ${result.lat}, ${result.lng}\n\n`;
+                    index++;
+                });
+            });
+            
+            output += `\n=== TOTAL: ${successful.length} ubicacions ===`;
+            
+            navigator.clipboard.writeText(output).then(() => {
+                alert(`✅ ${successful.length} coordenades copiades!`);
+            });
+        }
+        
+        function exportJS() {
+            const successful = results.filter(r => r.success);
+            
+            const categoryColors = {
+                'Alimentació': '#FF6B6B',
+                'Moda': '#4ECDC4',
+                'Llar': '#95E1D3',
+                'Cultura': '#F38181',
+                'Restauració': '#FFA07A'
+            };
+            
+            let output = 'const comerciosData = [\n';
+            
+            successful.forEach((result, index) => {
+                const color = categoryColors[result.category] || '#667eea';
+                const addr = result.address.includes('http') ? result.name : result.address;
+                output += `  { id: ${index + 1}, name: "${result.name}", category: "${result.category}", lat: ${result.lat}, lng: ${result.lng}, color: "${color}", description: "${addr}", address: "${addr}" }`;
+                if (index < successful.length - 1) {
+                    output += ',';
+                }
+                output += '\n';
+            });
+            
+            output += '];\n';
+            
+            navigator.clipboard.writeText(output).then(() => {
+                alert(`✅ Codi copiat! (${successful.length} ubicacions)`);
+            });
+        }
+        
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+</body>
+</html>
