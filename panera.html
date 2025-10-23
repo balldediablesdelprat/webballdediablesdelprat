@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gran Panera Infernal 2024 | Ball de Diables del Prat</title>
+    <title>Gran Panera Infernal 2025 | Ball de Diables del Prat</title>
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Gran Panera Infernal 2024 - Sorteig de 1.250€ per gastar en comerços locals del Prat de Llobregat. Ball de Diables del Prat de Llobregat.">
+        content="Gran Panera Infernal 2025 - Sorteig de 1.250€ per gastar en comerços locals del Prat de Llobregat. Ball de Diables del Prat de Llobregat.">
     <meta name="keywords"
-        content="panera infernal, sorteig, Prat de Llobregat, Ball de Diables, comerços locals, premi, 2024">
+        content="panera infernal, sorteig, Prat de Llobregat, Ball de Diables, comerços locals, premi, 2025">
     <meta name="author" content="Ball de Diables del Prat de Llobregat">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://balldediablesdelprat.cat/panera.html">
@@ -18,9 +18,9 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://balldediablesdelprat.cat/panera.html">
-    <meta property="og:title" content="Gran Panera Infernal 2024 | Ball de Diables del Prat">
+    <meta property="og:title" content="Gran Panera Infernal 2025 | Ball de Diables del Prat">
     <meta property="og:description"
-        content="Sorteig de 1.250€ per gastar en comerços locals del Prat. Participa en la Gran Panera Infernal 2024!">
+        content="Sorteig de 1.250€ per gastar en comerços locals del Prat. Participa en la Gran Panera Infernal 2025!">
     <meta property="og:image" content="https://balldediablesdelprat.cat/images/LogoBlanc.png">
 
     <!-- Fonts and Icons -->
@@ -116,8 +116,35 @@
             padding: 1rem;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            z-index: 400;
             max-width: 200px;
+        }
+
+        /* FIX Z-INDEX PER CONTROLS DEL MAPA - MÉS ESPECÍFIC */
+        .leaflet-top,
+        .leaflet-bottom {
+            z-index: 900 !important;
+        }
+
+        .leaflet-control-zoom {
+            z-index: 900 !important;
+        }
+
+        .leaflet-control-zoom-in,
+        .leaflet-control-zoom-out {
+            z-index: 900 !important;
+        }
+
+        .map-legend {
+            z-index: 400 !important;
+        }
+
+        .navbar {
+            z-index: 1100 !important;
+        }
+
+        .back-button {
+            z-index: 1100 !important;
         }
 
         .legend-item {
@@ -132,80 +159,6 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-        }
-
-        .comercios-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-
-        .toggle-btn {
-            background: var(--border-color);
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-        .toggle-btn.active,
-        .toggle-btn:hover {
-            background: var(--primary-red);
-            color: white;
-        }
-
-        .comercios-list-view {
-            display: none;
-        }
-
-        .comercios-list-view.active {
-            display: block;
-        }
-
-        .comercio-item {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .comercio-item:hover {
-            border-color: var(--primary-red);
-            transform: translateX(5px);
-        }
-
-        .comercio-category {
-            background: var(--primary-red);
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .comercio-info h4 {
-            margin: 0 0 0.2rem 0;
-            color: var(--text-dark);
-            font-size: 1rem;
-        }
-
-        .comercio-address {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            margin: 0;
         }
 
         .map-loading {
@@ -324,6 +277,15 @@
             font-size: 1.5rem;
         }
 
+        .info-card ul {
+            margin: 0.5rem 0;
+            padding-left: 1.2rem;
+        }
+
+        .info-card li {
+            margin: 0.3rem 0;
+        }
+
         .bases-section {
             background: var(--light-gray);
         }
@@ -331,6 +293,22 @@
         .bases-content {
             max-width: 800px;
             margin: 0 auto;
+        }
+
+        .bases-intro {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .bases-intro p {
+            margin-bottom: 1rem;
+        }
+
+        .bases-intro p:last-child {
+            margin-bottom: 0;
         }
 
         .base-item {
@@ -368,6 +346,15 @@
             animation: slideDown 0.3s ease;
         }
 
+        .base-content ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .base-content li {
+            margin: 0.5rem 0;
+        }
+
         @keyframes slideDown {
             from {
                 opacity: 0;
@@ -396,6 +383,7 @@
             align-items: center;
             gap: 0.8rem;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .comercio-card:hover {
@@ -472,6 +460,7 @@
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
+            margin: 0.5rem;
         }
 
         .contact-button:hover {
@@ -497,15 +486,6 @@
                 right: 0;
                 margin: 1rem;
                 max-width: none;
-            }
-
-            .comercios-toggle {
-                gap: 0.5rem;
-            }
-
-            .toggle-btn {
-                padding: 0.6rem 1rem;
-                font-size: 0.9rem;
             }
 
             .back-button {
@@ -579,13 +559,13 @@
         <!-- Hero Section -->
         <section class="panera-hero">
             <div class="panera-hero-content">
-                <h1 class="panera-title">Gran Panera Infernal 2024</h1>
+                <h1 class="panera-title">Gran Panera Infernal 2025</h1>
                 <p class="panera-subtitle">Sorteig solidari per impulsar el comerç local del Prat</p>
                 <div class="prize-highlight">
                     1.250€ en premis
                 </div>
-                <p>Participa i guanya per gastar en 60 comerços locals!</p>
-                <p><strong>Sorteig:</strong> 31 de desembre de 2024 amb la Grossa de Cap d'Any</p>
+                <p>Participa i guanya per gastar en comerços locals!</p>
+                <p><strong>Sorteig:</strong> 31 de desembre de 2025 amb la Grossa de Cap d'Any</p>
             </div>
         </section>
 
@@ -595,10 +575,18 @@
                 <div class="info-cards">
                     <div class="info-card">
                         <h3><i class="fas fa-gift"></i> El Premi</h3>
-                        <p>Targeta moneder de <strong>1.250€</strong> per gastar en comerços locals del Prat adherits al
-                            sorteig.</p>
-                        <p><strong>Màxim 150€ per establiment</strong> per donar suport al màxim de comerços possible.
-                        </p>
+                        <p><strong>1.250€</strong> per gastar en comerços locals del Prat adherits al sorteig.</p>
+                        <p><strong>Entrega en 3 parts:</strong></p>
+                        <ul>
+                            <li><strong>420€</strong> el dia de la trobada (verificació)</li>
+                            <li><strong>420€</strong> justificant la 1a part</li>
+                            <li><strong>410€</strong> justificant la 2a part</li>
+                        </ul>
+                        <p><strong>Límits:</strong></p>
+                        <ul>
+                            <li>Màxim <strong>125€</strong> per establiment</li>
+                            <li>Màxim <strong>200€</strong> en restaurants/bars</li>
+                        </ul>
                     </div>
 
                     <div class="info-card">
@@ -612,11 +600,11 @@
 
                     <div class="info-card">
                         <h3><i class="fas fa-calendar-alt"></i> Sorteig</h3>
-                        <p><strong>Data:</strong> 31 de desembre de 2024</p>
+                        <p><strong>Data:</strong> 31 de desembre de 2025</p>
                         <p>Combinació amb el <strong>primer premi de la Grossa de Cap d'Any</strong> (darrers 4 números)
                         </p>
-                        <p><strong>Recollida:</strong> Abans del 15 de gener de 2025</p>
-                        <p><strong>Límit d'ús:</strong> 30 de desembre de 2025</p>
+                        <p><strong>Recollida:</strong> Abans del 15 de gener de 2026</p>
+                        <p><strong>Límit d'ús:</strong> 30 de desembre de 2026</p>
                     </div>
                 </div>
             </div>
@@ -627,7 +615,7 @@
             <div class="container">
                 <h2 class="section-title">Comerços Adherits - Ubicacions</h2>
                 <p style="text-align: center; color: var(--text-light); margin-bottom: 3rem;">
-                    Descobreix on es troben els 60 establiments participants en la Gran Panera Infernal 2024
+                    Descobreix els establiments participants en la Gran Panera Infernal 2025
                 </p>
 
                 <!-- Map Container -->
@@ -641,15 +629,16 @@
                             <button class="map-filter active" data-category="all">Tots</button>
                             <button class="map-filter" data-category="alimentacio">Alimentació</button>
                             <button class="map-filter" data-category="moda">Moda</button>
-                            <button class="map-filter" data-category="serveis">Serveis</button>
+                            <button class="map-filter" data-category="llar">Llar</button>
                             <button class="map-filter" data-category="cultura">Cultura</button>
+                            <button class="map-filter" data-category="restauracio">Restauració</button>
                         </div>
                     </div>
 
                     <div class="map-wrapper">
                         <div class="map-loading" id="mapLoading">
                             <div class="map-spinner"></div>
-                            <p>Carregant mapa...</p>
+                            <p>Carregant mapa interactiu...</p>
                         </div>
                         <div id="comerciosMap" style="display: none;"></div>
 
@@ -664,7 +653,7 @@
                             </div>
                             <div class="legend-item">
                                 <div class="legend-icon" style="background: #2ecc71;"></div>
-                                <span>Serveis</span>
+                                <span>Llar</span>
                             </div>
                             <div class="legend-item">
                                 <div class="legend-icon" style="background: #f39c12;"></div>
@@ -672,254 +661,15 @@
                             </div>
                             <div class="legend-item">
                                 <div class="legend-icon" style="background: #9b59b6;"></div>
-                                <span>Altres</span>
+                                <span>Restauració</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Grid de Comercios -->
+                <!-- Grid de Comercios generado dinámicamente por JavaScript -->
                 <div class="comercios-grid" id="mapView">
-                    <div class="comercio-card">
-                        <div class="comercio-number">1</div>
-                        <div class="comercio-name">Bicicletes Balaguer</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">2</div>
-                        <div class="comercio-name">Ferreteria Primer Clau</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">3</div>
-                        <div class="comercio-name">Copisteria Alonso</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">4</div>
-                        <div class="comercio-name">Academia d'Anglès Estela</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">5</div>
-                        <div class="comercio-name">Montse Borràs</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">6</div>
-                        <div class="comercio-name">La Central (Mercat)</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">7</div>
-                        <div class="comercio-name">Carnisseria Piñol (Mercat)</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">8</div>
-                        <div class="comercio-name">La Cuineta de l'Isabel (Mercat)</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">9</div>
-                        <div class="comercio-name">Carnisseria Montserrat (Mercat)</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">10</div>
-                        <div class="comercio-name">Ferreteria La Cresta</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">11</div>
-                        <div class="comercio-name">Passion Beauté</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">12</div>
-                        <div class="comercio-name">Herba Bona</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">13</div>
-                        <div class="comercio-name">M'Enamorau & Tuki</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">14</div>
-                        <div class="comercio-name">Aurora</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">15</div>
-                        <div class="comercio-name">Fonollosa</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">16</div>
-                        <div class="comercio-name">Delcar</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">17</div>
-                        <div class="comercio-name">Party's</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">18</div>
-                        <div class="comercio-name">Flors Muntané</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">19</div>
-                        <div class="comercio-name">Cal Ramonet del Nara</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">20</div>
-                        <div class="comercio-name">Libreria Drac</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">21</div>
-                        <div class="comercio-name">Muy Coqueta</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">22</div>
-                        <div class="comercio-name">Un Pedacito de Ti</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">23</div>
-                        <div class="comercio-name">Fontpell</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">24</div>
-                        <div class="comercio-name">Tàstum</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">25</div>
-                        <div class="comercio-name">La Nova San José</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">26</div>
-                        <div class="comercio-name">Pa i Coca</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">27</div>
-                        <div class="comercio-name">Polleria Antònia (Mercat)</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">28</div>
-                        <div class="comercio-name">Classis Moda</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">29</div>
-                        <div class="comercio-name">Calçats Avenida</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">30</div>
-                        <div class="comercio-name">Cal Picapedrer 2</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">31</div>
-                        <div class="comercio-name">Optica Cottet El Prat</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">32</div>
-                        <div class="comercio-name">Abelló</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">33</div>
-                        <div class="comercio-name">Made with Heart</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">34</div>
-                        <div class="comercio-name">Flors Companys</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">35</div>
-                        <div class="comercio-name">Celler Terra i Sol</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">36</div>
-                        <div class="comercio-name">Cuibel Electrodomèstics</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">37</div>
-                        <div class="comercio-name">Nit i Dia</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">38</div>
-                        <div class="comercio-name">Águeda Herrera Lencería</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">39</div>
-                        <div class="comercio-name">Hoy y Ahora</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">40</div>
-                        <div class="comercio-name">Barroso Esports</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">41</div>
-                        <div class="comercio-name">Pet Naturalia</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">42</div>
-                        <div class="comercio-name">Servei de Secretaria</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">43</div>
-                        <div class="comercio-name">Montserratina</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">44</div>
-                        <div class="comercio-name">Llibreria Atenea</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">45</div>
-                        <div class="comercio-name">Montse Font Moda Dona</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">46</div>
-                        <div class="comercio-name">Cine Capri</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">47</div>
-                        <div class="comercio-name">Xocoprat</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">48</div>
-                        <div class="comercio-name">El Ninot</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">49</div>
-                        <div class="comercio-name">El Cuquet</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">50</div>
-                        <div class="comercio-name">Mandala Patch</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">51</div>
-                        <div class="comercio-name">Colla Bastonera del Prat</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">52</div>
-                        <div class="comercio-name">Perruqueria Monfort</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">53</div>
-                        <div class="comercio-name">Lamaranya</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">54</div>
-                        <div class="comercio-name">Castellers del Prat</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">55</div>
-                        <div class="comercio-name">La Mulassa del Prat</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">56</div>
-                        <div class="comercio-name">Ass. Gegantera Delta Prat</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">57</div>
-                        <div class="comercio-name">Ferretería Llobregat</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">58</div>
-                        <div class="comercio-name">Benessere. Herboristería, Dietética y Minerales</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">59</div>
-                        <div class="comercio-name">Pesca Salada Xarcuteria Puig</div>
-                    </div>
-                    <div class="comercio-card">
-                        <div class="comercio-number">60</div>
-                        <div class="comercio-name">La Peixateria del Barri</div>
-                    </div>
+                    <!-- Los 34 comerços se generan automàticament amb JavaScript -->
                 </div>
             </div>
         </section>
@@ -928,6 +678,16 @@
         <section class="section bases-section">
             <div class="container">
                 <h2 class="section-title">Bases Legals del Sorteig</h2>
+
+                <div class="bases-intro">
+                    <p>Des del Ball de Diables del Prat de Llobregat (NIF G67063825) es decideix l'any 2025 organitzar
+                        el sorteig d'una panera amb un <strong>premi directe de 1.250€</strong> per a gastar en comerços
+                        locals de la ciutat pratenca que són col·laboradors de la rifa.</p>
+                    <p>Aquesta consisteix a atorgar el premi a la butlleta que contingui els darrers quatre números en
+                        coincidència amb el primer premi de la Grossa de Cap d'Any que se celebra el dia
+                        <strong>31-12-2025</strong> des de Loteries de Catalunya.</p>
+                </div>
+
                 <div class="bases-content">
 
                     <div class="base-item">
@@ -943,14 +703,15 @@
 
                     <div class="base-item">
                         <div class="base-header" onclick="toggleBase(this)">
-                            <span>2. Descripció del Premi</span>
+                            <span>2. Import i Destinació del Premi</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
                             <p>El premi serà de 1.250€ a consumir en els comerços locals del Prat de Llobregat que donin
                                 suport a l'organització d'aquesta panera del Ball de Diables. El llistat i la
-                                localització d'aquests es pot consultar a tot seguit d'aquestes bases dins aquest mateix
-                                document.</p>
+                                localització d'aquests es pot consultar al web del Ball de Diables del Prat (<a
+                                    href="https://balldediablesdelprat.cat/panera.html"
+                                    target="_blank">https://balldediablesdelprat.cat/panera.html</a>).</p>
                         </div>
                     </div>
 
@@ -960,74 +721,87 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
-                            <p>El premiat rebrà una l'entrega d'una targeta moneder amb què farà front a la quantitat de
-                                despesa que contempla en premi.</p>
+                            <p>El premiat rebrà el premi en tres parts:</p>
+                            <ul>
+                                <li><strong>Primera part (420€):</strong> El dia de la trobada, un cop s'hagi verificat
+                                    que disposa del número guanyador.</li>
+                                <li><strong>Segona part (420€):</strong> Un cop s'hagi gastat la primera tercera part
+                                    del premi i se n'hagin justificat les despeses amb tiquets dels comerços adherits a
+                                    la Panera 2025.</li>
+                                <li><strong>Tercera part (410€):</strong> Una vegada justificada la segona part, amb el
+                                    compromís exprés que presentarà els tiquets per l'última tercera part un cop esgotat
+                                    l'import total.</li>
+                            </ul>
                         </div>
                     </div>
 
                     <div class="base-item">
                         <div class="base-header" onclick="toggleBase(this)">
-                            <span>4. Particularitat del Premi</span>
+                            <span>4. Límit per Establiment</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
-                            <p>El premi conté la particularitat que no es pot fer una compra superior a 150€ en un
-                                mateix establiment, així la quantia premiada pot ser repartida en diferents establiments
-                                i donar suport a més comerços com sigui possible.</p>
+                            <p>El premi conté la particularitat que <strong>no es pot fer una compra superior a 125€ en
+                                    un mateix establiment</strong>, així la quantia premiada pot ser repartida en
+                                diferents establiments i donar suport a més comerços com sigui possible.</p>
                         </div>
                     </div>
 
                     <div class="base-item">
                         <div class="base-header" onclick="toggleBase(this)">
-                            <span>5. Període de Venda</span>
+                            <span>5. Límit en Restauració</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
-                            <p>La venda de les butlletes es farà entre l'1 de novembre i el 31 de desembre, ambdós
-                                inclosos aquest últim fins a les 11h, una hora abans que comenci el Sorteig de la Grossa
-                                de Cap d'Any.</p>
+                            <p><strong>No es pot fer una despesa superior a 200€ en els comerços de restauració</strong>
+                                (bars i restaurants) que participin en la Panera 2025.</p>
                         </div>
                     </div>
 
                     <div class="base-item">
                         <div class="base-header" onclick="toggleBase(this)">
-                            <span>6. Sorteig</span>
+                            <span>6. Període de Venda</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
-                            <p>El sorteig es farà en combinació amb el primer premi de la Grossa de Cap d'Any,
-                                organitzat per Entitat Autònoma de Jocs i Apostes de la Generalitat (Q-5850004B).</p>
+                            <p>La venda de les butlletes es farà entre l'<strong>1 de novembre i el 31 de desembre de
+                                    2025</strong>, ambdós inclosos aquest últim fins a les 11h, una hora abans que
+                                comenci el Sorteig de la Grossa de Cap d'Any.</p>
                         </div>
                     </div>
 
                     <div class="base-item">
                         <div class="base-header" onclick="toggleBase(this)">
-                            <span>7. Participació</span>
+                            <span>7. Sistema de Sorteig</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
-                            <p>La participació és de 10 números per butlleta, havent-se fet el total de 1.000 tiquets
-                                que contenen els números, sempre no consecutius, d'entre el 0 i el 9.999.</p>
+                            <p>El sorteig es farà en combinació amb el <strong>primer premi de la Grossa de Cap
+                                    d'Any</strong>, organitzat per Entitat Autònoma de Jocs i Apostes de la Generalitat
+                                (Q-5850004B).</p>
                         </div>
                     </div>
 
                     <div class="base-item">
                         <div class="base-header" onclick="toggleBase(this)">
-                            <span>8. Cost de Participació</span>
+                            <span>8. Participació</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
-                            <p>El cost individual de participació en el sorteig per butlleta és de 5€.</p>
+                            <p>La participació és de <strong>10 números per butlleta</strong>, havent-se fet el total de
+                                <strong>1.000 tiquets</strong> que contenen els números, sempre no consecutius, d'entre
+                                el 0 i el 9.999.</p>
                         </div>
                     </div>
 
                     <div class="base-item">
                         <div class="base-header" onclick="toggleBase(this)">
-                            <span>9. Data Límit d'Ús</span>
+                            <span>9. Cost de Participació</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
-                            <p>La data límit d'ús del premi és del 30 de desembre de 2025.</p>
+                            <p>El cost individual de participació en el sorteig per butlleta és de <strong>5€</strong>.
+                            </p>
                         </div>
                     </div>
 
@@ -1037,9 +811,12 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
-                            <p>El guanyador/a ha de posar-se en contacte amb l'associació per correu electrònic
-                                (balldediablesdelprat@gmail.com) amb data límit del dia 15 de gener de 2025.
-                                L'organització i el premiat/da concertaran dia de trobada a conveniència entre les parts
+                            <p>El guanyador/a ha de posar-se en contacte amb l'associació per correu electrònic (<a
+                                    href="mailto:balldediablesdelprat@gmail.com">balldediablesdelprat@gmail.com</a>) o
+                                Instagram (<a href="https://www.instagram.com/balldediablesdelprat/"
+                                    target="_blank">@balldediablesdelprat</a>) amb <strong>data límit del dia 15 de
+                                    gener de 2026</strong>.</p>
+                            <p>L'organització i el premiat/da concertaran dia de trobada a conveniència entre les parts
                                 per fer l'entrega a La Nau de Cultura Popular (Pl. Xavier Ruiz Millán, 1). El guanyador
                                 haurà de verificar que té en possessió el número premiat fent l'entrega de la butlleta
                                 original on consti la combinació premiada.</p>
@@ -1052,11 +829,12 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="base-content">
-                            <p>Si el premi quedes desert sense que ningú en reclami la titularitat del butlletí
-                                guanyador, l'associació Ball de Diables del Prat decidirà anunciar que serà guanyador/a
-                                del sorteig aquell que contingui el butlletí que contingui la combinació del segon premi
-                                del mateix sorteig de la Grossa de Cap d'Any. En cas també desèrtic serà el premiat el
-                                que contingui els darrers quatre números del Tercer Premi.</p>
+                            <p>En cas que el premi quedés desert, és a dir, que cap persona no en reclamés la
+                                titularitat del butlletí guanyador, l'Associació Ball de Diables del Prat determinarà
+                                que el premi s'atorgui al butlletí que contingui la combinació corresponent al
+                                <strong>segon premi</strong> del mateix sorteig de la Grossa de Cap d'Any.</p>
+                            <p>Si aquest premi també restés desert, el guanyador serà el butlletí que coincideixi amb
+                                els darrers quatre dígits del <strong>tercer premi</strong> del mateix sorteig.</p>
                         </div>
                     </div>
 
@@ -1095,6 +873,9 @@
                 <a href="mailto:balldediablesdelprat@gmail.com" class="contact-button">
                     <i class="fas fa-envelope"></i> Contactar
                 </a>
+                <a href="https://www.instagram.com/balldediablesdelprat/" target="_blank" class="contact-button">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
             </div>
         </section>
     </main>
@@ -1102,7 +883,7 @@
     <!-- Footer -->
     <footer class="footer" role="contentinfo">
         <div class="container">
-            <p>&copy; 2024 Ball de Diables del Prat de Llobregat (NIF G67063825) - Gran Panera Infernal 2024</p>
+            <p>&copy; 2025 Ball de Diables del Prat de Llobregat (NIF G67063825) - Gran Panera Infernal 2025</p>
         </div>
     </footer>
 
@@ -1114,68 +895,42 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-        // Datos completos de los 60 comercios con ubicaciones del Prat de Llobregat
+        // Coordenades GPS EXACTES dels 34 comerços de la Panera 2025
         const comerciosData = [
-            { id: 1, name: "Bicicletes Balaguer", category: "serveis", lat: 41.3275, lng: 2.0973, color: "#2ecc71", description: "Reparació i venda de bicicletes" },
-            { id: 2, name: "Ferreteria Primer Clau", category: "serveis", lat: 41.3265, lng: 2.0983, color: "#2ecc71", description: "Material de ferreteria i bricolatge" },
-            { id: 3, name: "Copisteria Alonso", category: "serveis", lat: 41.3285, lng: 2.0963, color: "#2ecc71", description: "Serveis d'impressió i enquadernació" },
-            { id: 4, name: "Academia d'Anglès Estela", category: "cultura", lat: 41.3295, lng: 2.0953, color: "#f39c12", description: "Formació en idiomes" },
-            { id: 5, name: "Montse Borràs", category: "moda", lat: 41.3255, lng: 2.0993, color: "#3498db", description: "Moda i complements" },
-            { id: 6, name: "La Central (Mercat)", category: "alimentacio", lat: 41.3280, lng: 2.0990, color: "#e74c3c", description: "Productes del mercat" },
-            { id: 7, name: "Carnisseria Piñol (Mercat)", category: "alimentacio", lat: 41.3282, lng: 2.0988, color: "#e74c3c", description: "Carnisseria tradicional" },
-            { id: 8, name: "La Cuineta de l'Isabel (Mercat)", category: "alimentacio", lat: 41.3278, lng: 2.0992, color: "#e74c3c", description: "Menjar casolà" },
-            { id: 9, name: "Carnisseria Montserrat (Mercat)", category: "alimentacio", lat: 41.3281, lng: 2.0989, color: "#e74c3c", description: "Carnisseria de qualitat" },
-            { id: 10, name: "Ferreteria La Cresta", category: "serveis", lat: 41.3270, lng: 2.0980, color: "#2ecc71", description: "Ferreteria i utillatge" },
-            { id: 11, name: "Passion Beauté", category: "serveis", lat: 41.3290, lng: 2.0960, color: "#2ecc71", description: "Centre d'estètica i bellesa" },
-            { id: 12, name: "Herba Bona", category: "alimentacio", lat: 41.3260, lng: 2.0975, color: "#e74c3c", description: "Herboristeria i dietètica" },
-            { id: 13, name: "M'Enamorau & Tuki", category: "moda", lat: 41.3288, lng: 2.0965, color: "#3498db", description: "Moda i complements" },
-            { id: 14, name: "Aurora", category: "alimentacio", lat: 41.3272, lng: 2.0985, color: "#e74c3c", description: "Productes alimentaris" },
-            { id: 15, name: "Fonollosa", category: "serveis", lat: 41.3283, lng: 2.0970, color: "#2ecc71", description: "Serveis locals" },
-            { id: 16, name: "Delcar", category: "serveis", lat: 41.3268, lng: 2.0978, color: "#2ecc71", description: "Serveis d'automoció" },
-            { id: 17, name: "Party's", category: "altres", lat: 41.3276, lng: 2.0967, color: "#9b59b6", description: "Articles de festa" },
-            { id: 18, name: "Flors Muntané", category: "altres", lat: 41.3287, lng: 2.0972, color: "#9b59b6", description: "Floristeria" },
-            { id: 19, name: "Cal Ramonet del Nara", category: "alimentacio", lat: 41.3263, lng: 2.0988, color: "#e74c3c", description: "Restaurant tradicional" },
-            { id: 20, name: "Libreria Drac", category: "cultura", lat: 41.3278, lng: 2.0974, color: "#f39c12", description: "Llibreria local" },
-            { id: 21, name: "Muy Coqueta", category: "moda", lat: 41.3285, lng: 2.0968, color: "#3498db", description: "Botiga de moda" },
-            { id: 22, name: "Un Pedacito de Ti", category: "altres", lat: 41.3271, lng: 2.0982, color: "#9b59b6", description: "Regals i complements" },
-            { id: 23, name: "Fontpell", category: "alimentacio", lat: 41.3279, lng: 2.0976, color: "#e74c3c", description: "Carnisseria" },
-            { id: 24, name: "Tàstum", category: "alimentacio", lat: 41.3266, lng: 2.0979, color: "#e74c3c", description: "Especialitats gastronòmiques" },
-            { id: 25, name: "La Nova San José", category: "alimentacio", lat: 41.3284, lng: 2.0971, color: "#e74c3c", description: "Pastisseria" },
-            { id: 26, name: "Pa i Coca", category: "alimentacio", lat: 41.3273, lng: 2.0986, color: "#e74c3c", description: "Forner" },
-            { id: 27, name: "Polleria Antònia (Mercat)", category: "alimentacio", lat: 41.3281, lng: 2.0991, color: "#e74c3c", description: "Polleria del mercat" },
-            { id: 28, name: "Classis Moda", category: "moda", lat: 41.3289, lng: 2.0964, color: "#3498db", description: "Moda clàssica" },
-            { id: 29, name: "Calçats Avenida", category: "moda", lat: 41.3274, lng: 2.0981, color: "#3498db", description: "Sabateria" },
-            { id: 30, name: "Cal Picapedrer 2", category: "alimentacio", lat: 41.3267, lng: 2.0987, color: "#e74c3c", description: "Restaurant local" },
-            { id: 31, name: "Optica Cottet El Prat", category: "serveis", lat: 41.3277, lng: 2.0975, color: "#2ecc71", description: "Òptica" },
-            { id: 32, name: "Abelló", category: "altres", lat: 41.3286, lng: 2.0969, color: "#9b59b6", description: "Comerç local" },
-            { id: 33, name: "Made with Heart", category: "altres", lat: 41.3269, lng: 2.0984, color: "#9b59b6", description: "Articles fets a mà" },
-            { id: 34, name: "Flors Companys", category: "altres", lat: 41.3282, lng: 2.0973, color: "#9b59b6", description: "Floristeria" },
-            { id: 35, name: "Celler Terra i Sol", category: "alimentacio", lat: 41.3275, lng: 2.0977, color: "#e74c3c", description: "Vins i licors" },
-            { id: 36, name: "Cuibel Electrodomèstics", category: "serveis", lat: 41.3264, lng: 2.0989, color: "#2ecc71", description: "Electrodomèstics" },
-            { id: 37, name: "Nit i Dia", category: "alimentacio", lat: 41.3291, lng: 2.0962, color: "#e74c3c", description: "Supermercat" },
-            { id: 38, name: "Águeda Herrera Lencería", category: "moda", lat: 41.3258, lng: 2.0995, color: "#3498db", description: "Llenceria" },
-            { id: 39, name: "Hoy y Ahora", category: "altres", lat: 41.3270, lng: 2.0983, color: "#9b59b6", description: "Varietats" },
-            { id: 40, name: "Barroso Esports", category: "serveis", lat: 41.3281, lng: 2.0966, color: "#2ecc71", description: "Articles esportius" },
-            { id: 41, name: "Pet Naturalia", category: "altres", lat: 41.3262, lng: 2.0990, color: "#9b59b6", description: "Productes per animals" },
-            { id: 42, name: "Servei de Secretaria", category: "serveis", lat: 41.3287, lng: 2.0971, color: "#2ecc71", description: "Serveis administratius" },
-            { id: 43, name: "Montserratina", category: "alimentacio", lat: 41.3274, lng: 2.0978, color: "#e74c3c", description: "Pastisseria tradicional" },
-            { id: 44, name: "Llibreria Atenea", category: "cultura", lat: 41.3279, lng: 2.0974, color: "#f39c12", description: "Llibreria" },
-            { id: 45, name: "Montse Font Moda Dona", category: "moda", lat: 41.3265, lng: 2.0985, color: "#3498db", description: "Moda femenina" },
-            { id: 46, name: "Cine Capri", category: "cultura", lat: 41.3276, lng: 2.0976, color: "#f39c12", description: "Cinema local" },
-            { id: 47, name: "Xocoprat", category: "alimentacio", lat: 41.3283, lng: 2.0972, color: "#e74c3c", description: "Xocolateria" },
-            { id: 48, name: "El Ninot", category: "altres", lat: 41.3268, lng: 2.0987, color: "#9b59b6", description: "Jogueteria" },
-            { id: 49, name: "El Cuquet", category: "altres", lat: 41.3277, lng: 2.0980, color: "#9b59b6", description: "Articles infantils" },
-            { id: 50, name: "Mandala Patch", category: "altres", lat: 41.3284, lng: 2.0970, color: "#9b59b6", description: "Articles artesanals" },
-            { id: 51, name: "Colla Bastonera del Prat", category: "cultura", lat: 41.3272, lng: 2.0982, color: "#f39c12", description: "Entitat cultural" },
-            { id: 52, name: "Perruqueria Monfort", category: "serveis", lat: 41.3289, lng: 2.0963, color: "#2ecc71", description: "Perruqueria" },
-            { id: 53, name: "Lamaranya", category: "alimentacio", lat: 41.3261, lng: 2.0992, color: "#e74c3c", description: "Botiga gourmet" },
-            { id: 54, name: "Castellers del Prat", category: "cultura", lat: 41.3280, lng: 2.0975, color: "#f39c12", description: "Entitat castellera" },
-            { id: 55, name: "La Mulassa del Prat", category: "cultura", lat: 41.3275, lng: 2.0979, color: "#f39c12", description: "Entitat popular" },
-            { id: 56, name: "Ass. Gegantera Delta Prat", category: "cultura", lat: 41.3278, lng: 2.0977, color: "#f39c12", description: "Entitat gegantera" },
-            { id: 57, name: "Ferretería Llobregat", category: "serveis", lat: 41.3266, lng: 2.0984, color: "#2ecc71", description: "Ferreteria" },
-            { id: 58, name: "Benessere. Herboristería, Dietética y Minerales", category: "alimentacio", lat: 41.3285, lng: 2.0968, color: "#e74c3c", description: "Herboristeria i dietètica" },
-            { id: 59, name: "Pesca Salada Xarcuteria Puig", category: "alimentacio", lat: 41.3271, lng: 2.0986, color: "#e74c3c", description: "Peixateria i xarcuteria" },
-            { id: 60, name: "La Peixateria del Barri", category: "alimentacio", lat: 41.3279, lng: 2.0973, color: "#e74c3c", description: "Peixateria local" }
+            { id: 1, name: "Academia d'Anglès Estela", category: "cultura", lat: 41.331193, lng: 2.096625, color: "#f39c12", description: "Academia d'idiomes", address: "Carrer de Joan Maragall, 21" },
+            { id: 2, name: "Montse Borràs", category: "moda", lat: 41.331221, lng: 2.093946, color: "#3498db", description: "Moda i complements", address: "Carrer del Centre, 2" },
+            { id: 3, name: "La Central", category: "alimentacio", lat: 41.330659, lng: 2.093302, color: "#e74c3c", description: "Productes del mercat", address: "Plaça de la Vila, 12" },
+            { id: 4, name: "Carnisseria Montserrat", category: "alimentacio", lat: 41.330659, lng: 2.093302, color: "#e74c3c", description: "Carnisseria de qualitat", address: "Plaça de la Vila, 12" },
+            { id: 5, name: "Ferreteria la Cresta", category: "llar", lat: 41.329584, lng: 2.093412, color: "#2ecc71", description: "Ferreteria i bricolatge", address: "Carrer de Ferran Puig, 23" },
+            { id: 6, name: "Passion Beauté", category: "moda", lat: 41.329515, lng: 2.093444, color: "#3498db", description: "Centre d'estètica", address: "Carrer de Ferran Puig, 27" },
+            { id: 7, name: "Herba Bona", category: "llar", lat: 41.3287529, lng: 2.0937985, color: "#2ecc71", description: "Herboristeria i dietètica", address: "Carrer de Ferran Puig, 51" },
+            { id: 8, name: "Aurora", category: "moda", lat: 41.3283213, lng: 2.0919309, color: "#3498db", description: "Botiga de moda", address: "Carrer de Ferran Puig, 65" },
+            { id: 9, name: "Fonollosa", category: "moda", lat: 41.3281323, lng: 2.0920938, color: "#3498db", description: "Moda i complements", address: "Carrer de Ferran Puig, 73" },
+            { id: 10, name: "Delcar", category: "moda", lat: 41.3276658, lng: 2.092286, color: "#3498db", description: "Moda i accessoris", address: "Carrer de Frederic Soler, 6 bis" },
+            { id: 11, name: "Picapedrer", category: "alimentacio", lat: 41.330659, lng: 2.093302, color: "#e74c3c", description: "Parada del mercat", address: "Plaça de la Vila, 12" },
+            { id: 12, name: "Tàstum", category: "alimentacio", lat: 41.3297467, lng: 2.0907014, color: "#e74c3c", description: "Especialitats gastronòmiques", address: "Carrer de Ferran Puig, 10" },
+            { id: 13, name: "La Nova San José", category: "alimentacio", lat: 41.3296482, lng: 2.0906782, color: "#e74c3c", description: "Pastisseria tradicional", address: "Carrer de Ferran Puig, 14" },
+            { id: 14, name: "Perruqueria Carmen Marín", category: "moda", lat: 41.3292544, lng: 2.0907932, color: "#3498db", description: "Perruqueria", address: "Carrer de Ferran Puig, 32" },
+            { id: 15, name: "Llibreria Drac", category: "cultura", lat: 41.329325, lng: 2.0911024, color: "#f39c12", description: "Llibreria local", address: "Carrer de Ferran Puig, 37" },
+            { id: 16, name: "MuyCoqueta", category: "moda", lat: 41.3281585, lng: 2.0917297, color: "#3498db", description: "Botiga de moda", address: "Carrer de Ferran Puig, 72" },
+            { id: 17, name: "Font Pell", category: "moda", lat: 41.3267771, lng: 2.0905546, color: "#3498db", description: "Moda i calçat", address: "Carrer de Frederic Soler, 40" },
+            { id: 18, name: "Cal Ramonet del Nara", category: "alimentacio", lat: 41.3291645, lng: 2.0907271, color: "#e74c3c", description: "Restaurant tradicional", address: "Carrer de Ferran Puig, 34" },
+            { id: 19, name: "Flors Montané", category: "llar", lat: 41.3295125, lng: 2.0907763, color: "#2ecc71", description: "Floristeria", address: "Carrer de Ferran Puig, 18" },
+            { id: 20, name: "Pa i Coca", category: "alimentacio", lat: 41.3298351, lng: 2.0906303, color: "#e74c3c", description: "Forner artesanal", address: "Carrer de Ferran Puig, 6" },
+            { id: 21, name: "Nit i dia", category: "llar", lat: 41.3270673, lng: 2.0959859, color: "#2ecc71", description: "Supermercat", address: "Av. de la Verge de Montserrat, 47" },
+            { id: 22, name: "La Masia", category: "alimentacio", lat: 41.330659, lng: 2.093302, color: "#e74c3c", description: "Productes del mercat", address: "Plaça de la Vila, 12" },
+            { id: 23, name: "Calçats Avenida", category: "moda", lat: 41.3272323, lng: 2.0966809, color: "#3498db", description: "Sabateria", address: "Av. de la Verge de Montserrat, 41" },
+            { id: 24, name: "Pet Naturalia", category: "llar", lat: 41.3228776, lng: 2.0886705, color: "#2ecc71", description: "Productes per animals", address: "Carrer Rector Farrés i Poch, 15" },
+            { id: 25, name: "Celler Terra i Sol", category: "alimentacio", lat: 41.3442813, lng: 2.0651685, color: "#e74c3c", description: "Vins i licors", address: "Carrer de Frederic Soler, 21" },
+            { id: 26, name: "Agueda Herrera Lencería", category: "moda", lat: 41.3439542, lng: 2.0662453, color: "#3498db", description: "Llenceria", address: "Carrer de Frederic Soler, 66" },
+            { id: 27, name: "La Maranya", category: "moda", lat: 41.3289092, lng: 2.0911051, color: "#3498db", description: "Moda i complements", address: "Carrer de Ferran Puig, 40" },
+            { id: 28, name: "Ferreteria Llobregat", category: "llar", lat: 41.3293701, lng: 2.0963137, color: "#2ecc71", description: "Ferreteria", address: "Carretera de la Marina, 5" },
+            { id: 29, name: "Los Naranjos", category: "restauracio", lat: 41.3296986, lng: 2.0886957, color: "#9b59b6", description: "Restaurant", address: "Carrer de Mossèn Cinto Verdaguer, 16" },
+            { id: 30, name: "Avanti", category: "moda", lat: 41.3279795, lng: 2.091883, color: "#3498db", description: "Moda i complements", address: "Carrer de Ferran Puig, 82" },
+            { id: 31, name: "Le Tigrè Cakes", category: "restauracio", lat: 41.3290425, lng: 2.0914075, color: "#9b59b6", description: "Pastisseria i cafeteria", address: "Passatge Rector Martí i Piñol, 3" },
+            { id: 32, name: "La Cova", category: "restauracio", lat: 41.329294, lng: 2.090774, color: "#9b59b6", description: "Restaurant", address: "Carrer de Ferran Puig, 30" },
+            { id: 33, name: "El Bar del Mercat", category: "restauracio", lat: 41.330659, lng: 2.093302, color: "#9b59b6", description: "Bar del mercat", address: "Plaça de la Vila, 12" },
+            { id: 34, name: "La Nova Primavera", category: "restauracio", lat: 41.3301238, lng: 2.0908004, color: "#9b59b6", description: "Restaurant", address: "Carrer de Ferran Puig, 7" }
         ];
 
         let map;
@@ -1184,34 +939,41 @@
         // Render grid of comercios
         function renderComerciosGrid() {
             const mapView = document.getElementById('mapView');
+            if (!mapView) return;
+
             mapView.innerHTML = '';
 
             comerciosData.forEach(comercio => {
                 const card = document.createElement('div');
                 card.className = 'comercio-card';
                 card.innerHTML = `
-          <div class="comercio-number">${comercio.id}</div>
-          <div class="comercio-name">${comercio.name}</div>
-        `;
+                    <div class="comercio-number">${comercio.id}</div>
+                    <div class="comercio-name">${comercio.name}</div>
+                `;
                 card.addEventListener('click', () => focusComercio(comercio.id));
                 mapView.appendChild(card);
             });
         }
 
-        // Inicializar mapa con Leaflet (GRATIS)
+        // Inicializar mapa con Leaflet
         function initMap() {
-            document.getElementById('mapLoading').style.display = 'none';
-            document.getElementById('comerciosMap').style.display = 'block';
+            const mapLoading = document.getElementById('mapLoading');
+            const mapElement = document.getElementById('comerciosMap');
+
+            if (!mapElement) return;
+
+            if (mapLoading) mapLoading.style.display = 'none';
+            mapElement.style.display = 'block';
 
             // Centrar en El Prat de Llobregat
-            map = L.map('comerciosMap').setView([41.3278, 2.0978], 14);
+            map = L.map('comerciosMap').setView([41.3285, 2.0975], 15);
 
-            // Añadir tiles de OpenStreetMap (GRATIS)
+            // Tiles de OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
             }).addTo(map);
 
-            // Añadir marcadores
             addMarkers();
             initMapFilters();
         }
@@ -1219,21 +981,21 @@
         function addMarkers() {
             comerciosData.forEach(comercio => {
                 const markerHtml = `
-          <div style="
-            width: 24px; 
-            height: 24px; 
-            background: ${comercio.color}; 
-            border: 3px solid white; 
-            border-radius: 50%; 
-            box-shadow: 0 3px 10px rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 11px;
-          ">${comercio.id}</div>
-        `;
+                    <div style="
+                        width: 24px; 
+                        height: 24px; 
+                        background: ${comercio.color}; 
+                        border: 3px solid white; 
+                        border-radius: 50%; 
+                        box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-weight: bold;
+                        font-size: 11px;
+                    ">${comercio.id}</div>
+                `;
 
                 const customIcon = L.divIcon({
                     html: markerHtml,
@@ -1248,15 +1010,16 @@
                 }).addTo(map);
 
                 marker.bindPopup(`
-          <div style="padding: 12px; min-width: 220px;">
-            <h4 style="margin: 0 0 8px 0; color: #a3000f; font-weight: 600;">${comercio.name}</h4>
-            <div style="display: inline-block; background: ${comercio.color}; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">
-              ${getCategoryName(comercio.category)}
-            </div>
-            <p style="margin: 0 0 8px 0; color: #666; font-size: 13px;">${comercio.description}</p>
-            <small style="color: #999;">Comerç adherit #${comercio.id}</small>
-          </div>
-        `);
+                    <div style="padding: 12px; min-width: 220px;">
+                        <h4 style="margin: 0 0 8px 0; color: #a3000f; font-weight: 600;">${comercio.name}</h4>
+                        <div style="display: inline-block; background: ${comercio.color}; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">
+                            ${getCategoryName(comercio.category)}
+                        </div>
+                        <p style="margin: 0 0 8px 0; color: #666; font-size: 13px;">${comercio.description}</p>
+                        <p style="margin: 0 0 8px 0; color: #999; font-size: 12px;"><i class="fas fa-map-marker-alt"></i> ${comercio.address}</p>
+                        <small style="color: #999;">Comerç adherit #${comercio.id}</small>
+                    </div>
+                `);
 
                 marker.category = comercio.category;
                 marker.comercioId = comercio.id;
@@ -1268,9 +1031,9 @@
             const names = {
                 'alimentacio': 'Alimentació',
                 'moda': 'Moda',
-                'serveis': 'Serveis',
+                'llar': 'Llar',
                 'cultura': 'Cultura',
-                'altres': 'Altres'
+                'restauracio': 'Restauració'
             };
             return names[category] || category;
         }
@@ -1296,27 +1059,15 @@
             });
         }
 
-        function showMapView() {
-            document.getElementById('mapView').style.display = 'grid';
-            document.getElementById('listView').classList.remove('active');
-            document.querySelectorAll('.toggle-btn')[0].classList.add('active');
-            document.querySelectorAll('.toggle-btn')[1].classList.remove('active');
-        }
-
-        function showListView() {
-            document.getElementById('mapView').style.display = 'none';
-            document.getElementById('listView').classList.add('active');
-            document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
-            document.querySelectorAll('.toggle-btn')[1].classList.add('active');
-        }
-
         function focusComercio(comercioId) {
             const comercio = comerciosData.find(c => c.id === comercioId);
             if (comercio && map) {
-                map.setView([comercio.lat, comercio.lng], 17);
+                map.setView([comercio.lat, comercio.lng], 18);
                 const marker = markers.find(m => m.comercioId === comercioId);
                 if (marker) marker.openPopup();
-                showMapView();
+
+                // Scroll suau al mapa
+                document.getElementById('comerciosMap').scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
 

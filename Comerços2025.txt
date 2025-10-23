@@ -1,0 +1,181 @@
+=== COMERÇOS PANERA 2025 - COORDENADES ===
+
+1. Academia d'Anglès Estela
+   Categoria: Cultura
+   Adreça: Carrer de Joan Maragall, 21, bajos 4
+    41.331193, 2.096625
+
+2. Montse Borràs
+   Categoria: Moda
+   Adreça: Carrer del Centre, 2
+    41.331221, 2.093946
+
+3. La Central
+   Categoria: Alimentació
+   Adreça: Plaça de la Vila, 12
+    41.330659, 2.093302
+
+4. Carnisseria Montserrat
+   Categoria: Alimentació
+   Adreça: Plaça de la Vila, 12
+    41.330659, 2.093302
+
+5. Ferreteria la Cresta
+   Categoria: Llar
+   Adreça: Carrer de Ferran Puig, 23
+    41.329584, 2.093412
+
+6. Passion Beauté
+   Categoria: Moda
+   Adreça: Carrer de Ferran Puig, 27
+    41.329515, 2.093444
+
+7. Herba Bona
+   Categoria: Llar
+   Adreça: Carrer de Ferran Puig, 51
+    41.3287529,2.0937985
+
+8. Aurora
+   Categoria: Moda
+   Adreça: Carrer de Ferran Puig, 65
+    41.3283213,2.0919309
+
+9. Fonollosa
+   Categoria: Moda
+   Adreça: Carrer de Ferran Puig, 73
+    41.3281323,2.0920938
+
+10. Delcar
+    Categoria: Moda
+    Adreça: Carrer de Frederic Soler, 6 bis
+    41.3276658,2.092286
+
+11. Picapedrer
+    Categoria: Alimentació
+    Adreça: Plaça de la Vila, 12
+    41.330659, 2.093302
+
+12. Tàstum
+    Categoria: Alimentació
+    Adreça: Carrer de Ferran Puig, 10
+    41.3297467,2.0907014
+
+13. La Nova San José
+    Categoria: Alimentació
+    Adreça: Carrer de Ferran Puig, 14
+    41.3296482,2.0906782
+
+14. Perruqueria Carmen Marín
+    Categoria: Moda
+    Adreça: Carrer de Ferran Puig, 32
+    41.3292544,2.0907932
+
+15. Llibreria Drac
+    Categoria: Cultura
+    Adreça: Carrer de Ferran Puig, 37
+    41.329325,2.0911024
+
+16. MuyCoqueta
+    Categoria: Moda
+    Adreça: Carrer de Ferran Puig, 72
+    41.3281585,2.0917297
+
+17. Font Pell
+    Categoria: Moda
+    Adreça: Carrer de Frederic Soler, 40
+    41.3267771,2.0905546
+
+18. Cal Ramonet del Nara
+    Categoria: Alimentació
+    Adreça: Carrer de Ferran Puig, 34
+    41.3291645,2.0907271
+
+19. Flors Montané
+    Categoria: Llar
+    Adreça: Carrer de Ferran Puig, 18
+    41.3295125,2.0907763
+
+20. Pa i Coca
+    Categoria: Alimentació
+    Adreça: Carrer de Ferran Puig, 6
+    41.3298351,2.0906303
+
+21. Nit i dia
+    Categoria: Llar
+    Adreça: Av. de la Verge de Montserrat, 47
+    41.3270673,2.0959859
+
+22. La Masia
+    Categoria: Alimentació
+    Adreça: Plaça de la Vila, 12
+    41.330659, 2.093302
+
+
+23. Calçats Avenida
+    Categoria: Moda
+    Adreça: Av. de la Verge de Montserrat, 41
+    41.3272323,2.0966809
+
+24. Pet Naturalia
+    Categoria: Llar
+    Adreça: Carrer Rector Farrés i Poch, 15
+    41.3228776,2.0886705
+
+25. Celler Terra i Sol
+    Categoria: Alimentació
+    Adreça: Carrer de Frederic Soler, 21
+    41.3442813,2.0651685
+
+26. Agueda Herrera Lencería
+    Categoria: Moda
+    Adreça: Carrer de Frederic Soler, 66
+    41.3439542,2.0662453
+
+27. La Maranya
+    Categoria: Moda
+    Adreça: Carrer de Ferran Puig, 40
+    41.3289092,2.0911051
+
+28. Ferreteria Llobregat
+    Categoria: Llar
+    Adreça: Carretera de la Marina, 5
+    41.3293701,2.0963137
+
+29. Los Naranjos
+    Categoria: Restauració
+    Adreça: Carrer de Mossèn Cinto Verdaguer, 16
+    41.3296986,2.0886957
+
+30. Avanti
+    Categoria: Moda
+    Adreça: Carrer de Ferran Puig, 82
+    41.3279795,2.091883
+
+31. Le Tigrè Cakes
+    Categoria: Restauració
+    Adreça: Passatge Rector Martí i Piñol, 3
+    41.3290425,2.0914075
+
+32. La Cova
+    Categoria: Restauració
+    Adreça: Carrer de Ferran Puig, 30
+    41.329294,2.090774
+
+33. El Bar del Mercat
+    Categoria: Restauració
+    Adreça: Plaça de la Vila, 12
+    41.330659, 2.093302
+
+34. La Nova Primavera
+    Categoria: Restauració
+    Adreça: Carrer de Ferran Puig, 7
+    41.3301238,2.0908004
+
+=== TOTAL: 34 comerços ===
+
+=== CATEGORIES ===
+- Alimentació: Productes alimentaris, carnisseries, forns, etc.
+- Moda: Roba, calçat, complements, perruqueries
+- Llar: Ferreteries, floristeries, animals, decoració
+- Cultura: Llibreries, acadèmies, formació
+- Restauració: Bars, restaurants, pastisseries
