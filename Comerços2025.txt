@@ -83,3 +83,16 @@ Le Tigrè Cakes | Restauració | https://www.google.es/maps/place//@41.3290122,2
 La Cova | Restauració | https://www.google.es/maps/place//@41.3293086,2.0934469,17z
 El Bar del Mercat | Restauració | https://www.google.es/maps/place//@41.3304394,2.0935590,17z
 La Nova Primavera | Restauració | https://www.google.es/maps/place//@41.3301431,2.0933401,17z
+Ferreteria el Primer Clau | Llar | https://www.google.es/maps/place//@41.3237947,2.0938729,17z
+Copisteria Alonso | Cultura | https://www.google.es/maps/place//@41.3288857,2.0986544,17z
+M'Enamorau & Tuki | Llar | https://www.google.es/maps/place//@41.3289052,2.09368,17z
+Jugueteria Pla | Llar | https://www.google.es/maps/place//@41.3237437,2.0902422,17z
+PadelCrack | Moda | https://www.google.es/maps/place//@41.3228996,2.0972452,17z
+El Ninot | Cultura | https://www.google.es/maps/place//@41.3271689,2.1001124,17z
+Natur Prat | Llar | https://www.google.es/maps/place//@41.3241008,2.0894617,17z
+Atleet | Moda | https://www.google.es/maps/place//@41.3237653,2.1026854,17z
+Ferreteria JM | Llar | https://www.google.es/maps/place//@41.3243881,2.1011777,17z
+Floristería el Trébol | Llar | https://www.google.es/maps/place//@41.3232359,2.0983807,17z
+Calçat Diba's | Moda | https://www.google.es/maps/place//@41.3231128,2.0980807,17z
+Cuida't | Moda | https://www.google.es/maps/place//@41.3291461,2.0962802,17z
+La Docta | Alimentació | https://www.google.es/maps/place//@41.3276398,2.0993613,17z
