@@ -54,7 +54,7 @@ const comerciosData = [
     { id: 53, name: "Montserratina", category: "alimentacio", lat: 41.3237878, lng: 2.0894425, color: "#e74c3c", description: "Carrer de Ramon Llull, 13, El Prat de Llobregat", address: "Carrer de Ramon Llull, 13, El Prat de Llobregat" },
     { id: 54, name: "Little Baby", category: "moda", lat: 41.3247224, lng: 2.101958, color: "#3498db", description: "Carrer de Lleida, 152, El Prat de Llobregat", address: "Carrer de Lleida, 152, El Prat de Llobregat" },
     { id: 55, name: "Benessere", category: "llar", lat: 41.3242976, lng: 2.1007665, color: "#2ecc71", description: "Carrer de Lleida, 140, El Prat de Llobregat", address: "Carrer de Lleida, 140, El Prat de Llobregat" },
-    { id: 56, name: "Nathal", category: "moda", lat: 41.3270758, lng: 2.1003574, color: "#3498db", description: "Av. de la Verge de Montserrat, 33, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, 33, El Prat de Llobregat" },
+    { id: 56, name: "Nathal", category: "moda", lat: 41.3270758, lng: 2.1003574, color: "#3498db", description: "Carretera de la Marina, 27, El Prat de Llobregat", address: "Carretera de la Marina, 27, El Prat de Llobregat" },
     { id: 57, name: "Tèxtil Siles", category: "moda", lat: 41.3265926, lng: 2.0991683, color: "#3498db", description: "Av. de la Verge de Montserrat, 31, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, 31, El Prat de Llobregat" },
 ];
 
