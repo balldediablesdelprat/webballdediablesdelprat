@@ -46,6 +46,16 @@ const comerciosData = [
     { id: 45, name: "Calçat Diba's", category: "moda", lat: 41.3231128, lng: 2.0980807, color: "#3498db", description: "Carrer de Lleida, 112, El Prat de Llobregat", address: "Carrer de Lleida, 112, El Prat de Llobregat" },
     { id: 46, name: "Cuida't", category: "moda", lat: 41.3291461, lng: 2.0962802, color: "#3498db", description: "Carrer de Manuel Bertrand, 84, El Prat de Llobregat", address: "Carrer de Manuel Bertrand, 84, El Prat de Llobregat" },
     { id: 47, name: "La Docta", category: "alimentacio", lat: 41.3276398, lng: 2.0993613, color: "#e74c3c", description: "Av. de la Verge de Montserrat, 37, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, 37, El Prat de Llobregat" },
+    { id: 48, name: "Bicicletes Balaguer", category: "moda", lat: 41.3259927, lng: 2.0929951, color: "#3498db", description: "Carrer de Jaume Casanovas, 95, El Prat de Llobregat", address: "Carrer de Jaume Casanovas, 95, El Prat de Llobregat" },
+    { id: 49, name: "Xoco Prat", category: "alimentacio", lat: 41.3300754, lng: 2.0987289, color: "#e74c3c", description: "Carrer d'Enric Borrás, 66, El Prat de Llobregat", address: "Carrer d'Enric Borrás, 66, El Prat de Llobregat" },
+    { id: 50, name: "Llibreria Atenea", category: "cultura", lat: 41.3231661, lng: 2.0892828, color: "#f39c12", description: "Carrer de la Mercè, 33, El Prat de Llobregat", address: "Carrer de la Mercè, 33, El Prat de Llobregat" },
+    { id: 51, name: "Servei Secretaria", category: "cultura", lat: 41.3283446, lng: 2.0953267, color: "#f39c12", description: "Carrer de Castella, 30, El Prat de Llobregat", address: "Carrer de Castella, 30, El Prat de Llobregat" },
+    { id: 52, name: "El Closet", category: "moda", lat: 41.3308247, lng: 2.0955534, color: "#3498db", description: "Plaça de Catalunya, 28, El Prat de Llobregat", address: "Plaça de Catalunya, 28, El Prat de Llobregat" },
+    { id: 53, name: "Montserratina", category: "alimentacio", lat: 41.3237878, lng: 2.0894425, color: "#e74c3c", description: "Carrer de Ramon Llull, 13, El Prat de Llobregat", address: "Carrer de Ramon Llull, 13, El Prat de Llobregat" },
+    { id: 54, name: "Little Baby", category: "moda", lat: 41.3247224, lng: 2.101958, color: "#3498db", description: "Carrer de Lleida, 152, El Prat de Llobregat", address: "Carrer de Lleida, 152, El Prat de Llobregat" },
+    { id: 55, name: "Benessere", category: "llar", lat: 41.3242976, lng: 2.1007665, color: "#2ecc71", description: "Carrer de Lleida, 140, El Prat de Llobregat", address: "Carrer de Lleida, 140, El Prat de Llobregat" },
+    { id: 56, name: "Nathal", category: "moda", lat: 41.3270758, lng: 2.1003574, color: "#3498db", description: "Av. de la Verge de Montserrat, 33, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, 33, El Prat de Llobregat" },
+    { id: 57, name: "Tèxtil Siles", category: "moda", lat: 41.3265926, lng: 2.0991683, color: "#3498db", description: "Av. de la Verge de Montserrat, 31, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, 31, El Prat de Llobregat" },
 ];
 
 
