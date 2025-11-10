@@ -1,98 +1,79 @@
-::::::::::::::::::::::::::::
-COMERÇOS PANERA 2025 /// TXT
-::::::::::::::::::::::::::::
+PANERA 2025
+===================================================
+Total de comerços: 57
 
+CULTURA (8 comerços)
+--------------------
+• Academia d'Anglès Estela - Carrer de Joan Maragall, 21
+• Llibreria Drac - Carrer de Ferran Puig, 37
+• Copisteria Alonso - Carretera de la Marina, 2
+• El Ninot - Carretera de la Marina, 25
+• Llibreria Atenea - Carrer de la Mercè, 33
+• Servei Secretaria - Carrer de Castella, 30
 
+MODA (21 comerços)
+------------------
+• Montse Borràs - Carrer del Centre, 2
+• Passion Beauté - Carrer de Ferran Puig, 27
+• Aurora - Carrer de Ferran Puig, 65
+• Fonollosa - Carrer de Ferran Puig, 73
+• Delcar - Carrer de Frederic Soler, 6 bis
+• Perruqueria Carmen Marín - Carrer de Ferran Puig, 32
+• MuyCoqueta - Carrer de Ferran Puig, 72
+• Font Pell - Carrer de Frederic Soler, 40
+• Calçats Avenida - Av. de la Verge de Montserrat, 41
+• Agueda Herrera Lencería - Carrer de Frederic Soler, 66
+• La Maranya - Carrer de Ferran Puig, 40
+• Avanti - Carrer de Ferran Puig, 82
+• PadelCrack - Carrer de Lleida, 108
+• Atleet - Carretera de la Marina, 77
+• Calçat Diba's - Carrer de Lleida, 112
+• Cuida't - Carrer de Manuel Bertrand, 84
+• Bicicletes Balaguer - Carrer de Jaume Casanovas, 95
+• El Closet - Plaça de Catalunya, 28
+• Little Baby - Carrer de Lleida, 152
+• Nathal - Av. de la Verge de Montserrat, 33
+• Tèxtil Siles - Av. de la Verge de Montserrat, 31
 
+ALIMENTACIÓ (13 comerços)
+-------------------------
+• La Central - Plaça de la Vila, 12
+• Carnisseria Montserrat - Plaça de la Vila, 12
+• Picapedrer - Plaça de la Vila, 12
+• Tàstum - Carrer de Ferran Puig, 10
+• La Nova San José - Carrer de Ferran Puig, 14
+• Cal Ramonet del Nara - Carrer de Ferran Puig, 34
+• Pa i Coca - Carrer de Ferran Puig, 6
+• La Masia - Plaça de la Vila, 12
+• Celler Terra i Sol - Carrer de Frederic Soler, 21
+• La Docta - Av. de la Verge de Montserrat, 37
+• Xoco Prat - Carrer d'Enric Borrás, 66
+• Montserratina - Carrer de Ramon Llull, 13
 
-Academia d'Anglès Estela | Cultura | Carrer de Joan Maragall, 21, El Prat de Llobregat
-Montse Borràs | Moda | Carrer del Centre, 2, El Prat de Llobregat
-La Central | Alimentació | Plaça de la Vila, 12, El Prat de Llobregat
-Carnisseria Montserrat | Alimentació | Plaça de la Vila, 12, El Prat de Llobregat
-Ferreteria la Cresta | Llar | Carrer de Ferran Puig, 23, El Prat de Llobregat
-Passion Beauté | Moda | Carrer de Ferran Puig, 27, El Prat de Llobregat
-Herba Bona | Llar | Carrer de Ferran Puig, 51, El Prat de Llobregat
-Aurora | Moda | Carrer de Ferran Puig, 65, El Prat de Llobregat
-Fonollosa | Moda | Carrer de Ferran Puig, 73, El Prat de Llobregat
-Delcar | Moda | Carrer de Frederic Soler, 6 bis, El Prat de Llobregat
-Picapedrer | Alimentació | Plaça de la Vila, 12, El Prat de Llobregat
-Tàstum | Alimentació | Carrer de Ferran Puig, 10, El Prat de Llobregat
-La Nova San José | Alimentació | Carrer de Ferran Puig, 14, El Prat de Llobregat
-Perruqueria Carmen Marín | Moda | Carrer de Ferran Puig, 32, El Prat de Llobregat
-Llibreria Drac | Cultura | Carrer de Ferran Puig, 37, El Prat de Llobregat
-MuyCoqueta | Moda | Carrer de Ferran Puig, 72, El Prat de Llobregat
-Font Pell | Moda | Carrer de Frederic Soler, 40, El Prat de Llobregat
-Cal Ramonet del Nara | Alimentació | Carrer de Ferran Puig, 34, El Prat de Llobregat
-Flors Montané | Llar | Carrer de Ferran Puig, 18, El Prat de Llobregat
-Pa i Coca | Alimentació | Carrer de Ferran Puig, 6, El Prat de Llobregat
-Nit i dia | Llar | Av. de la Verge de Montserrat, 47, El Prat de Llobregat
-La Masia | Alimentació | Plaça de la Vila, 12, El Prat de Llobregat
-Calçats Avenida | Moda | Av. de la Verge de Montserrat, 41, El Prat de Llobregat
-Pet Naturalia | Llar | Carrer Rector Farrés i Poch, 15, El Prat de Llobregat
-Celler Terra i Sol | Alimentació | Carrer de Frederic Soler, 21, El Prat de Llobregat
-Agueda Herrera Lencería | Moda | Carrer de Frederic Soler, 66, El Prat de Llobregat
-La Maranya | Moda | Carrer de Ferran Puig, 40, El Prat de Llobregat
-Ferreteria Llobregat | Llar | Carretera de la Marina, 5, El Prat de Llobregat
-Los Naranjos | Restauració | Carrer de Mossèn Cinto Verdaguer, 16, El Prat de Llobregat
-Avanti | Moda | Carrer de Ferran Puig, 82, El Prat de Llobregat
-Le Tigrè Cakes | Restauració | Passatge Rector Martí i Piñol, 3, El Prat de Llobregat
-La Cova | Restauració | Carrer de Ferran Puig, 30, El Prat de Llobregat
-El Bar del Mercat | Restauració | Plaça de la Vila, 12, El Prat de Llobregat
-La Nova Primavera | Restauració | Carrer de Ferran Puig, 7, El Prat de Llobregat
+LLAR (13 comerços)
+------------------
+• Ferreteria la Cresta - Carrer de Ferran Puig, 23
+• Herba Bona - Carrer de Ferran Puig, 51
+• Flors Montané - Carrer de Ferran Puig, 18
+• Nit i dia - Av. de la Verge de Montserrat, 47
+• Pet Naturalia - Carrer Rector Farrés i Poch, 15
+• Ferreteria Llobregat - Carretera de la Marina, 5
+• Ferreteria el Primer Clau - Carrer de Jaume Casanovas, 135
+• M'Enamorau & Tuki - Carrer de Ferran Puig, 40
+• Jugueteria Pla - Carrer de Ramon Llull, 9
+• Natur Prat - Av. de la Verge de Montserrat, 200
+• Ferreteria JM - Carrer de Lleida, 144
+• Floristería el Trébol - Carrer de Lleida, 116
+• Benessere - Carrer de Lleida, 140
 
+RESTAURACIÓ (5 comerços)
+------------------------
+• Los Naranjos - Carrer de Mossèn Cinto Verdaguer, 16
+• Le Tigrè Cakes - Passatge Rector Martí i Piñol, 3
+• La Cova - Carrer de Ferran Puig, 30
+• El Bar del Mercat - Plaça de la Vila, 12
+• La Nova Primavera - Carrer de Ferran Puig, 7
 
-
-
-:::::::::::::::::::::::::::::::::
-COMERÇOS PANERA 2025 /// URL MAPS
-:::::::::::::::::::::::::::::::::
-
-
-
-Academia d'Anglès Estela | Cultura | https://www.google.es/maps/place//@41.3313350,2.0965152,17z
-Montse Borràs | Moda | https://www.google.es/maps/place//@41.3311696,2.0939320,17z
-La Central | Alimentació | https://www.google.es/maps/place//@41.3304394,2.0935590,17z
-Carnisseria Montserrat | Alimentació | https://www.google.es/maps/place//@41.3304394,2.0935590,17z
-Ferreteria la Cresta | Llar | https://www.google.es/maps/place//@41.3296108,2.0934235,17z
-Passion Beauté | Moda | https://www.google.es/maps/place//@41.3295258,2.0934468,17z
-Herba Bona | Llar | https://www.google.es/maps/place//@41.3287250,2.0940276,17z
-Aurora | Moda | https://www.google.es/maps/place//@41.3283256,2.0943767,17z
-Fonollosa | Moda | https://www.google.es/maps/place//@41.3281037,2.0945748,17z
-Delcar | Moda | https://www.google.es/maps/place//@41.3271899,2.0952554,17z
-Picapedrer | Alimentació | https://www.google.es/maps/place//@41.3304394,2.0935590,17z
-Tàstum | Alimentació | https://www.google.es/maps/place//@41.3297260,2.0933171,17z
-La Nova San José | Alimentació | https://www.google.es/maps/place//@41.3296389,2.0933150,17z
-Perruqueria Carmen Marín | Moda | https://www.google.es/maps/place//@41.3292628,2.0934839,17z
-Llibreria Drac | Cultura | https://www.google.es/maps/place//@41.3292859,2.0935507,17z
-MuyCoqueta | Moda | https://www.google.es/maps/place//@41.3281885,2.0944042,17z
-Font Pell | Moda | https://www.google.es/maps/place//@41.3267805,2.0955242,17z
-Cal Ramonet del Nara | Alimentació | https://www.google.es/maps/place//@41.3292105,2.0935282,17z
-Flors Montané | Llar | https://www.google.es/maps/place//@41.3294971,2.0933795,17z
-Pa i Coca | Alimentació | https://www.google.es/maps/place//@41.3298061,2.0932949,17z
-Nit i dia | Llar | https://www.google.es/maps/place//@41.3192193,2.0833300,17z
-La Masia | Alimentació | https://www.google.es/maps/place//@41.3304394,2.0935590,17z
-Calçats Avenida | Moda | https://www.google.es/maps/place//@41.3272283,2.0992558,17z
-Pet Naturalia | Llar | https://www.google.es/maps/place//@41.3228609,2.0912570,17z
-Celler Terra i Sol | Alimentació | https://www.google.es/maps/place//@41.3271987,2.0953097,17z
-Agueda Herrera Lencería | Moda | https://www.google.es/maps/place//@41.325497,2.0968407,17z
-La Maranya | Moda | https://www.google.es/maps/place//@41.3289564,2.0937433,17z
-Ferreteria Llobregat | Llar | https://www.google.es/maps/place//@41.3292410,2.0987898,17z
-Los Naranjos | Restauració | https://www.google.es/maps/place//@41.3297235,2.0913336,17z
-Avanti | Moda | https://www.google.es/maps/place//@41.3280169,2.0945558,17z
-Le Tigrè Cakes | Restauració | https://www.google.es/maps/place//@41.3290122,2.0939926,17z
-La Cova | Restauració | https://www.google.es/maps/place//@41.3293086,2.0934469,17z
-El Bar del Mercat | Restauració | https://www.google.es/maps/place//@41.3304394,2.0935590,17z
-La Nova Primavera | Restauració | https://www.google.es/maps/place//@41.3301431,2.0933401,17z
-Ferreteria el Primer Clau | Llar | https://www.google.es/maps/place//@41.3237947,2.0938729,17z
-Copisteria Alonso | Cultura | https://www.google.es/maps/place//@41.3288857,2.0986544,17z
-M'Enamorau & Tuki | Llar | https://www.google.es/maps/place//@41.3289052,2.09368,17z
-Jugueteria Pla | Llar | https://www.google.es/maps/place//@41.3237437,2.0902422,17z
-PadelCrack | Moda | https://www.google.es/maps/place//@41.3228996,2.0972452,17z
-El Ninot | Cultura | https://www.google.es/maps/place//@41.3271689,2.1001124,17z
-Natur Prat | Llar | https://www.google.es/maps/place//@41.3241008,2.0894617,17z
-Atleet | Moda | https://www.google.es/maps/place//@41.3237653,2.1026854,17z
-Ferreteria JM | Llar | https://www.google.es/maps/place//@41.3243881,2.1011777,17z
-Floristería el Trébol | Llar | https://www.google.es/maps/place//@41.3232359,2.0983807,17z
-Calçat Diba's | Moda | https://www.google.es/maps/place//@41.3231128,2.0980807,17z
-Cuida't | Moda | https://www.google.es/maps/place//@41.3291461,2.0962802,17z
-La Docta | Alimentació | https://www.google.es/maps/place//@41.3276398,2.0993613,17z
+==================
+TOTAL: 57 comerços
+==================
