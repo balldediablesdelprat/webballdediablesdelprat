@@ -57,6 +57,8 @@ const comerciosData = [
     { id: 56, name: "Tèxtil Siles", category: "moda", lat: 41.3265926, lng: 2.0991683, color: "#3498db", description: "Av. de la Verge de Montserrat, 31, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, 31, El Prat de Llobregat" },
     { id: 57, name: "Flors Company", category: "llar", lat: 41.3284607, lng: 2.0937598, color: "#2ecc71", description: "Carrer de Mossèn Cinto Verdaguer, El Prat de Llobregat", address: "Carrer de Mossèn Cinto Verdaguer, El Prat de Llobregat" },
     { id: 58, name: "La Teresa Merceria", category: "moda", lat: 41.3259637, lng: 2.0930006, color: "#3498db", description: "Carrer de Jaume Casanovas, El Prat de Llobregat", address: "Carrer de Jaume Casanovas, El Prat de Llobregat" },
+    { id: 59, name: "Barroso Esports", category: "moda", lat: 41.3268458, lng: 2.0954247, color: "#3498db", description: "Carrer de Frederic Soler, El Prat de Llobregat", address: "Carrer de Frederic Soler, El Prat de Llobregat" },
+    { id: 60, name: "Papereria Victoria", category: "llar", lat: 41.3282307, lng: 2.0991369, color: "#2ecc71", description: "Av. de la Verge de Montserrat, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, El Prat de Llobregat" },
 ];
 
 
