@@ -55,6 +55,8 @@ const comerciosData = [
     { id: 54, name: "Benessere", category: "llar", lat: 41.3242976, lng: 2.1007665, color: "#2ecc71", description: "Carrer de Lleida, 140, El Prat de Llobregat", address: "Carrer de Lleida, 140, El Prat de Llobregat" },
     { id: 55, name: "Nathal", category: "moda", lat: 41.3270758, lng: 2.1003574, color: "#3498db", description: "Carretera de la Marina, 27, El Prat de Llobregat", address: "Carretera de la Marina, 27, El Prat de Llobregat" },
     { id: 56, name: "Tèxtil Siles", category: "moda", lat: 41.3265926, lng: 2.0991683, color: "#3498db", description: "Av. de la Verge de Montserrat, 31, El Prat de Llobregat", address: "Av. de la Verge de Montserrat, 31, El Prat de Llobregat" },
+    { id: 57, name: "Flors Company", category: "llar", lat: 41.3284607, lng: 2.0937598, color: "#2ecc71", description: "Carrer de Mossèn Cinto Verdaguer, El Prat de Llobregat", address: "Carrer de Mossèn Cinto Verdaguer, El Prat de Llobregat" },
+    { id: 58, name: "La Teresa Merceria", category: "moda", lat: 41.3259637, lng: 2.0930006, color: "#3498db", description: "Carrer de Jaume Casanovas, El Prat de Llobregat", address: "Carrer de Jaume Casanovas, El Prat de Llobregat" },
 ];
 
 
