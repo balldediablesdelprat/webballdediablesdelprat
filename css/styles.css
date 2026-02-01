@@ -261,6 +261,12 @@ select:focus {
     outline-offset: 2px;
 }
 
+/* Remove outline for navbar links */
+.desktop-nav a:focus,
+.mobile-nav a:focus {
+    outline: none;
+}
+
 .gallery-card:focus-within {
     outline: 2px solid var(--primary-red);
     outline-offset: 2px;
@@ -1860,7 +1866,7 @@ select:focus {
 }
 
 .pdf-viewer {
-    width: 100%;
+    width: 70%;
     height: 85vh;
     max-width: 800px;
     background: white;
