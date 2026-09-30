@@ -863,7 +863,7 @@ function initSmoothScrolling() {
 
 function initCountdownTimer() {
     function updateCountdown() {
-        const festaMajor = new Date('2026-09-25T18:30:00').getTime();
+        const festaMajor = new Date('2027-09-24T18:30:00').getTime();
         const now = new Date().getTime();
         const distance = festaMajor - now;
 
@@ -1692,7 +1692,7 @@ function initVersotsPDFViewer() {
     }
 
     function updateMiniCountdown() {
-        const targetDate = new Date('2026-09-26T13:30:00').getTime();
+        const targetDate = new Date('2027-09-25T13:30:00').getTime();
         const now = new Date().getTime();
         const distance = targetDate - now;
 
