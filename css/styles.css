@@ -70,11 +70,11 @@ body {
 }
 
 .loading-logo-image {
-    width: clamp(120px, 15vw, 180px);
+    width: clamp(110px, 14vw, 160px);
     height: auto;
     opacity: 0;
-    transform: scale(0.8);
-    animation: logoFadeIn 1.5s ease-out 0.3s forwards;
+    transform: scale(0.92);
+    animation: logoFadeIn 0.45s ease-out forwards;
     filter: drop-shadow(0 10px 40px rgba(163, 0, 15, 0.15));
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -121,20 +121,21 @@ body {
 }
 
 .loading-progress {
-    width: clamp(120px, 20vw, 200px);
-    height: 2px;
-    background: rgba(163, 0, 15, 0.1);
-    border-radius: 1px;
+    width: clamp(140px, 22vw, 220px);
+    height: 3px;
+    background: rgba(163, 0, 15, 0.12);
+    border-radius: 2px;
     overflow: hidden;
     flex-shrink: 0;
+    margin-top: 1.6rem;
 }
 
 .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--primary-red), var(--light-red));
-    border-radius: 1px;
+    border-radius: 2px;
     width: 0%;
-    animation: progressFill 2.5s ease-out forwards;
+    transition: width 0.25s ease;
 }
 
 .loading-percentage {
@@ -1151,6 +1152,28 @@ select:focus {
     margin-bottom: 2rem;
     line-height: 1.7;
 }
+
+/* La Grossa — secció a la home (fosca, cinematogràfica) */
+.grossa-home { background: #0e0a0b; }
+.grossa-home-bg { background-image: url('../images/Correfoc-Grossa.jpg') !important; background-position: center 30% !important; }
+.grossa-home-overlay {
+    background: linear-gradient(180deg, rgba(14, 10, 11, 0.74), rgba(82, 0, 8, 0.80)) !important;
+}
+.grossa-home .section-title { color: #fff; }
+.grossa-home .panera-description { color: rgba(255, 255, 255, 0.82); }
+.grossa-home .prize-amount { color: #f0d382; font-weight: 800; }
+.grossa-home-eyebrow {
+    display: inline-block; color: #e4b93c;
+    letter-spacing: 2px; text-transform: uppercase;
+    font-size: 0.78rem; font-weight: 600; margin-bottom: 0.4rem;
+}
+
+/* Footer: crèdit + icones (igual a la pàgina de La Grossa) */
+.footer .dev { margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-light); }
+.footer .dev b { color: var(--text-dark); font-weight: 600; }
+.footer .dev-links { display: inline-flex; gap: 1.1rem; margin-top: 0.9rem; }
+.footer .dev-links a { color: var(--text-lighter); font-size: 1rem; transition: color 0.2s, transform 0.2s; }
+.footer .dev-links a:hover { color: var(--primary-red); transform: translateY(-2px); }
 
 /* ================================
    Gallery
@@ -2867,4 +2890,160 @@ select:focus {
 
 .success-notification.show {
     transform: translateX(0);
+}
+/* Scrollbar oculta visualment (el scroll segueix funcionant) */
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* "Som-hi Diables!" mai es parteix pel guió */
+.sh { white-space: nowrap; }
+@media (max-width: 480px) {
+    .sh { display: block; margin-top: 0.2rem; }
+    .sh-dot { display: none; }
+}
+
+/* =========================================================
+   GALERIA (estil La Grossa: fosc, cinematogràfic, minimal)
+   ========================================================= */
+.gx {
+    --gx-ink: #0e0a0b;
+    --gx-ink-2: #171012;
+    --gx-gold: #e4b93c;
+    --gx-gold-soft: #f0d382;
+    --gx-mut: rgba(255, 255, 255, 0.66);
+    --gx-line: rgba(255, 255, 255, 0.14);
+    background: var(--gx-ink);
+    color: #fff;
+    padding: 6rem 2rem;
+    position: relative;
+}
+.gx-head { text-align: center; margin-bottom: 2.2rem; }
+.gx-title {
+    font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+    font-weight: 200; letter-spacing: -0.5px; line-height: 1.1;
+    color: #fff; margin: 0 0 0.6rem;
+}
+.gx-title b { font-weight: 800; }
+.gx-sub { color: var(--gx-mut); font-weight: 300; font-size: 1rem; margin: 0; }
+
+/* Mosaic */
+.gx-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 216px;
+    grid-auto-flow: dense;
+    gap: 12px;
+}
+.gx-item {
+    margin: 0; position: relative;
+    border-radius: 12px; overflow: hidden;
+    background: var(--gx-ink-2);
+}
+.gx-item.is-portrait { grid-row: span 2; }
+.gx-item[hidden] { display: none; }
+.gx-open {
+    display: block; width: 100%; height: 100%; padding: 0; border: 0; margin: 0;
+    background: none; cursor: zoom-in;
+}
+.gx-open img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+.gx-item figcaption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; gap: 0.1rem;
+    padding: 2.4rem 1rem 0.85rem;
+    background: linear-gradient(180deg, transparent, rgba(8, 6, 7, 0.82));
+    pointer-events: none;
+}
+.gx-cap-t { font-weight: 600; font-size: 0.92rem; color: #fff; }
+.gx-cap-m { font-size: 0.75rem; color: rgba(255, 255, 255, 0.78); letter-spacing: 0.3px; }
+
+@media (hover: hover) {
+    .gx-item figcaption { opacity: 0; transform: translateY(6px); transition: opacity 0.35s ease, transform 0.35s ease; }
+    .gx-item:hover figcaption, .gx-open:focus-visible + figcaption { opacity: 1; transform: none; }
+    .gx-item:hover .gx-open img { transform: scale(1.04); }
+}
+.gx-open:focus-visible { outline: 2px solid var(--gx-gold); outline-offset: -2px; border-radius: 12px; }
+
+/* Veure'n més */
+.gx-more { text-align: center; margin-top: 1.6rem; }
+.gx-more[hidden] { display: none; }
+.gx-more-btn {
+    background: transparent; color: #fff; cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.32); border-radius: 12px;
+    padding: 0.9rem 1.8rem; font-family: inherit; font-size: 0.95rem; font-weight: 600;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.gx-more-btn span { color: var(--gx-mut); font-weight: 400; }
+.gx-more-btn:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.5); }
+.gx-more-btn:focus-visible, .gx-lightbox button:focus-visible {
+    outline: 2px solid var(--gx-gold); outline-offset: 3px;
+}
+
+/* Visor */
+.gx-lightbox {
+    position: fixed; inset: 0; z-index: 3000;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(8, 6, 7, 0.94);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    padding: 4.5rem 5.5rem 3.5rem;
+}
+.gx-lightbox.open { display: flex; animation: gxFade 0.25s ease; }
+.gx-lb-stage { margin: 0; display: flex; flex-direction: column; align-items: center; max-width: 100%; max-height: 100%; }
+.gx-lb-stage img {
+    max-width: 100%; max-height: calc(100vh - 10rem); width: auto; height: auto;
+    border-radius: 10px; object-fit: contain;
+    animation: gxPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gx-lb-cap {
+    display: flex; gap: 1rem; align-items: baseline; justify-content: center;
+    margin-top: 1rem; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;
+}
+.gx-lb-count { color: rgba(255, 255, 255, 0.6); font-variant-numeric: tabular-nums; font-size: 0.82rem; }
+.gx-lightbox button {
+    position: absolute; width: 46px; height: 46px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.08); color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.16); cursor: pointer; font-size: 1.05rem;
+    transition: background 0.2s ease;
+}
+.gx-lightbox button:hover { background: rgba(255, 255, 255, 0.16); }
+.gx-lb-close { top: 1.2rem; right: 1.2rem; }
+.gx-lb-prev { left: 1.2rem; top: 50%; transform: translateY(-50%); }
+.gx-lb-next { right: 1.2rem; top: 50%; transform: translateY(-50%); }
+html.gx-lock, html.gx-lock body { overflow: hidden; }
+
+@keyframes gxFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gxPop { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 1100px) {
+    .gx-grid { grid-auto-rows: 18vw; }
+}
+@media (max-width: 980px) {
+    .gx-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 28vw; }
+    .gx-grid.is-collapsed .gx-item.is-cut-sm { display: none; }
+}
+@media (max-width: 600px) {
+    .gx { padding: 3.6rem 1rem; }
+    .gx-head { margin-bottom: 1.6rem; }
+    .gx-sub { font-size: 0.92rem; }
+    .gx-grid { gap: 8px; grid-auto-rows: calc((100vw - 2rem - 8px) / 2 * 0.667); }
+    .gx-item { border-radius: 10px; }
+    .gx-item figcaption { padding: 1.6rem 0.65rem 0.55rem; }
+    .gx-cap-t { font-size: 0.8rem; }
+    .gx-cap-m { font-size: 0.7rem; }
+    .gx-lightbox { padding: 4rem 0.8rem 5.5rem; }
+    .gx-lb-stage img { max-height: calc(100vh - 11rem); }
+    .gx-lb-prev, .gx-lb-next { top: auto; bottom: 1.2rem; transform: none; }
+    .gx-lb-prev { left: calc(50% - 56px); }
+    .gx-lb-next { right: calc(50% - 56px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .gx-open img, .gx-item figcaption { transition: none; }
+    .gx-lightbox.open, .gx-lb-stage img { animation: none; }
+}
+/* A pantalles tàctils el peu de foto només es mostra al visor */
+@media (hover: none) {
+    .gx-item figcaption { display: none; }
 }
