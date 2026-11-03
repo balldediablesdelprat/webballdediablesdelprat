@@ -1,0 +1,628 @@
+/* =========================================================
+   LA GROSSA 2026 — Proposta v2 (minimalista / cinematogràfica)
+   Fosc, editorial, molt d'aire. Vermell diables + daurat.
+   ========================================================= */
+
+:root {
+    --ink: #0e0a0b;
+    --ink-2: #171012;
+    --ink-3: #221619;
+    --paper: #f6f1ea;
+    --paper-2: #ece3d7;
+    --red: #a3000f;
+    --red-bright: #ff2f44;
+    --gold: #e4b93c;
+    --gold-soft: #f0d382;
+    --mut: rgba(255, 255, 255, 0.62);
+    --mut-2: rgba(255, 255, 255, 0.56);
+    --line: rgba(255, 255, 255, 0.14);
+    --font: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font);
+    background: var(--ink);
+    color: #fff;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+}
+.eyebrow::before {
+    content: '';
+    width: 34px;
+    height: 1px;
+    background: var(--gold);
+    display: inline-block;
+}
+
+/* ---------- TOP BAR ---------- */
+.g-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+}
+.g-top a { color: #fff; text-decoration: none; }
+.g-top .brand {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-weight: 600; font-size: 0.95rem; letter-spacing: 0.3px;
+}
+.g-top .brand img { width: 28px; height: 28px; filter: brightness(0) invert(1); }
+.g-top .back {
+    font-size: 0.85rem; color: var(--mut);
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: color 0.25s;
+}
+.g-top .back:hover { color: #fff; }
+
+/* ---------- HERO ---------- */
+.g-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 0 5rem;
+    background:
+        linear-gradient(180deg, rgba(14,10,11,0.55) 0%, rgba(14,10,11,0.28) 30%, rgba(14,10,11,0.74) 55%, rgba(14,10,11,0.9) 80%, var(--ink) 100%),
+        url('../images/Correfoc-Grossa.jpg') center 30%/cover no-repeat;
+}
+.g-hero::after { /* gra subtil */
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+.g-hero-inner { position: relative; z-index: 2; width: 100%; }
+
+.g-hero h1 {
+    font-weight: 200;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -1px;
+    margin: 1.4rem 0 1rem;
+    text-shadow: 0 6px 40px rgba(0,0,0,0.5);
+}
+.g-hero h1 b { font-weight: 800; color: #fff; }
+.g-hero h1 .gold { color: var(--gold-soft); font-weight: 800; }
+
+.g-hero .lede {
+    max-width: 480px;
+    color: var(--mut);
+    font-size: 1.05rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+}
+
+/* compte enrere minimal */
+.g-count {
+    display: flex;
+    gap: 2.6rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.g-count .u { display: flex; flex-direction: column; }
+.g-count .n {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 200;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+.g-count .l {
+    font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--mut-2); margin-top: 0.5rem;
+}
+.g-count .sep { width: 1px; align-self: stretch; background: var(--line); }
+
+.g-hero .meta {
+    margin-top: 2.2rem;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--mut-2);
+}
+.g-hero .meta b { color: var(--gold); font-weight: 600; }
+
+/* ---------- NÚMERO / PARTICIPACIÓ ---------- */
+.g-number {
+    background: var(--ink);
+    text-align: center;
+    padding: 7rem 2rem;
+    position: relative;
+}
+.g-number .sub { color: var(--mut-2); letter-spacing: 3px; text-transform: uppercase; font-size: 0.72rem; }
+.g-number .series { color: var(--mut); font-size: 0.9rem; font-weight: 300; }
+
+/* graella dels 6 números — tots en una línia a desktop */
+.g-nums {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.7rem;
+    max-width: 1000px;
+    margin: 1.6rem auto 0;
+}
+.num-chip {
+    position: relative;
+    text-align: center;
+    font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 0.7rem 0.4rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+}
+.num-chip.feat {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, rgba(228, 185, 60, 0.14), rgba(228, 185, 60, 0.02));
+    color: var(--gold-soft);
+}
+.num-tag {
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: #3a2a00;
+    font-size: 0.55rem; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 700;
+    padding: 2px 8px; border-radius: 6px; white-space: nowrap;
+}
+.g-note { color: var(--mut); font-weight: 300; font-size: 0.9rem; margin-top: 1.6rem; }
+
+.g-price {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.1rem 2rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+.g-price .amt { font-size: 1.8rem; font-weight: 800; color: var(--gold-soft); }
+.g-price .brk { color: var(--mut); font-size: 0.9rem; font-weight: 300; }
+.g-price .brk b { color: #fff; font-weight: 600; }
+
+/* premi gros */
+.g-jackpot {
+    margin: 3rem auto 0;
+    display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+}
+.g-jackpot .lbl { color: var(--mut); font-weight: 300; font-size: 0.95rem; }
+.g-jackpot .amt {
+    font-size: clamp(2.4rem, 7vw, 3.6rem); font-weight: 800; line-height: 1;
+    color: var(--gold-soft);
+}
+.g-jackpot .fine { color: var(--mut-2); font-size: 0.78rem; font-weight: 300; }
+
+/* ---------- DETALLS (substitueix les 3 targetes) ---------- */
+.g-details {
+    background: var(--ink-2);
+    padding: 6rem 2rem;
+}
+.g-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+}
+.g-cell {
+    padding: 0 2.2rem;
+    border-left: 1px solid var(--line);
+}
+.g-cell:first-child { border-left: none; padding-left: 0; }
+.g-cell .ic { color: var(--gold); font-size: 1.2rem; margin-bottom: 1rem; }
+.g-cell h2 {
+    font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: 0.3px;
+}
+.g-cell p { color: var(--mut); font-weight: 300; font-size: 0.95rem; margin-bottom: 0.6rem; }
+.g-cell p b { color: #fff; font-weight: 600; }
+.g-cell em { color: var(--gold-soft); font-style: normal; font-size: 0.8rem; }
+
+/* ---------- COM FUNCIONA ---------- */
+.g-prizes { background: var(--ink); padding: 6rem 2rem; text-align: center; }
+.g-prizes .lede { color: var(--mut); font-weight: 300; max-width: 620px; margin: 1rem auto 3.5rem; }
+.g-tiers {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    gap: 3.5rem;
+}
+.g-tier { min-width: 120px; }
+.g-tier .t-ic { color: var(--gold); font-size: 1.4rem; margin-bottom: 0.8rem; }
+.g-tier .t-name { font-weight: 600; margin-bottom: 0.3rem; }
+.g-tier .t-sub { color: var(--mut-2); font-size: 0.82rem; font-weight: 300; }
+
+/* taula de premis */
+.g-table {
+    width: 100%;
+    max-width: 680px;
+    margin: 2.5rem auto 0;
+    border-collapse: collapse;
+    text-align: left;
+}
+.g-table th {
+    font-size: 0.68rem; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--mut-2); font-weight: 600;
+    padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--line);
+}
+.g-table td {
+    padding: 0.85rem 0.9rem; border-bottom: 1px solid var(--line);
+    font-weight: 300; color: var(--mut);
+}
+.g-table td:first-child { color: #fff; font-weight: 600; }
+.g-table .mine { color: var(--gold-soft); font-weight: 700; }
+.g-table tr.top td { font-size: 1.02rem; }
+.g-table tr.top td:first-child { color: var(--gold-soft); }
+.g-table .colhead-mine { color: var(--gold-soft); }
+.g-table-foot { color: var(--mut-2); font-size: 0.82rem; font-weight: 300; margin-top: 1.2rem; max-width: 680px; margin-inline: auto; text-align: center; }
+
+/* enllaços dins seccions fosques */
+.g-cell a, .g-bases a, .g-table-foot a, .g-prizes .lede a {
+    color: var(--gold-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+}
+.g-cell a:hover, .g-bases a:hover, .g-table-foot a:hover { color: var(--gold); }
+
+/* ---------- SECTION TITLE ---------- */
+.g-stitle {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 200;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.4rem;
+}
+.g-stitle b { font-weight: 800; }
+.center { text-align: center; }
+
+/* ---------- BASES ---------- */
+.g-bases { background: var(--ink-2); padding: 6rem 2rem; }
+.g-bases .wrap { max-width: 760px; }
+.g-bases .note {
+    color: var(--mut); font-weight: 300; font-size: 0.9rem;
+    margin: 0.4rem 0 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--line);
+}
+.acc { border-bottom: 1px solid var(--line); }
+.acc-h {
+    width: 100%; background: none; border: none; color: #fff;
+    font-family: var(--font); font-size: 1rem; font-weight: 500;
+    text-align: left; cursor: pointer;
+    padding: 1.4rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+}
+.acc-h .pl { color: var(--gold); font-weight: 300; font-size: 1.4rem; transition: transform 0.3s; flex-shrink: 0; }
+.acc.open .acc-h .pl { transform: rotate(45deg); }
+.acc-c {
+    max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+    color: var(--mut); font-weight: 300; font-size: 0.95rem;
+}
+.acc-c .pad { padding: 0 0 1.5rem; }
+.acc-c b { color: #fff; font-weight: 600; }
+
+/* ---------- CTA ---------- */
+.g-cta {
+    background: linear-gradient(135deg, var(--red), #6a000a);
+    text-align: center;
+    padding: 6rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+.g-cta h2 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 200; margin-bottom: 0.6rem; }
+.g-cta h2 b { font-weight: 800; }
+.g-cta p { color: rgba(255,255,255,0.8); font-weight: 300; margin-bottom: 2.4rem; }
+.g-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.g-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 1rem 2rem; border-radius: 12px; text-decoration: none;
+    font-weight: 600; font-size: 0.95rem; transition: all 0.25s;
+}
+.g-btn.solid { background: var(--gold); color: #3a2a00; }
+.g-btn.solid:hover { background: var(--gold-soft); transform: translateY(-2px); }
+.g-btn.ghost { border: 1px solid rgba(255,255,255,0.4); color: #fff; }
+.g-btn.ghost:hover { background: rgba(255,255,255,0.1); }
+
+/* ---------- OFICIAL / FOOTER ---------- */
+.g-official {
+    background: var(--paper);
+    color: #33261f;
+    padding: 3rem 2rem;
+    text-align: center;
+}
+.g-official .cap {
+    font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+    color: #9a8b7d; margin-bottom: 1.5rem;
+}
+.g-logos { display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+.g-logos img { height: 42px; width: auto; }
+.g-foot {
+    background: var(--ink); color: var(--mut-2);
+    text-align: center; padding: 2.8rem 2rem; font-weight: 300;
+}
+.g-foot .copyright { font-size: 0.82rem; color: var(--mut); }
+.g-foot .dev { font-size: 0.76rem; margin-top: 0.9rem; letter-spacing: 0.3px; }
+.g-foot .dev b { color: var(--mut); font-weight: 600; }
+.g-foot .dev-links {
+    display: inline-flex; gap: 1.1rem; margin-top: 0.9rem;
+}
+.g-foot .dev-links a {
+    color: var(--mut-2); font-size: 1rem; transition: color 0.2s, transform 0.2s;
+}
+.g-foot .dev-links a:hover { color: var(--gold-soft); transform: translateY(-2px); }
+
+.g-form.sending { opacity: 0.6; pointer-events: none; }
+
+/* modal de confirmació "Rebut!" */
+.g-modal {
+    position: fixed; inset: 0; z-index: 2000;
+    display: none; align-items: center; justify-content: center;
+    padding: 1.5rem;
+    background: rgba(8, 6, 7, 0.72);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.g-modal.open { display: flex; animation: g-fade 0.25s ease; }
+.g-modal-card {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 2.6rem 2rem 2rem;
+    max-width: 340px; width: 100%;
+    text-align: center;
+    animation: g-pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.g-modal-card h3 { font-weight: 700; font-size: 1.4rem; margin: 0.6rem 0 0.4rem; }
+.g-modal-card p { color: rgba(255, 255, 255, 0.78); font-weight: 300; font-size: 0.95rem; line-height: 1.5; }
+.g-modal-close {
+    margin-top: 1.6rem; cursor: pointer; border: none;
+    background: var(--gold); color: #3a2a00;
+    font-family: var(--font); font-weight: 700; font-size: 0.9rem;
+    padding: 0.7rem 1.8rem; border-radius: 10px; transition: all 0.2s;
+}
+.g-modal-close:hover { background: var(--gold-soft); transform: translateY(-2px); }
+
+/* check que es dibuixa */
+.check-anim { width: 76px; height: 76px; display: block; margin: 0 auto; }
+.check-anim .c-ring {
+    fill: none; stroke: var(--gold); stroke-width: 4; stroke-linecap: round;
+    stroke-dasharray: 201; stroke-dashoffset: 201;
+}
+.check-anim .c-tick {
+    fill: none; stroke: var(--gold); stroke-width: 5;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 60; stroke-dashoffset: 60;
+}
+.g-modal.open .check-anim .c-ring { animation: g-draw 0.55s ease forwards; }
+.g-modal.open .check-anim .c-tick { animation: g-draw 0.4s 0.45s ease forwards; }
+
+@keyframes g-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes g-pop { from { opacity: 0; transform: translateY(12px) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes g-draw { to { stroke-dashoffset: 0; } }
+
+/* ---------- AFINAT MÒBIL ---------- */
+@media (max-width: 480px) {
+    .wrap { padding: 0 1.2rem; }
+
+    /* Hero: evitar desbordament i compactar */
+    .g-hero { min-height: 90vh; padding: 0 0 2.6rem; }
+    .g-hero h1 {
+        font-size: clamp(2rem, 9.5vw, 2.6rem);
+        letter-spacing: -0.5px; line-height: 1.06;
+        overflow-wrap: anywhere;
+    }
+    .eyebrow { font-size: 0.6rem; letter-spacing: 1.5px; gap: 0.5rem; }
+    .eyebrow::before { width: 20px; }
+    .g-hero .lede { font-size: 0.95rem; margin-bottom: 1.8rem; }
+    .g-count { gap: 1.1rem; }
+    .g-count .n { font-size: 1.8rem; }
+    .g-hero .meta { font-size: 0.66rem; letter-spacing: 0.5px; margin-top: 1.6rem; }
+
+    /* Números i preu */
+    .g-number { padding: 3.6rem 1.2rem; }
+    .g-number .sub { font-size: 0.66rem; }
+    .num-chip { font-size: 1.15rem; letter-spacing: 1px; padding: 0.6rem 0.3rem; border-radius: 10px; }
+    .g-nums { gap: 0.5rem; }
+    .g-note { font-size: 0.85rem; }
+    .g-price { padding: 0.9rem 1.4rem; }
+    .g-price .amt { font-size: 1.5rem; }
+    .g-price .brk { font-size: 0.85rem; }
+    .g-jackpot .amt { font-size: 2.2rem; }
+    .g-jackpot .lbl { font-size: 0.88rem; }
+
+    /* Seccions */
+    .g-details, .g-prizes, .g-bases, .g-cta { padding: 3.4rem 1.2rem; }
+    .g-stitle { font-size: 1.6rem; }
+    .g-prizes .lede { font-size: 0.92rem; }
+
+    /* Taula de premis compacta */
+    .g-table { font-size: 0.78rem; }
+    .g-table th { font-size: 0.7rem; letter-spacing: 0.5px; padding: 0.5rem 0.3rem; }
+    .g-table td { padding: 0.55rem 0.3rem; }
+    .g-table tr.top td { font-size: 0.85rem; }
+
+    /* Formulari i modal */
+    .g-form { margin-top: 2rem; }
+    .g-modal-card { padding: 2rem 1.4rem; }
+    .check-anim { width: 64px; height: 64px; }
+
+    /* Footer */
+    .g-foot { padding: 2.4rem 1.2rem; }
+}
+
+/* ---------- FORMULARI DE CONTACTE ---------- */
+.g-form {
+    max-width: 560px;
+    margin: 2.6rem auto 0.5rem;
+    display: grid;
+    gap: 1rem;
+    text-align: left;
+}
+.g-form[hidden] { display: none; }
+.g-form .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.g-field label {
+    display: block;
+    font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8); margin-bottom: 0.45rem;
+}
+.g-field input, .g-field textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    color: #fff; font-family: var(--font); font-size: 0.95rem;
+    transition: border-color 0.2s, background 0.2s;
+}
+.g-field textarea { resize: vertical; min-height: 92px; }
+.g-field input::placeholder, .g-field textarea::placeholder { color: rgba(255, 255, 255, 0.74); }
+.g-field input:focus, .g-field textarea:focus {
+    outline: none; border-color: var(--gold); background: rgba(255, 255, 255, 0.12);
+}
+.g-form .submit {
+    justify-self: start;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    border: none; cursor: pointer;
+    background: var(--gold); color: #3a2a00;
+    font-family: var(--font); font-weight: 700; font-size: 0.95rem;
+    padding: 1rem 2rem; border-radius: 10px; transition: all 0.25s;
+}
+.g-form .submit:hover { background: var(--gold-soft); transform: translateY(-2px); }
+.g-or {
+    margin: 2.2rem 0 1rem;
+    font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+/* MOCKUP banner */
+.mk {
+    background: #111; color: var(--gold);
+    text-align: center; font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.5px; padding: 0.55rem 1rem;
+    border-bottom: 1px solid var(--gold);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 980px) {
+    .g-nums { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 760px) {
+    .g-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .g-cell { border-left: none; padding: 0; border-top: 1px solid var(--line); padding-top: 2.5rem; }
+    .g-cell:first-child { border-top: none; padding-top: 0; }
+    .g-count { gap: 1.6rem; }
+    .g-count .sep { display: none; }
+    .g-nums { grid-template-columns: repeat(3, 1fr); }
+    .g-price { flex-direction: column; align-items: center; gap: 0.4rem; border-radius: 12px; text-align: center; }
+    .g-form .row2 { grid-template-columns: 1fr; }
+    .g-hero { padding-bottom: 3.5rem; }
+    .g-table { font-size: 0.85rem; }
+    .g-table th, .g-table td { padding: 0.65rem 0.5rem; }
+}
+
+/* Scrollbar oculta visualment (el scroll segueix funcionant) */
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Preu: salt de línia només a mòbil */
+.g-price .m-br { display: none; }
+@media (max-width: 480px) {
+    .g-price { display: flex; width: 100%; max-width: 300px; margin-left: auto; margin-right: auto; }
+    .g-price .m-br { display: block; }
+    .g-price .dot { display: none; }
+    .g-price .brk { line-height: 1.6; }
+    .g-number { padding-top: 2.6rem; }
+}
+
+/* Detalls compactes a mòbil: icona a l'esquerra */
+@media (max-width: 480px) {
+    .g-grid { gap: 1.6rem; }
+    .g-cell {
+        display: grid; grid-template-columns: 26px 1fr; column-gap: 0.9rem;
+        padding-top: 1.6rem;
+    }
+    .g-cell:first-child { padding-top: 0; }
+    .g-cell .ic { grid-column: 1; grid-row: 1 / span 6; margin: 0; padding-top: 2px; font-size: 1.05rem; }
+    .g-cell > *:not(.ic) { grid-column: 2; }
+    .g-cell h2 { font-size: 0.98rem; margin-bottom: 0.5rem; }
+    .g-cell p { font-size: 0.88rem; margin-bottom: 0.35rem; }
+}
+
+/* Taula i marges laterals a mòbil */
+@media (max-width: 480px) {
+    .g-number, .g-details, .g-prizes, .g-bases, .g-cta { padding-left: 0; padding-right: 0; }
+    .g-table { font-size: 0.82rem; }
+    .g-table th:nth-child(2), .g-table td:nth-child(2) { display: none; }
+    .g-table td { white-space: nowrap; padding: 0.7rem 0.4rem; }
+    .g-table th { white-space: normal; vertical-align: bottom; }
+    .g-table td:last-child, .g-table th:last-child { text-align: right; }
+    .g-prizes .lede { margin-bottom: 2rem; }
+}
+
+/* Formulari compacte a mòbil */
+@media (max-width: 480px) {
+    .g-form { gap: 0.8rem; }
+    .g-form .row2 + .row2 { grid-template-columns: 1.4fr 1fr; }
+    .g-field label { font-size: 0.64rem; margin-bottom: 0.35rem; }
+    .g-field input, .g-field textarea { padding: 0.75rem 0.9rem; font-size: 0.92rem; }
+    .g-field textarea { min-height: 76px; }
+    .g-form .submit { justify-self: stretch; justify-content: center; padding: 0.95rem 1rem; }
+    .g-or { margin: 1.8rem 0 0.8rem; }
+    .g-btn { padding: 0.8rem 1.4rem; font-size: 0.88rem; }
+    .g-cta h2 { font-size: 1.7rem; }
+    .g-cta p { font-size: 0.92rem; margin-bottom: 0; }
+}
+
+/* "Som-hi Diables!" mai es parteix pel guió */
+.sh { white-space: nowrap; }
+@media (max-width: 480px) {
+    .sh { display: block; margin-top: 0.2rem; }
+    .sh-dot { display: none; }
+}
+
+/* Bases: text justificat amb guionat en català */
+.acc-c .pad {
+    text-align: justify;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    hyphenate-limit-chars: 7 3 3;
+}
+
+/* ---------- Revisió d'accessibilitat (impeccable audit) ---------- */
+.g-count .l { font-size: 0.7rem; color: var(--mut); }
+.g-table th { font-size: 0.72rem; }
+.num-tag { font-size: 0.7rem; letter-spacing: 0; text-transform: none; padding: 2px 7px; }
+.g-official .cap { color: #6f6258; font-size: 0.74rem; }
+.g-number .sub { font-size: 0.72rem; }
+
+/* Superfícies del navegador */
+::selection { background: rgba(228, 185, 60, 0.85); color: #1a1205; }
+.g-field input, .g-field textarea { caret-color: var(--gold); }
+a:focus-visible, button:focus-visible, .acc-h:focus-visible {
+    outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px;
+}
+.g-field input:focus-visible, .g-field textarea:focus-visible { outline: none; }
+
+/* Àrees tàctils mínimes */
+.g-foot .dev-links a { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; }
+.g-foot .dev-links { gap: 0.4rem; }
+
+/* Moviment reduït: es manté el canvi d'estat, sense animació */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .g-modal.open, .g-modal-card { animation: none; }
+    .check-anim .c-ring, .check-anim .c-tick { stroke-dashoffset: 0; animation: none !important; }
+    .g-btn, .g-form .submit, .g-foot .dev-links a, .g-modal-close { transition: none; }
+}

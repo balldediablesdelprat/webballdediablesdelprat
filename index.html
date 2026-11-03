@@ -152,28 +152,16 @@
   <link rel="preload" href="images/Carretillada.jpg" as="image">
 </head>
 
-<body class="loading debug-loading">
-  <!-- Loading Screen -->
-  <div id="loadingScreen" class="loading-screen" role="progressbar" aria-labelledby="loading-title" aria-valuenow="0"
+<body class="loading">
+  <!-- Loading Screen (minimalista) -->
+  <div id="loadingScreen" class="loading-screen" role="progressbar" aria-label="Carregant" aria-valuenow="0"
     aria-valuemin="0" aria-valuemax="100">
     <div class="loading-logo">
       <img src="images/Logo.png" alt="Logo Ball de Diables del Prat" class="loading-logo-image"
         onerror="this.style.display='none'">
     </div>
-
-    <div class="loading-spinner">
-      <div class="spinner-ring"></div>
-      <div class="spinner-ring"></div>
-    </div>
-
-    <div id="loading-title" class="loading-text">Tensant els tabals...</div>
-
     <div class="loading-progress">
       <div class="progress-fill"></div>
-    </div>
-
-    <div class="loading-percentage">
-      <span id="percentageText">0%</span>
     </div>
   </div>
 
@@ -196,7 +184,7 @@
         <li role="none"><a href="#home" role="menuitem">Inici</a></li>
         <li role="none"><a href="#about" role="menuitem">Qui som</a></li>
         <li role="none"><a href="#events" role="menuitem">Esdeveniments</a></li>
-        <li role="none"><a href="#panera" role="menuitem">Panera 2025</a></li>
+        <li role="none"><a href="#grossa" role="menuitem">La Grossa 2026</a></li>
         <li role="none"><a href="#gallery" role="menuitem">Galeria</a></li>
         <li role="none"><a href="#tocs" role="menuitem">Tocs de Tabal</a></li>
         <li role="none"><a href="#contact" role="menuitem">Contacte</a></li>
@@ -217,7 +205,7 @@
           <li role="none"><a href="#home" role="menuitem">Inici</a></li>
           <li role="none"><a href="#about" role="menuitem">Qui som</a></li>
           <li role="none"><a href="#events" role="menuitem">Esdeveniments</a></li>
-          <li role="none"><a href="#panera" role="menuitem">Panera 2025</a></li>
+          <li role="none"><a href="#grossa" role="menuitem">La Grossa 2026</a></li>
           <li role="none"><a href="#gallery" role="menuitem">Galeria</a></li>
           <li role="none"><a href="#tocs" role="menuitem">Tocs de Tabal</a></li>
           <li role="none"><a href="#contact" role="menuitem">Contacte</a></li>
@@ -261,9 +249,9 @@
           </div>
           <div class="about-image">
             <div class="placeholder-image">
-              <img src="images/Versots2.JPG"
-                alt="Membres del Ball de Diables del Prat durant els Versots Diabòlics a la plaça de la Vila"
-                width="400" height="300" loading="lazy" />
+              <img src="images/galeria/familia-2026-2.jpg"
+                alt="Foto de família del Ball de Diables del Prat davant l'Ajuntament"
+                width="1600" height="1067" loading="lazy" />
             </div>
           </div>
         </div>
@@ -470,9 +458,13 @@
                 <td>Febrer 2026</td>
                 <td>Mil·lenari de Montserrat</td>
               </tr>
-              <tr tabindex="0" role="row" class="future-event">
+              <tr tabindex="0" role="row">
                 <td>Octubre 2026</td>
-                <td>...</td>
+                <td>Sabadell</td>
+              </tr>
+              <tr tabindex="0" role="row">
+                <td>Novembre 2026</td>
+                <td>Cornellà</td>
               </tr>
               <tr tabindex="0" role="row" class="future-event">
                 <td>Gener 2027</td>
@@ -484,111 +476,233 @@
       </div>
     </section>
 
-    <!-- Panera Section -->
-    <section id="panera" class="section panera" aria-labelledby="panera-title">
-      <div class="panera-background" role="img" aria-label="Fons decoratiu de la Gran Panera Infernal"></div>
-      <div class="panera-overlay"></div>
+    <!-- La Grossa Section -->
+    <section id="grossa" class="section panera grossa-home" aria-labelledby="grossa-title">
+      <div class="panera-background grossa-home-bg" role="img" aria-label="Correfoc del Ball de Diables del Prat"></div>
+      <div class="panera-overlay grossa-home-overlay"></div>
       <div class="container">
         <div class="panera-content">
-          <h2 id="panera-title" class="section-title">Gran Panera Infernal 2025</h2>
-          <div class="prize-amount" aria-label="Premi de mil dos-cents cinquanta euros">1.250€</div>
+          <span class="grossa-home-eyebrow">La Grossa de Cap d'Any · 2026</span>
+          <h2 id="grossa-title" class="section-title">Juguem La Grossa de Catalunya</h2>
+          <div class="prize-amount" aria-label="Fins a deu mil euros">10.000€</div>
           <p class="panera-description">
-            Sorteig per gastar en comerços locals del Prat. El premi es determina pels darrers quatre números del primer
-            premi de la Grossa de Cap d'Any 2025!
+            Aquest any canviem la panera per La Grossa de Cap d'Any. Compra la teva participació de 5&nbsp;€ i juga amb el
+            Ball. Si la Grossa toca un dels nostres números, són 10.000&nbsp;€ per participació!
           </p>
-          <a href="panera.html" class="cta-button" aria-label="Més informació sobre la Gran Panera Infernal 2025">Més
+          <a href="grossa.html" class="cta-button" aria-label="Més informació sobre La Grossa de Catalunya 2026">Més
             informació</a>
         </div>
       </div>
     </section>
 
     <!-- Gallery -->
-    <section id="gallery" class="section gallery gallery-modern" aria-labelledby="gallery-title">
+    <section id="gallery" class="gx" aria-labelledby="gallery-title">
       <div class="container">
-        <h2 id="gallery-title" class="section-title">Galeria</h2>
-        <div class="gallery-masonry" role="grid">
-          <article class="gallery-card" role="gridcell">
-            <div class="gallery-image">
-              <img src="images/Esclat1.JPG" alt="Esclat de Festa Major amb diables i espurnes de foc il·luminant la nit"
-                width="300" height="225" loading="lazy" />
-              <div class="gallery-overlay">
-                <h3>Esclat de Festa</h3>
-                <p>Festa Major 2024</p>
-              </div>
-            </div>
-          </article>
-          <article class="gallery-card" role="gridcell">
-            <div class="gallery-image">
-              <img src="images/Seguici3.jpg" alt="Actuació dels Versots Diabòlics a la plaça amb públic assistent"
-                width="300" height="225" loading="lazy" />
-              <div class="gallery-overlay">
-                <h3>Seguici</h3>
-                <p>Sant Pere i Sant Pau 2025</p>
-              </div>
-            </div>
-          </article>
-          <article class="gallery-card" role="gridcell">
-            <div class="gallery-image">
-              <img src="images/Correfoc1.jpg" alt="Correfoc nocturn amb diables portant maces enceses entre el públic"
-                width="300" height="225" loading="lazy" />
-              <div class="gallery-overlay">
-                <h3>Correfoc</h3>
-                <p>Festa Major 2024</p>
-              </div>
-            </div>
-          </article>
-          <article class="gallery-card" role="gridcell">
-            <div class="gallery-image">
-              <img src="images/Seguici2.JPG" alt="Seguici Popular del Ball de Diables pels carrers del Prat" width="300"
-                height="225" loading="lazy" />
-              <div class="gallery-overlay">
-                <h3>Seguici</h3>
-                <p>Festa Major 2024</p>
-              </div>
-            </div>
-          </article>
-          <article class="gallery-card" role="gridcell">
-            <div class="gallery-image">
-              <img src="images/Correfoc2.JPG" alt="Flames diabòliques il·luminant els carrers durant el correfoc"
-                width="300" height="225" loading="lazy" />
-              <div class="gallery-overlay">
-                <h3>Correfoc</h3>
-                <p>Festa Major 2024</p>
-              </div>
-            </div>
-          </article>
-          <article class="gallery-card" role="gridcell">
-            <div class="gallery-image">
-              <img src="images/Esclat2.JPG" alt="Ball de diables en plena acció amb maces de foc i vestuari tradicional"
-                width="300" height="225" loading="lazy" />
-              <div class="gallery-overlay">
-                <h3>Esclat</h3>
-                <p>Festa Major 2022</p>
-              </div>
-            </div>
-          </article>
-          <article class="gallery-card" role="gridcell">
-            <div class="gallery-image">
-              <img src="images/Versots1.JPG"
-                alt="Tambors tradicionals de membrana de pell utilitzats pels Ball de Diables" width="300" height="225"
-                loading="lazy" />
-              <div class="gallery-overlay">
-                <h3>Versots Diabòlics</h3>
-                <p>Festa Major 2024</p>
-              </div>
-            </div>
-          </article>
-          <article class="gallery-card" role="gridcell">
-            <div class="gallery-image">
-              <img src="images/Carretillada.jpg" alt="Carretillada espectacular amb efectes pirotècnics i diables"
-                width="300" height="225" loading="lazy" />
-              <div class="gallery-overlay">
-                <h3>Carretillada</h3>
-                <p>Sant Pere i Sant Pau 2025</p>
-              </div>
-            </div>
-          </article>
+        <header class="gx-head">
+          <h2 id="gallery-title" class="gx-title">La nostra <b>galeria</b></h2>
+          <p class="gx-sub">Els moments del Ball de Diables del Prat!</p>
+        </header>
+        <div class="gx-grid" id="gxGrid">
+          <figure class="gx-item is-portrait" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-03.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-03.jpg" alt="Diable amb la maça encesa enmig d&#x27;una pluja d&#x27;espurnes al correfoc de Festa Major 2026" width="533" height="800" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item" data-cat="esclat">
+            <button type="button" class="gx-open" data-full="images/galeria/esclat-2026-1.jpg" aria-label="Amplia la foto: Esclat de Festa, Festa Major 2026">
+              <img src="images/galeria/thumb/esclat-2026-1.jpg" alt="L&#x27;àngel davant els diables i les espurnes a l&#x27;Esclat 2026" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Esclat de Festa</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item" data-cat="carretillada">
+            <button type="button" class="gx-open" data-full="images/galeria/carretillada-2026-1.jpg" aria-label="Amplia la foto: Carretillada, Sant Pere i Sant Pau 2026">
+              <img src="images/galeria/thumb/carretillada-2026-1.jpg" alt="Carretillada nocturna amb foc i fum al centre de la plaça" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Carretillada</span><span class="gx-cap-m">Sant Pere i Sant Pau 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-02.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-02.jpg" alt="Diables ballant amb les maces enceses al correfoc" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-portrait" data-cat="esclat">
+            <button type="button" class="gx-open" data-full="images/galeria/esclat-2026-7.jpg" aria-label="Amplia la foto: Esclat de Festa, Festa Major 2026">
+              <img src="images/galeria/thumb/esclat-2026-7.jpg" alt="Diable caminant entre fum vermell i palmeres durant l&#x27;Esclat 2026" width="533" height="800" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Esclat de Festa</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-05.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-05.jpg" alt="Diables encenent les maces sota una cortina d&#x27;espurnes al correfoc" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item" data-cat="versots">
+            <button type="button" class="gx-open" data-full="images/galeria/versots-2026.jpg" aria-label="Amplia la foto: Versots, Festa Major 2026">
+              <img src="images/galeria/thumb/versots-2026.jpg" alt="Actuació dels versots davant del públic a la plaça" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Versots</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item" data-cat="esclat">
+            <button type="button" class="gx-open" data-full="images/galeria/esclat-2026-4.jpg" aria-label="Amplia la foto: Esclat de Festa, Festa Major 2026">
+              <img src="images/galeria/thumb/esclat-2026-4.jpg" alt="Foc vermell il·luminant els diables a l&#x27;Esclat 2026" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Esclat de Festa</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-portrait" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-08.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-08.jpg" alt="Grup de diables amb maces enceses envoltats d&#x27;espurnes" width="533" height="800" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-01.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-01.jpg" alt="Tabalers marcant el ritme al correfoc de Festa Major 2026" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item" data-cat="esclat">
+            <button type="button" class="gx-open" data-full="images/galeria/esclat-2026-6.jpg" aria-label="Amplia la foto: Esclat de Festa, Festa Major 2026">
+              <img src="images/galeria/thumb/esclat-2026-6.jpg" alt="Diable amb barret de copa i capa vermella a l&#x27;Esclat 2026" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Esclat de Festa</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-cut-sm" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-06.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-06.jpg" alt="Fila de diables amb capes vermelles i blanques pels carrers" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-portrait is-extra" data-cat="esclat">
+            <button type="button" class="gx-open" data-full="images/galeria/esclat-2026-2.jpg" aria-label="Amplia la foto: Esclat de Festa, Festa Major 2026">
+              <img src="images/galeria/thumb/esclat-2026-2.jpg" alt="Diables amb foc en primer pla durant l&#x27;Esclat 2026" width="533" height="800" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Esclat de Festa</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="esclat">
+            <button type="button" class="gx-open" data-full="images/galeria/esclat-2026-3.jpg" aria-label="Amplia la foto: Esclat de Festa, Festa Major 2026">
+              <img src="images/galeria/thumb/esclat-2026-3.jpg" alt="Silueta d&#x27;un diable entre el fum i les espurnes" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Esclat de Festa</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-09.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-09.jpg" alt="Diables enmig de la fumera del correfoc de Festa Major" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="carretillada">
+            <button type="button" class="gx-open" data-full="images/galeria/carretillada-2026-2.jpg" aria-label="Amplia la foto: Carretillada, Sant Pere i Sant Pau 2026">
+              <img src="images/galeria/thumb/carretillada-2026-2.jpg" alt="Diables amb carretilles enceses de nit" width="540" height="360" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Carretillada</span><span class="gx-cap-m">Sant Pere i Sant Pau 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-portrait is-extra" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-07.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-07.jpg" alt="Font de foc i espurnes sobre els diables al correfoc" width="533" height="800" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="esclat">
+            <button type="button" class="gx-open" data-full="images/galeria/esclat-2026-5.jpg" aria-label="Amplia la foto: Esclat de Festa, Festa Major 2026">
+              <img src="images/galeria/thumb/esclat-2026-5.jpg" alt="El Ball de Diables del Prat agrupat després de l&#x27;Esclat 2026" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Esclat de Festa</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-10.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-10.jpg" alt="Correfoc nocturn amb llum vermella i espurnes" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-portrait is-extra" data-cat="ball">
+            <button type="button" class="gx-open" data-full="images/galeria/matinades-2026.jpg" aria-label="Amplia la foto: Matinades, Festa Major 2026">
+              <img src="images/galeria/thumb/matinades-2026.jpg" alt="Tabalers entre el fum durant les matinades" width="360" height="540" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Matinades</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="carretillada">
+            <button type="button" class="gx-open" data-full="images/galeria/carretillada-2026-3.jpg" aria-label="Amplia la foto: Carretillada, Sant Pere i Sant Pau 2026">
+              <img src="images/galeria/thumb/carretillada-2026-3.jpg" alt="Carretillada amb diables i espurnes sota els arbres" width="540" height="360" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Carretillada</span><span class="gx-cap-m">Sant Pere i Sant Pau 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-04.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-04.jpg" alt="Foc vermell davant d&#x27;una façana durant el correfoc" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-fm-2026-11.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2026">
+              <img src="images/galeria/thumb/correfoc-fm-2026-11.jpg" alt="Detall d&#x27;una maça encesa amb espurnes" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2026</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="esclat">
+            <button type="button" class="gx-open" data-full="images/galeria/esclat-2024.jpg" aria-label="Amplia la foto: Esclat de Festa, Festa Major 2024">
+              <img src="images/galeria/thumb/esclat-2024.jpg" alt="Esclat de Festa Major amb diables i espurnes de foc il·luminant la nit" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Esclat de Festa</span><span class="gx-cap-m">Festa Major 2024</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="ball">
+            <button type="button" class="gx-open" data-full="images/galeria/seguici-2025.jpg" aria-label="Amplia la foto: Seguici, Sant Pere i Sant Pau 2025">
+              <img src="images/galeria/thumb/seguici-2025.jpg" alt="Seguici del Ball de Diables a la plaça amb públic" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Seguici</span><span class="gx-cap-m">Sant Pere i Sant Pau 2025</span></figcaption>
+          </figure>
+          <figure class="gx-item is-portrait is-extra" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-2024-1.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2024">
+              <img src="images/galeria/thumb/correfoc-2024-1.jpg" alt="Correfoc nocturn amb diables portant maces enceses entre el públic" width="533" height="800" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2024</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="carretillada">
+            <button type="button" class="gx-open" data-full="images/galeria/carretillada-2025.jpg" aria-label="Amplia la foto: Carretillada, Sant Pere i Sant Pau 2025">
+              <img src="images/galeria/thumb/carretillada-2025.jpg" alt="Carretillada espectacular amb efectes pirotècnics i diables" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Carretillada</span><span class="gx-cap-m">Sant Pere i Sant Pau 2025</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="versots">
+            <button type="button" class="gx-open" data-full="images/galeria/versots-2024.jpg" aria-label="Amplia la foto: Versots Diabòlics, Festa Major 2024">
+              <img src="images/galeria/thumb/versots-2024.jpg" alt="Versots Diabòlics a la plaça" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Versots Diabòlics</span><span class="gx-cap-m">Festa Major 2024</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="correfoc">
+            <button type="button" class="gx-open" data-full="images/galeria/correfoc-2024-2.jpg" aria-label="Amplia la foto: Correfoc, Festa Major 2024">
+              <img src="images/galeria/thumb/correfoc-2024-2.jpg" alt="Flames diabòliques il·luminant els carrers durant el correfoc" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Correfoc</span><span class="gx-cap-m">Festa Major 2024</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="ball">
+            <button type="button" class="gx-open" data-full="images/galeria/seguici-2024.jpg" aria-label="Amplia la foto: Seguici, Festa Major 2024">
+              <img src="images/galeria/thumb/seguici-2024.jpg" alt="Seguici Popular del Ball de Diables pels carrers del Prat" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Seguici</span><span class="gx-cap-m">Festa Major 2024</span></figcaption>
+          </figure>
+          <figure class="gx-item is-extra" data-cat="esclat">
+            <button type="button" class="gx-open" data-full="images/galeria/esclat-2022.jpg" aria-label="Amplia la foto: Esclat de Festa, Festa Major 2022">
+              <img src="images/galeria/thumb/esclat-2022.jpg" alt="Ball de diables en plena acció amb maces de foc i vestuari tradicional" width="800" height="533" loading="lazy" decoding="async">
+            </button>
+            <figcaption><span class="gx-cap-t">Esclat de Festa</span><span class="gx-cap-m">Festa Major 2022</span></figcaption>
+          </figure>
         </div>
+        <div class="gx-more">
+          <button type="button" class="gx-more-btn" id="gxMore">Veure totes les fotos <span>(31)</span></button>
+        </div>
+      </div>
+
+      <div class="gx-lightbox" id="gxLightbox" role="dialog" aria-modal="true" aria-label="Visor de fotos" aria-hidden="true">
+        <button type="button" class="gx-lb-close" id="gxClose" aria-label="Tanca el visor"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+        <button type="button" class="gx-lb-nav gx-lb-prev" id="gxPrev" aria-label="Foto anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <figure class="gx-lb-stage">
+          <img id="gxLbImg" src="" alt="">
+          <figcaption class="gx-lb-cap"><span id="gxLbTitle"></span><span id="gxLbCount" class="gx-lb-count"></span></figcaption>
+        </figure>
+        <button type="button" class="gx-lb-nav gx-lb-next" id="gxNext" aria-label="Foto següent"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
       </div>
     </section>
 
@@ -929,13 +1043,13 @@
   <!-- Footer -->
   <footer class="footer" role="contentinfo">
     <div class="container">
-      <p>&copy; 2025 Ball de Diables del Prat de Llobregat. Endavant diables!</p>
-      <div class="developer-credits">
-        <p>Web desenvolupada per <a href="mailto:marcg-c20@hotmail.es" title="Contactar amb el desenvolupador">Marc
-            García-Cuevas de Paz</a> |
-          <a href="https://www.instagram.com/marccgarciia/" target="_blank" rel="noopener"
-            title="Instagram del desenvolupador">@marccgarciia</a>
-        </p>
+      <p>&copy; 2026 Ball de Diables del Prat de Llobregat<span class="sh-dot"> · </span><span class="sh">Som-hi Diables!</span></p>
+      <p class="dev">Web desenvolupada per <b>Marc García-Cuevas de Paz</b></p>
+      <div class="dev-links">
+        <a href="mailto:marcg-c20@hotmail.es" title="Correu" aria-label="Correu"><i class="fas fa-envelope"></i></a>
+        <a href="https://marccgarciia.com/" title="Web" aria-label="Web" target="_blank" rel="noopener"><i class="fas fa-globe"></i></a>
+        <a href="https://www.linkedin.com/in/marccgarciia/" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.instagram.com/marccgarciia/" title="Instagram" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
       </div>
     </div>
   </footer>

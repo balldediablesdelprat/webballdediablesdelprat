@@ -608,7 +608,7 @@ function initRealLoadingScreen() {
             console.log('⚠️ Forzando completar loading por timeout...');
             completeLoading();
         }
-    }, 6000);
+    }, 2000);
 
     // Función para actualizar el progreso suavemente
     function updateProgress() {
@@ -667,7 +667,7 @@ function initRealLoadingScreen() {
 
         if (percentageText) percentageText.textContent = '100%';
         if (progressFill) progressFill.style.width = '100%';
-        if (loadingTitle) loadingTitle.textContent = 'Endavant diables!';
+        if (loadingTitle) loadingTitle.textContent = 'Som-hi Diables!';
 
         console.log('🎉 Loading completado - Ocultando pantalla');
 
@@ -695,27 +695,27 @@ function initRealLoadingScreen() {
     }
 
     // Cargar recursos de forma escalonada (simulado)
-    loadResource('DOM Ready', 100);
-    loadResource('CSS Styles', 300);
-    loadResource('Logo Principal', 600);
-    loadResource('Imágenes Críticas', 1200);
-    loadResource('Fonts', 1800);
-    loadResource('Assets', 2400);
-    loadResource('Scripts', 3000);
-    loadResource('Final Check', 3600);
+    loadResource('DOM Ready', 40);
+    loadResource('CSS Styles', 100);
+    loadResource('Logo Principal', 170);
+    loadResource('Imágenes Críticas', 260);
+    loadResource('Fonts', 360);
+    loadResource('Assets', 470);
+    loadResource('Scripts', 590);
+    loadResource('Final Check', 720);
 
     // Progreso mínimo garantizado
     setTimeout(() => {
         if (!isCompleted && targetPercentage < 70) {
             targetPercentage = 70;
         }
-    }, 2000);
+    }, 500);
 
     setTimeout(() => {
         if (!isCompleted && targetPercentage < 90) {
             targetPercentage = 90;
         }
-    }, 4000);
+    }, 800);
 
     // Completar si no se ha hecho ya
     setTimeout(() => {
@@ -723,7 +723,7 @@ function initRealLoadingScreen() {
             resourcesLoaded = totalResources;
             targetPercentage = 100;
         }
-    }, 5000);
+    }, 1000);
 }
 
 function initializeAllFeatures() {
@@ -1788,3 +1788,122 @@ window.addEventListener('loadingComplete', function () {
 
 // Fallback si no hi ha loading screen
 setTimeout(initVersotsPDFViewer, 1000);
+// ================================
+// GALERIA: "veure-les totes" i visor
+// ================================
+(function () {
+    var grid = document.getElementById('gxGrid');
+    if (!grid) return;
+
+    var items = Array.prototype.slice.call(grid.querySelectorAll('.gx-item'));
+    var moreWrap = document.querySelector('.gx-more');
+    var moreBtn = document.getElementById('gxMore');
+    var lb = document.getElementById('gxLightbox');
+    var lbImg = document.getElementById('gxLbImg');
+    var lbTitle = document.getElementById('gxLbTitle');
+    var lbCount = document.getElementById('gxLbCount');
+    var current = 'all';
+    var expanded = false;
+    var visible = [];
+    var index = 0;
+    var lastFocus = null;
+
+    function render() {
+        visible = [];
+        items.forEach(function (item) {
+            var inCat = current === 'all' || item.getAttribute('data-cat') === current;
+            var hiddenExtra = current === 'all' && !expanded && item.classList.contains('is-extra');
+            var show = inCat && !hiddenExtra;
+            item.hidden = !show;
+            // el visor recorre totes les fotos de la categoria, encara que estiguin plegades
+            if (inCat) visible.push(item);
+        });
+        var collapsed = current === 'all' && !expanded;
+        grid.classList.toggle('is-collapsed', collapsed);
+        if (moreWrap) moreWrap.hidden = !collapsed;
+    }
+
+
+    if (moreBtn) {
+        moreBtn.addEventListener('click', function () {
+            expanded = true;
+            render();
+        });
+    }
+
+    function show(i) {
+        if (!visible.length) return;
+        index = (i + visible.length) % visible.length;
+        var item = visible[index];
+        var btn = item.querySelector('.gx-open');
+        var img = item.querySelector('img');
+        var t = item.querySelector('.gx-cap-t');
+        var m = item.querySelector('.gx-cap-m');
+        lbImg.style.animation = 'none';
+        void lbImg.offsetWidth;
+        lbImg.style.animation = '';
+        lbImg.src = btn.getAttribute('data-full');
+        lbImg.alt = img.alt;
+        lbTitle.textContent = (t ? t.textContent : '') + (m ? ' · ' + m.textContent : '');
+        lbCount.textContent = (index + 1) + ' / ' + visible.length;
+        // precarrega la següent
+        var next = visible[(index + 1) % visible.length];
+        if (next) { var pre = new Image(); pre.src = next.querySelector('.gx-open').getAttribute('data-full'); }
+    }
+
+    function open(item) {
+        lastFocus = document.activeElement;
+        show(visible.indexOf(item));
+        lb.classList.add('open');
+        lb.setAttribute('aria-hidden', 'false');
+        document.documentElement.classList.add('gx-lock');
+        document.getElementById('gxClose').focus();
+    }
+
+    function close() {
+        if (!lb.classList.contains('open')) return;
+        lb.classList.remove('open');
+        lb.setAttribute('aria-hidden', 'true');
+        document.documentElement.classList.remove('gx-lock');
+        lbImg.src = '';
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    items.forEach(function (item) {
+        item.querySelector('.gx-open').addEventListener('click', function () { open(item); });
+    });
+
+    document.getElementById('gxClose').addEventListener('click', close);
+    document.getElementById('gxPrev').addEventListener('click', function () { show(index - 1); });
+    document.getElementById('gxNext').addEventListener('click', function () { show(index + 1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+
+    document.addEventListener('keydown', function (e) {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowLeft') show(index - 1);
+        else if (e.key === 'ArrowRight') show(index + 1);
+        else if (e.key === 'Tab') {
+            // manté el focus dins del visor
+            var f = Array.prototype.slice.call(lb.querySelectorAll('button'));
+            var first = f[0], last = f[f.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+    });
+
+    // swipe a mòbil
+    var x0 = null, y0 = null;
+    lb.addEventListener('touchstart', function (e) {
+        x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+    }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0;
+        var dy = e.changedTouches[0].clientY - y0;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(index + (dx < 0 ? 1 : -1));
+        x0 = y0 = null;
+    });
+
+    render();
+})();
